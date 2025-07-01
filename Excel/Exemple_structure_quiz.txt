@@ -1,0 +1,174 @@
+[QUIZ] XIAOMI 14T et 14T Pro
+
+Q1	Quelle est l'ouverture sur l'appareil photo principal du Xiaomi 14T ?
+    f/2.2
+    f/1.6
+    f/2.0
+   *f/1.8 
+
+Q2	Les Xiaomi 14T et 14T Pro disposent de la même durée de recharge.
+    TRUE
+   *Faux. Le Xiaomi 14T se recharge en 19 minutes tandis que le 14T Pro se recharge en 45 minutes. 
+
+Q3	Quelle est la résolution de l'appareil photo principal sur le Xiaomi 14T?
+    12 MP
+    24 MP
+    36 MP
+   *50 MP 
+
+Q4	La fonctionnalité #1 sur le Xiaomi 14T permet une recharge complète en seulement 19 minutes.
+    QuickCharge
+    SuperCharge
+ #1 HyperCharge 
+    FastCharge
+
+Q5	Le Xiaomi 14T Pro utilise l'IA avancée Google Gemini.
+   *TRUE 
+    Faux
+
+Q6	La technologie #1 est employée pour offrir une qualité de photos exceptionnelle sur le Xiaomi 14T.
+    Sony
+    Canon
+ #1 Leica 
+    Nikon
+
+Q7	Quelle est la taille des gravures sur le Xiaomi 14T Pro ?
+    7 nm
+    5 nm
+    4 nm
+   *3 nm 
+
+Q8	Le Xiaomi 14T et le 14T Pro offrent un zoom optique x5.
+    TRUE
+   *Faux 
+Q9	La technologie d'IA intégrée au Xiaomi 14T et 14T Pro s'appelle #1.
+    AI Genius
+    AI Craftsmanship
+    AI Creativity
+    AI Innovation #1
+
+Q10	Quelle est la plage de focales disponibles sur le Xiaomi 14T ?
+    14 à 75mm
+    20 to 90mm
+   *10 à 85mm 
+    18 to 80mm
+
+
+
+
+
+
+
+
+
+
+
+[QUIZ] XIAOMI 14T et 14T Pro
+
+Q1	Quelle est l'ouverture sur l'appareil photo principal du Xiaomi 14T ?
+    f/2.2
+    f/1.6
+    f/2.0
+   *f/1.8 
+
+Q2	Les Xiaomi 14T et 14T Pro disposent de la même durée de recharge.
+    Vrai
+   *Faux. Le Xiaomi 14T se recharge en 19 minutes tandis que le 14T Pro se recharge en 45 minutes. 
+
+Q3	Quelle est la résolution de l'appareil photo principal sur le Xiaomi 14T?
+    12 MP
+    24 MP
+    36 MP
+   *50 MP 
+
+Q4	La fonctionnalité #1 sur le Xiaomi 14T permet une recharge complète en seulement 19 minutes.
+    QuickCharge
+    SuperCharge
+ #1 HyperCharge 
+    FastCharge
+
+Q5	Le Xiaomi 14T Pro utilise l'IA avancée Google Gemini.
+   *Vrai 
+    Faux
+
+Q6	La technologie #1 est employée pour offrir une qualité de photos exceptionnelle sur le Xiaomi 14T.
+    Sony
+    Canon
+ #1 Leica 
+    Nikon
+
+Q7	Quelle est la taille des gravures sur le Xiaomi 14T Pro ?
+    7 nm
+    5 nm
+    4 nm
+   *3 nm 
+
+Q8	Le Xiaomi 14T et le 14T Pro offrent un zoom optique x5.
+    Vrai
+   *Faux 
+Q9	La technologie d'IA intégrée au Xiaomi 14T et 14T Pro s'appelle #1.
+    AI Genius
+    AI Craftsmanship
+    AI Creativity
+    AI Innovation #1
+
+Q10	Quelle est la plage de focales disponibles sur le Xiaomi 14T ?
+    14 à 75mm
+    20 to 90mm
+   *10 à 85mm 
+    18 to 80mm
+
+
+
+[QUIZ] ULT POWER SOUND Casque Bluetooth® 
+
+Q1 Le ULT POWER SOUND est équipé de ses modes quelles modes?
+* Deep Bass et Attack Bass 
+   Extra Bass et Ultimate Bass
+   Strong Bass et Mighty Bass
+   Power Bass et Super Bass
+
+Q2 Il dispose d'une réduction de bruit active.
+* Vrai
+  Faux
+
+Q3 Le ULT POWER SOUND dispose d'une puissance de ____
+   40mm
+   20mm
+   30mm
+* 50mm 
+
+Q4 Quelle est l'autonomie du ULT POWER SOUND avec RBA OFF?
+* Jusqu'à 50 heures
+  Jusqu'à 40 heures
+  Jusqu'à 60 heures
+  Jusqu'à 35 heures 
+
+Q5  Ce casque est uniquement compatible avec iOS.
+   Vrai
+* Faux. Il est compatible à la fois avec iOS et Android.
+
+Q6 Qu'est-ce qui est fourni avec le ULT POWER SOUND dans la boîte?
+  * Housse de transport rigide
+    Étui souple de transport
+    Une carte mémoire
+    Un abonnement Spotify
+Q7 Le ULT POWER SOUND offre un son surround immergent.
+* Vrai
+  Faux
+
+Q8 Combien de minutes de charge sont nécessaires pour disposer de 1h30 d'autonomie?
+   5 min
+* 3 min
+   10 min
+   1 min
+    
+Q9 Y a-t-il un son ambiant sur le ULT POWER SOUND?
+  Faux
+* Vrai
+
+Q10 Quelle est la plager de fréquence du ULT POWER SOUND?
+   5Hz-18,000Hz
+   5Hz-15,000Hz
+* 5Hz–20,000Hz
+   8Hz-20,000Hz

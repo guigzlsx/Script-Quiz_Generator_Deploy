@@ -1,0 +1,111 @@
+Rédige un script de 290 à 310 mots (TRES TRES IMPORTANT LE NOMBRE DE MOTS) en mettant en avant 5 points clés importants, en adoptant 
+      un ton promotionnel et fluide, semblable à cet exemple de structure :
+
+
+[SCRIPT] FUJIFILM APPAREIL INSTAX WIDE 400
+
+Découvrez l'Instax Wide 400, l'appareil photo instantané idéal pour capturer vos moments les plus précieux.
+Avec son format large de 108 x 86 mm, il est parfait pour immortaliser les photos de groupe et les paysages, offrant une qualité d'image exceptionnelle.
+Simple d’utilisation, l’Instax Wide 400 devient votre compagnon indispensable lors de toutes les grandes occasions, que ce soit pour des fêtes, des événements ou des moments en famille.
+L'Instax Wide 400 est équipé d'un flash électronique intégré qui ajuste automatiquement l'intensité de l'éclair en fonction de la distance du sujet.
+Cela garantit des photos parfaitement éclairées, quel que soit l'environnement.
+De plus, grâce au bouton retardateur, vous pouvez être sûr que personne ne manquera sur la photo, vous permettant ainsi de partager ces instants mémorables avec tout le monde.
+L'appareil inclut également un accessoire de réglage de l'angle de prise de vue, vous assurant des clichés parfaitement cadrés sans avoir besoin d'un trépied.
+Sa bonnette d’approche vous permet d'effectuer des prises de vue macro à seulement 40 cm du sujet, capturant ainsi les moindres détails.
+Enfin, son design moderne et son coloris vert sauge ajoutent une touche de style à chaque instant capturé.
+Faites place à plus avec l'Instax Wide 400, l'appareil photo qui réinvente l'instantané grand format et vous accompagne partout, pour des souvenirs inoubliables.
+
+MOTS-CLÉS ASSOCIÉS
+Format large (108 x 86 mm)
+Facilité d'utilisation
+Flash électronique intelligent
+Bouton retardateur
+Accessoires pratiques
+
+
+Donc redige moi le script comme demandé au dessus, en y incluant les bullet points a chaque debut de phrase reviens a la ligne, c'est tres important.
+
+Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
+
+Ensuite, génère un quiz de 10 questions avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
+      qcm (minimum une fausse réponse,4 propositions par question, entre 1 et 3 bonnes reponses) +
+      vrai ou faux (en argumentant la bonne reponse si necessaire, jusqu'a 80 caracteres max) + texte à trou (avec un seul trou, 4 propositions dont 1 vraie) 
+      en utilisant les documents suivants ainsi que les arguments clés.Ces 3 formats sont evidemment à inclure a chaque fois. 
+      Pour ces 10 questions indique moi la bonne reponse à chaque fois
+
+
+      Je te soumets un exemple de format de quiz que je souhaite obtenir :
+      [QUIZ] XIAOMI 14T et 14T Pro
+
+[QUIZ] XIAOMI 14T et 14T Pro
+
+Q1	Quelle est l'ouverture sur l'appareil photo principal du Xiaomi 14T ?
+    f/2.2
+    f/1.6
+    f/2.0
+   *f/1.8 
+
+Q2	Les Xiaomi 14T et 14T Pro disposent de la même durée de recharge.
+    Vrai
+   *Faux. Le Xiaomi 14T se recharge en 19 minutes tandis que le 14T Pro se recharge en 45 minutes. 
+
+Q3	Quelle est la résolution de l'appareil photo principal sur le Xiaomi 14T?
+    12 MP
+    24 MP
+    36 MP
+   *50 MP 
+
+Q4	La fonctionnalité #1 sur le Xiaomi 14T permet une recharge complète en seulement 19 minutes.
+    QuickCharge
+    SuperCharge
+ #1 HyperCharge 
+    FastCharge
+
+Q5	Le Xiaomi 14T Pro utilise l'IA avancée Google Gemini.
+   *Vrai 
+    Faux
+
+Q6	La technologie #1 est employée pour offrir une qualité de photos exceptionnelle sur le Xiaomi 14T.
+    Sony
+    Canon
+ #1 Leica 
+    Nikon
+
+Q7	Quelle est la taille des gravures sur le Xiaomi 14T Pro ?
+    7 nm
+    5 nm
+    4 nm
+   *3 nm 
+
+Q8	Le Xiaomi 14T et le 14T Pro offrent un zoom optique x5.
+    Vrai
+   *Faux 
+Q9	La technologie d'IA intégrée au Xiaomi 14T et 14T Pro s'appelle #1.
+    AI Genius
+    AI Craftsmanship
+    AI Creativity
+    AI Innovation #1
+
+Q10	Quelle est la plage de focales disponibles sur le Xiaomi 14T ?
+    14 à 75mm
+    20 to 90mm
+   *10 à 85mm 
+    18 to 80mm
+
+Les asterisques (*) indiquent les bonnes réponses. Assure-toi de les inclure dans le quiz.
+les #1 indiquent les bonnes reponses uniquement sur les textes a trou.
+Cette structure est primordiale pour la génération du quiz.
+
+Le texte doit etre dans la polisse calibri 
+JE VEUX EXACTEMENT LE MEME FORMAT DE QUIZ QUE CELUI CI-DESSUS, HYPER HYPER IMPORTANT, IL YA 1 TABULATION ENTRE LE NUMERO DE LA QUESTION ET SON ENONCé 
+RESPECTE LES ESPACES ET LES TABULATIONS, JE VEUX EXACTEMENT LES MEME QUE SUR L'EXEMPLE CI-DESSUS C'EST PRIMORDIAL
+EVITE LES REDIS ET REPETITIONS DANS LE QUIZ, CHAUQE QUESTION DOIT ETRE UNIQUE, AUCUNE RESSAMBLANCE AVEC UNE AUTRE QUESTION
+ET SURTOUT N'INVENTE RIEN DANS LE SCRIPT ET LE QUIZ, TU DOIS TE BASER SUR LE DOCUMENT QUE JE T'AI FOURNI
+NE PARLE JAMAIS DE PRIX DANS LE SCRIPT ET LE QUIZ
+RESPECTE LES TABULATIONS IL YA 1 TABULATION ENTRE LE NUMERO DE LA QUESTION ET SON ENONCé
+Evite a tout prix les redondances
+LE SCRIPT DOIT CONTENIR 290 à 310 MOTS
+
+
+JE VEUX QUE LE TOUT SOIT EN ANGLAIS
+

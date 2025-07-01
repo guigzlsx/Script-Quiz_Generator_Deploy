@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Script et Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="image/thunder-only-square.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="banner">
+        <a href="index.html" class="logo">
+            <h1>Script & Quiz Generator with <img src="image/gpt.png" alt=""></h1>
+        </a>
+
+        <label class="checkbox-container">
+            <input type="checkbox" id="englishOption">
+            Generate in English
+        </label>
+        
+        <div class="burger-menu">
+            <div class="burger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <nav class="menu-items">
+                <button id="darkModeToggle" class="btn-1">Dark mode</button>
+                <button onclick="window.location.href='Excel/index.html'" class="btn-1">Excel tab</button>
+                <button onclick="window.location.href='text_to_docx/index.html'" class="btn-1">Docx file</button>
+                <button id="clearScriptButton" class="clear-btn">Effacer le script</button>
+            </nav>
+        </div>
+    </header>
+    
+
+    <div class="file-upload-container">
+        <input type="file" id="fileInput" accept=".txt, .pdf, .docx,"> 
+        <label for="fileInput" class="custom-file-upload">
+            Choisir un fichier
+        </label>
+    </div>
+    <!-- <button class="btn-8" id="uploadButton">Envoyer</button> -->
+    <button class="btn-9" id="uploadButton">
+        <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1" id="Layer_1" class="sparkle">
+            <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"></path>
+        </svg>
+    
+        <span class="text">Générer</span>
+    </button>
+
+    <div id="loader" class="loader" style="display: none;">
+        <div class="progress">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div id="Chargement">Votre script et votre quiz chargent</div>
+    </div>
+
+    <div id="result" class="result" style="display: none;">
+        <h2>Script et Quiz généré :</h2>
+        <pre id="scriptOutput"></pre> 
+        <div id="quizOutput"></div> 
+        <ul class="horizontal-list">
+            <li><a href="C:\Users\glesaux\Documents\Code\Script_and_quiz_generator\text_to_docx\index.html">Convert Script to Docx file</a></li>
+            <li><a href="C:\Users\glesaux\Documents\Code\Script_and_quiz_generator\Excel\index.html">Convert Quiz to Excel tab</a></li>
+        </ul>
+    
+        
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

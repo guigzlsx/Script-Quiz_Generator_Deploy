@@ -1,0 +1,175 @@
+/* Styles généraux */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 20px;
+    background-color: #f4f4f9;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Styles pour les titres */
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+h1.dark-mode {
+    color: #e0e0e0;
+}
+
+/* Styles pour les formulaires */
+form {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Styles pour les zones de texte */
+textarea {
+    border: 4px dashed #6b46c1;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    color: #6b46c1;
+    font-size: 20px;
+    padding: 10px;
+    width: 100%;
+    max-width: 600px;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+textarea.dark-mode {
+    background-color: #333;
+    color: #f8f9fa;
+    border-color: #bb86fc;
+}
+
+textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+textarea.dark-mode:focus {
+    border-color: #bb86fc;
+    box-shadow: 0 2px 8px rgba(187, 134, 252, 0.25);
+}
+
+/* Styles pour les boutons */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button.dark-mode {
+    background-color: #bb86fc;
+}
+
+button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 2px 8px rgba(0, 86, 179, 0.25);
+    transform: translateY(-2px);
+}
+
+button.dark-mode:hover {
+    background-color: #9a67ea;
+    box-shadow: 0 2px 8px rgba(154, 103, 234, 0.25);
+}
+
+button:active {
+    background-color: #004494;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+}
+
+button.dark-mode:active {
+    background-color: #7c4dff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour les liens de téléchargement */
+#downloadLink {
+    display: block;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+#downloadLink.dark-mode {
+    color: #bb86fc;
+}
+
+#downloadLink:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+#downloadLink.dark-mode:hover {
+    color: #9a67ea;
+}
+
+/* Styles pour les listes */
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+ul li {
+    margin: 10px 0;
+}
+
+ul li a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #6b46c1;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ul li a.dark-mode {
+    background-color: #bb86fc;
+    color: #121212;
+}
+
+ul li a:hover {
+    background-color: #4c2885;
+    box-shadow: 0 2px 8px rgba(76, 40, 133, 0.25);
+    transform: translateY(-2px);
+}
+
+ul li a.dark-mode:hover {
+    background-color: #9a67ea;
+    box-shadow: 0 2px 8px rgba(154, 103, 234, 0.25);
+}
+
+ul li a:active {
+    background-color: #3a1f63;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+}
+
+ul li a.dark-mode:active {
+    background-color: #7c4dff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
