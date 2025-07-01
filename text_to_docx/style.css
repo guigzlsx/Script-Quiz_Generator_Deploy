@@ -173,3 +173,20 @@ ul li a.dark-mode:active {
     background-color: #7c4dff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+
+.disclaimer {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px auto 30px auto;
+    max-width: 700px;
+    font-size: 1em;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(133, 100, 4, 0.07);
+}
+.disclaimer b {
+    color: #7c4d00;
+}

@@ -579,3 +579,24 @@ body.dark-mode {
 .checkbox-container input[type="checkbox"]:hover {
     transform: scale(1.1);
 }
+
+.page-description {
+    margin: 30px auto 20px auto;
+    max-width: 700px;
+    padding: 18px 24px;
+    background: #f4f0fa;
+    border-radius: 10px;
+    font-size: 1.15em;
+    color: #4c2885;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(76, 40, 133, 0.07);
+}
+
+.page-description strong {
+    color: #683FEA;
+    font-size: 1.18em;
+}
+
+.page-description b {
+    color: #6b46c1;
+}
