@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="image/thunder-only-square.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
 </head>
 <body>
     <header class="banner">
@@ -72,24 +75,25 @@
         <h2>Script et Quiz généré :</h2>
         <pre id="scriptOutput"></pre> 
         <div id="quizOutput"></div> 
-        <ul class="horizontal-list">
+        <div class="export-buttons">
+            <button id="exportQuizExcel" class="btn-1">Exporter le quiz en Excel</button>
+            <button id="exportScriptDocx" class="btn-1">Exporter le script en DOCX</button>
+        </div>
+        <!-- <ul class="horizontal-list">
             <li><a href="text_to_docx/index.html">Convert Script to Docx file</a></li>
             <li><a href="Excel/index.html">Convert Quiz to Excel tab</a></li>
-        </ul>
+        </ul> -->
 
         <section class="page-description">
             <p>
-                Après la génération, copiez simplement le script ou le quiz affiché ci-dessous. 
-                Ensuite, rendez-vous sur l’onglet “Excel” pour transformer le quiz en fichier Excel, 
-                ou sur l’onglet “Docx” pour convertir le script en fichier Word. Il vous suffit de coller 
-                le texte dans la zone prévue, puis de lancer la conversion pour obtenir votre fichier prêt à 
-                l’emploi.
+                Après la génération, vous pouvez directement exporter le script en fichier Word (DOCX) ou le quiz en fichier Excel (XLSX) grâce aux boutons ci-dessous.
+                Il n'est plus nécessaire de copier-coller le texte dans d'autres onglets : cliquez simplement sur le bouton d'export souhaité pour obtenir votre fichier prêt à l'emploi.
             </p>
         </section>
     
         
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js" defer></script>
 </body>
 </html>
