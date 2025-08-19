@@ -74,10 +74,10 @@ app.post("/upload", upload.single("document"), async (req, res) => {
 
     // Préparer le prompt
     const prompt = `
-     Voici un document :\n${truncatedData}\n
-    ${inEnglish ? "JE VEUX QUE LE TOUT SOIT EN ANGLAIS\n" : ""}
-      Rédige un script de 290 à 310 mots (TRES TRES IMPORTANT LE NOMBRE DE MOTS) en mettant en avant 5 points clés importants, en adoptant 
-      un ton promotionnel et fluide, semblable à cet exemple de structure :
+    Voici un document :\n${truncatedData}\n
+   ${inEnglish ? "JE VEUX QUE LE TOUT SOIT EN ANGLAIS\n" : ""}
+     Rédige un script de 290 à 310 mots (TRES TRES IMPORTANT LE NOMBRE DE MOTS) en mettant en avant 5 points clés importants, en adoptant 
+     un ton promotionnel et fluide, semblable à cet exemple de structure :
 
 
 [SCRIPT] FUJIFILM APPAREIL INSTAX WIDE 400
@@ -106,69 +106,73 @@ Donc redige moi le script comme demandé au dessus, en y incluant les bullet poi
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
 
 Ensuite, génère un quiz de 10 questions avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
-      qcm (minimum une fausse réponse,4 propositions par question, entre 1 et 3 bonnes reponses) +
-      vrai ou faux (en argumentant la bonne reponse si necessaire, jusqu'a 80 caracteres max) + texte à trou (avec un seul trou, 4 propositions dont 1 vraie) 
-      en utilisant les documents suivants ainsi que les arguments clés.Ces 3 formats sont evidemment à inclure a chaque fois. 
-      Pour ces 10 questions indique moi la bonne reponse à chaque fois
+     qcm (minimum une fausse réponse,4 propositions par question, entre 1 et 3 bonnes reponses) +
+     vrai ou faux (en argumentant la bonne reponse si necessaire, jusqu'a 80 caracteres max) + texte à trou (avec un seul trou, 4 propositions dont 1 vraie) 
+     en utilisant les documents suivants ainsi que les arguments clés.Ces 3 formats sont evidemment à inclure a chaque fois. 
+     Pour ces 10 questions indique moi la bonne reponse à chaque fois
+     TRES IMPORTANT : JE VEUX QUE LE QUIZZ SOIT ORIENTÉ USAGE, ET QUE LES QUESTIONS SOIENT PERTINENTES POUR LE PRODUIT, METS EN AVANT LES BÉNÉFICES CONCRETS DES CARACTÉRISTIQUES 
+     TECHNIQUES DANS DES SCÉNARIOS RÉELS (VOYAGES, SOIRÉES, SPORT, TRAVAIL, DÉTENTE) DANS CHACUNE DES QUESTIONS.
 
 
-      Je te soumets un exemple de format de quiz que je souhaite obtenir :
-      [QUIZ] XIAOMI 14T et 14T Pro
+     Je te soumets un exemple de format de quiz que je souhaite obtenir, pour la mise en forme et le fond:
+     [QUIZ] XIAOMI 14T et 14T Pro
 
 [QUIZ] XIAOMI 14T et 14T Pro
 
-Q1	Quelle est l'ouverture sur l'appareil photo principal du Xiaomi 14T ?
-    f/2.2
-    f/1.6
-    f/2.0
-   *f/1.8 
+Q1  L’appareil photo principal du Xiaomi 14T capte plus de lumière, même en faible luminosité, pour des photos plus nettes. Que ne permet-il pas de faire ?
+  *Photographier de nuit
+  *Réussir ses portraits en intérieur
+  *Capturer un coucher de soleil
+   Plonger en mer
 
-Q2	Les Xiaomi 14T et 14T Pro disposent de la même durée de recharge.
-    Vrai
-   *Faux. Le Xiaomi 14T se recharge en 19 minutes tandis que le 14T Pro se recharge en 45 minutes. 
+Q2  Les Xiaomi 14T et 14T Pro disposent de la même durée de recharge.
+   Vrai, tous deux se chargent en 45mins.
+  *Faux. Le Xiaomi 14T se recharge en 19 minutes tandis que le 14T Pro se recharge en 45 minutes. 
 
-Q3	Quelle est la résolution de l'appareil photo principal sur le Xiaomi 14T?
-    12 MP
-    24 MP
-    36 MP
-   *50 MP 
+Q3  Avec ses 50 MP, l’appareil photo principal du Xiaomi 14T vous permet de…
+   Flouter vos photos
+   Agrandir sans perdre en détails
+   Avoir uniquement des clichés en noir et blanc
+  *Immortaliser chaque détail avec précision
 
-Q4	La fonctionnalité #1 sur le Xiaomi 14T permet une recharge complète en seulement 19 minutes.
-    QuickCharge
-    SuperCharge
- #1 HyperCharge 
-    FastCharge
+Q4  Que permet la fonctionnalité HyperCharge sur le Xiaomi 14T ?
+   Recharger la batterie en 2 heures
+   Doubler l’autonomie
+  *Faire le plein d’énergie en seulement 19 minutes
+   Utiliser le téléphone sans batterie
 
-Q5	Le Xiaomi 14T Pro utilise l'IA avancée Google Gemini.
-   *Vrai 
-    Faux
+Q5  Pendant vos tâches de travail, le Xiaomi 14T Pro utilise l’IA.
+  *Vrai, il utilise Google Gemini pour améliorer productivité et confort
+   Faux
 
-Q6	La technologie #1 est employée pour offrir une qualité de photos exceptionnelle sur le Xiaomi 14T.
-    Sony
-    Canon
- #1 Leica 
-    Nikon
+Q6  Quelle marque de technologie photo équipe les Xiaomi 14T et 14T Pro pour des souvenirs de vacances d’exception ?
+   Sony
+   Canon
+  *Leica 
+   Nikon
 
-Q7	Quelle est la taille des gravures sur le Xiaomi 14T Pro ?
-    7 nm
-    5 nm
-    4 nm
-   *3 nm 
+Q7  La finesse de gravure en 3 nm du Xiaomi 14T Pro permet…
+   De prendre de meilleures photos sous l’eau
+   D’ajouter plus de mémoire
+   D’avoir plus de couleurs sur l’écran
+  *D’améliorer les performances tout en réduisant la consommation d’énergie
 
-Q8	Le Xiaomi 14T et le 14T Pro offrent un zoom optique x5.
-    Vrai
-   *Faux 
-Q9	La technologie d'IA intégrée au Xiaomi 14T et 14T Pro s'appelle #1.
-    AI Genius
-    AI Craftsmanship
-    AI Creativity
-    AI Innovation #1
+Q8  Le Xiaomi 14T et le 14T Pro offrent-ils un zoom optique x5 ?
+  *Vrai, ce qui permet de zoomer sur un match…
+   Faux 
+Q9  La technologie d’IA intégrée au Xiaomi 14T et 14T Pro s’appelle…
+   AI Genius
+   AI Craftsmanship
+   AI Creativity
+  *AI Innovation
 
-Q10	Quelle est la plage de focales disponibles sur le Xiaomi 14T ?
-    14 à 75mm
-    20 to 90mm
-   *10 à 85mm 
-    18 to 80mm
+Q10 Une plage de focales de 10 à 85 mm sur le Xiaomi 14T permet de…
+   Capturer uniquement des paysages
+   Capturer uniquement des sujets éloignés
+  *Capturer aussi bien de larges paysages que des sujets éloignés
+   Prendre uniquement des photos de nuit
+
+
 
 Les asterisques (*) indiquent les bonnes réponses. Assure-toi de les inclure dans le quiz.
 les #1 indiquent les bonnes reponses uniquement sur les textes a trou.
@@ -182,15 +186,24 @@ ET SURTOUT N'INVENTE RIEN DANS LE SCRIPT ET LE QUIZ, TU DOIS TE BASER SUR LE DOC
 NE PARLE JAMAIS DE PRIX DANS LE SCRIPT ET LE QUIZ
 RESPECTE LES TABULATIONS IL YA 1 TABULATION ENTRE LE NUMERO DE LA QUESTION ET SON ENONCé
 Evite a tout prix les redondances
+LE QUIZ DOIT ETRE PLUS BASE SUR DES QUESTIONS QUE POURRAIT SE POSER UN CLIENT, IL FAUT QUE LE QUIZ SOIT REALISTE ET UTILISABLE PAR UN CLIENT
+LE SCRIPT DOIT PLUS INCARNER LE PRODUIT, ETRE PLUS VIVANT CAR IL EST DESTINé A L'ELABORATION D'UNE VIDEO.
 LE SCRIPT DOIT CONTENIR 290 à 310 MOTS
 
+VOICI LE STYLE DE SCRIPT QUE JE VEUX OBTENIR :
+Rédige-moi un script de type vidéo YouTube, à la première personne, comme si je parlais directement à ma communauté. Le ton doit être naturel, 
+fluide, dynamique, avec des expressions orales ("bon bah", "clairement", "franchement", etc.), un style un peu conversationnel et enthousiaste. 
+Le script doit présenter [nom du produit] en décrivant d’abord l'expérience globale, puis les points forts et les défauts, sans être trop technique mais en restant précis. 
+Termine par une conclusion qui aide le spectateur à savoir si le produit est fait pour lui.
+Je veux que le script soit dans le style des vidéastes tech comme TheiCollection, Jojol, Nowtech ou Brandon Le Proktor : un peu critique, mais objectif, 
+passionné et accessible. Fais attention à ne pas juste réciter une fiche technique.
 
 
 
 
 
 
-    `;
+   `;
 
     try {
       // Envoyer la requête à OpenAI
