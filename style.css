@@ -600,3 +600,39 @@ body.dark-mode {
 .page-description b {
     color: #6b46c1;
 }
+
+/* Lisibilité header: label en blanc sur la bannière */
+.banner .checkbox-container {
+    color: #ffffff;
+}
+
+/* Bouton Générer (mode clair): texte et icône en blanc pour un meilleur contraste */
+.text {
+    font-weight: 600;
+    color: #FFFFFF; /* au lieu de #AAAAAA */
+    font-size: medium;
+}
+.sparkle {
+    fill: #FFFFFF; /* au lieu de #AAAAAA */
+}
+
+/* Contraste renforcé pour la zone des résultats et le bloc <pre> */
+.result {
+    margin-top: 20px;
+    padding: 16px;
+    background-color: #f7f7fb; /* plus clair et net */
+    border: 1px solid #d1d5db; /* séparation visible */
+    border-radius: 8px;
+}
+pre {
+    background-color: #ffffff; /* fond blanc net */
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #222; /* texte un peu plus sombre pour le contraste */
+}
+#scriptOutput {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #222;
+}
