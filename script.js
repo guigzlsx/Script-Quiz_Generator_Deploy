@@ -10,6 +10,24 @@ document
   .getElementById("clearScriptButton")
   .addEventListener("click", clearScript);
 
+// Bouton 'Supprimer tout' : efface le script, le quiz et masque les résultats
+const clearAllBtn = document.getElementById("clearAllButton");
+if (clearAllBtn) {
+  clearAllBtn.addEventListener("click", () => {
+    // Effacer le stockage local
+    localStorage.removeItem("generatedScript");
+    // Vider les éléments d'affichage
+    const scriptOutput = document.getElementById("scriptOutput");
+    const resultDiv = document.getElementById("result");
+    const quizOutput = document.getElementById("quizOutput");
+    if (scriptOutput) scriptOutput.textContent = "";
+    if (quizOutput) quizOutput.innerText = "";
+    if (resultDiv) resultDiv.style.display = "none";
+    // Masquer le bouton après suppression
+    clearAllBtn.style.display = "none";
+  });
+}
+
 async function envoyerRequete() {
   const fileInput = document.getElementById("fileInput");
   const loader = document.getElementById("loader");
@@ -54,6 +72,9 @@ async function envoyerRequete() {
       saveScriptToLocalStorage(data.script); // Sauvegarder le script dans le stockage local
       // Ne plus afficher le quiz en doublon dans #quizOutput
       quizOutput.innerText = "";
+      // Afficher le bouton Supprimer tout
+      const clearAllBtn = document.getElementById("clearAllButton");
+      if (clearAllBtn) clearAllBtn.style.display = "block";
     } else {
       scriptOutput.textContent = "Aucun script généré.";
       quizOutput.innerText = "";
