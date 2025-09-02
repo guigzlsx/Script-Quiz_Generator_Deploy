@@ -115,7 +115,7 @@ Photo avancée
 
 
 Donc redige moi le script comme demandé au dessus, en y incluant les bullet points a chaque debut de phrase reviens a la ligne, c'est tres important.
-N'utilise pas les memes expressons a chaque fois que l'exemple ci-dessus, c'est juste un exemple parmis tant d'autre du style que j'attends.
+N'utilise pas les memes expressons a chaque fois , c'est juste un exemple parmis tant d'autre du style que j'attends, C'EST TRES IMPORTANT !
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
 
 Ensuite, génère un quiz de 10 questions ORIENTE USAGE AU MAXIMUM avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
