@@ -121,6 +121,7 @@ Ne parle pas du negatif des produits, pour rappel c'est un texte à caractere pr
 Inspire-toi du ton, pas du texte.
 Ne sois pas trop familier non plus
 Les mots clef doivent etre des mots et non des valeurs
+Important de mettre le titre "MOTS-CLÉS ASSOCIÉS" avant les mots clef
 Ne mets pas de points devant les phrases 
 Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), a chaque fin de phrase reviens a la ligne, c'est tres important.
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
