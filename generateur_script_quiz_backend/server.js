@@ -126,7 +126,7 @@ Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), a c
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
 
 Ensuite, génère un quiz de 10 questions ORIENTE USAGE AU MAXIMUM avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
-     qcm (minimum une fausse réponse,4 propositions par question, entre 1 et 3 bonnes reponses) +
+     qcm (minimum une fausse réponse,4 propositions par question, ENTRE 1 ET 3 BONNES REPONSES) +
      vrai ou faux (en argumentant la bonne reponse si necessaire, jusqu'a 80 caracteres max) + texte à trou (avec un seul trou, 4 propositions dont 1 vraie) 
      en utilisant les documents suivants ainsi que les arguments clés.Ces 3 formats sont evidemment à inclure a chaque fois. 
      Pour ces 10 questions indique moi la bonne reponse à chaque fois
@@ -193,7 +193,7 @@ Q10 Une plage de focales de 10 à 85 mm sur le Xiaomi 14T permet de…
 
 
 
-Les asterisques (*) indiquent les bonnes réponses. Assure-toi de les inclure dans le quiz.
+Les asterisques (*) indiquent la ou les bonnes réponses. Assure-toi de les inclure dans le quiz.
 les #1 indiquent les bonnes reponses uniquement sur les textes a trou.TRES IMPORTANT
 Cette structure est primordiale pour la génération du quiz.
 
