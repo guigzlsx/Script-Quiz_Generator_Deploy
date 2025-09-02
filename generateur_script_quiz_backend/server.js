@@ -118,7 +118,7 @@ Donc redige moi le script comme demandé au dessus, en y incluant les bullet poi
 
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
 
-Ensuite, génère un quiz de 10 questions avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
+Ensuite, génère un quiz de 10 questions orienté usage avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
      qcm (minimum une fausse réponse,4 propositions par question, entre 1 et 3 bonnes reponses) +
      vrai ou faux (en argumentant la bonne reponse si necessaire, jusqu'a 80 caracteres max) + texte à trou (avec un seul trou, 4 propositions dont 1 vraie) 
      en utilisant les documents suivants ainsi que les arguments clés.Ces 3 formats sont evidemment à inclure a chaque fois. 
