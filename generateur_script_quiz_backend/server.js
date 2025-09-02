@@ -133,7 +133,6 @@ Ensuite, génère un quiz de 10 questions ORIENTE USAGE AU MAXIMUM avec les form
 
 
      Je te soumets un exemple de format de quiz que je souhaite obtenir, pour la mise en forme et le fond:
-     [QUIZ] XIAOMI 14T et 14T Pro
 
 [QUIZ] XIAOMI 14T et 14T Pro
 
