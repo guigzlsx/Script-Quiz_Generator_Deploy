@@ -77,7 +77,7 @@ app.post("/upload", upload.single("document"), async (req, res) => {
     Voici un document :\n${truncatedData}\n
    ${inEnglish ? "JE VEUX QUE LE TOUT SOIT EN ANGLAIS\n" : ""}
      Rédige un script de 290 à 310 mots (TRES TRES IMPORTANT LE NOMBRE DE MOTS) en mettant en avant 5 points clés importants, en adoptant 
-     un ton promotionnel et fluide, semblable à cet exemple de structure :
+     un ton promotionnel et fluide, semblable à cet exemple de structure (n'utilise pas forcement les meme expressions que sur cet exemple):
 
 
 [SCRIPT] GOOGLE PIXEL 10
@@ -114,8 +114,8 @@ Photo avancée
 
 
 
-Donc redige moi le script comme demandé au dessus, en y incluant les bullet points a chaque debut de phrase reviens a la ligne, c'est tres important.
-N'utilise pas les memes expressons a chaque fois , c'est juste un exemple parmis tant d'autre du style que j'attends, C'EST TRES IMPORTANT !
+Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), en y incluant les bullet points a chaque debut de phrase reviens a la ligne, c'est tres important.
+N'utilise pas les memes expressions a chaque fois , c'est juste un exemple parmis tant d'autre du style que j'attends, C'EST TRES IMPORTANT !
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
 
 Ensuite, génère un quiz de 10 questions ORIENTE USAGE AU MAXIMUM avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
