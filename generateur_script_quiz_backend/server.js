@@ -224,7 +224,7 @@ passionné et accessible. Fais attention à ne pas juste réciter une fiche tech
     try {
       // Envoyer la requête à OpenAI
       const response = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: "gpt-5",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.3,
       });
