@@ -115,8 +115,9 @@ Photo avancée
 
 IMPORTANT : L’exemple fourni est uniquement là pour comprendre le ton et la structure. 
 Tu NE DOIS PAS réutiliser les mêmes phrases, ni la même introduction, ni les mêmes formulations. 
-Chaque phrase doit être originale, adaptée au produit et evite la negativité, releve uniquement les points positifs du produit. 
+Chaque phrase doit être originale et adaptée au produit. 
 Le style attendu est fluide, conversationnel, comme une vidéo YouTube, mais avec des expressions différentes. 
+Évite absolument de commencer par "Salut à tous, aujourd'hui on va parler de…" ou "qu'est-ce qu'il a dans le ventre ce petit bijou de technologie ?". 
 Inspire-toi du ton, pas du texte.
 Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), en y incluant les bullet points a chaque debut de phrase reviens a la ligne, c'est tres important.
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
