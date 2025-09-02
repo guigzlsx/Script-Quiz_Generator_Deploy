@@ -117,8 +117,9 @@ IMPORTANT : L’exemple fourni est uniquement là pour comprendre le ton et la s
 Tu NE DOIS PAS réutiliser les mêmes phrases, ni la même introduction, ni les mêmes formulations. 
 Chaque phrase doit être originale et adaptée au produit. 
 Le style attendu est fluide, conversationnel, comme une vidéo YouTube, mais avec des expressions différentes. 
-Ne parle pas du negatif des produits, pour rappel c'est un texte à caractere promotionnel
+Ne parle pas du negatif des produits, pour rappel c'est un texte à caractere promotionnel.
 Inspire-toi du ton, pas du texte.
+Ne sois pas trop familier non plus
 Ne mets pas de points devant les phrases 
 Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), a chaque fin de phrase reviens a la ligne, c'est tres important.
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
@@ -146,11 +147,11 @@ Q2  Les Xiaomi 14T et 14T Pro disposent de la même durée de recharge.
    Vrai, tous deux se chargent en 45mins.
   *Faux. Le Xiaomi 14T se recharge en 19 minutes tandis que le 14T Pro se recharge en 45 minutes. 
 
-Q3  Avec ses 50 MP, l’appareil photo principal du Xiaomi 14T vous permet de…
+Q3  Avec ses 50 MP, l’appareil photo principal du Xiaomi 14T vous permet de #1
    Flouter vos photos
    Agrandir sans perdre en détails
    Avoir uniquement des clichés en noir et blanc
-  *Immortaliser chaque détail avec précision
+  #1Immortaliser chaque détail avec précision
 
 Q4  Que permet la fonctionnalité HyperCharge sur le Xiaomi 14T ?
    Recharger la batterie en 2 heures
@@ -192,7 +193,7 @@ Q10 Une plage de focales de 10 à 85 mm sur le Xiaomi 14T permet de…
 
 
 Les asterisques (*) indiquent les bonnes réponses. Assure-toi de les inclure dans le quiz.
-les #1 indiquent les bonnes reponses uniquement sur les textes a trou.
+les #1 indiquent les bonnes reponses uniquement sur les textes a trou.TRES IMPORTANT
 Cette structure est primordiale pour la génération du quiz.
 
 Le texte doit etre dans la polisse calibri 
