@@ -119,7 +119,8 @@ Chaque phrase doit être originale et adaptée au produit.
 Le style attendu est fluide, conversationnel, comme une vidéo YouTube, mais avec des expressions différentes. 
 Évite absolument de commencer par "Salut à tous, aujourd'hui on va parler de…" ou "qu'est-ce qu'il a dans le ventre ce petit bijou de technologie ?". 
 Inspire-toi du ton, pas du texte.
-Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), en y incluant les bullet points a chaque debut de phrase reviens a la ligne, c'est tres important.
+Ne mets pas de points devant les phrases 
+Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), a chaque debut de phrase reviens a la ligne, c'est tres important.
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
 
 Ensuite, génère un quiz de 10 questions ORIENTE USAGE AU MAXIMUM avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
