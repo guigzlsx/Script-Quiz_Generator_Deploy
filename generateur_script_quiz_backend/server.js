@@ -80,25 +80,38 @@ app.post("/upload", upload.single("document"), async (req, res) => {
      un ton promotionnel et fluide, semblable à cet exemple de structure :
 
 
-[SCRIPT] FUJIFILM APPAREIL INSTAX WIDE 400
+[SCRIPT] GOOGLE PIXEL 10
 
-Découvrez l'Instax Wide 400, l'appareil photo instantané idéal pour capturer vos moments les plus précieux.
-Avec son format large de 108 x 86 mm, il est parfait pour immortaliser les photos de groupe et les paysages, offrant une qualité d'image exceptionnelle.
-Simple d’utilisation, l’Instax Wide 400 devient votre compagnon indispensable lors de toutes les grandes occasions, que ce soit pour des fêtes, des événements ou des moments en famille.
-L'Instax Wide 400 est équipé d'un flash électronique intégré qui ajuste automatiquement l'intensité de l'éclair en fonction de la distance du sujet.
-Cela garantit des photos parfaitement éclairées, quel que soit l'environnement.
-De plus, grâce au bouton retardateur, vous pouvez être sûr que personne ne manquera sur la photo, vous permettant ainsi de partager ces instants mémorables avec tout le monde.
-L'appareil inclut également un accessoire de réglage de l'angle de prise de vue, vous assurant des clichés parfaitement cadrés sans avoir besoin d'un trépied.
-Sa bonnette d’approche vous permet d'effectuer des prises de vue macro à seulement 40 cm du sujet, capturant ainsi les moindres détails.
-Enfin, son design moderne et son coloris vert sauge ajoutent une touche de style à chaque instant capturé.
-Faites place à plus avec l'Instax Wide 400, l'appareil photo qui réinvente l'instantané grand format et vous accompagne partout, pour des souvenirs inoubliables.
+Salut à tous ! Aujourd'hui, on va parler du Google Pixel 10, le dernier né de la gamme Pixel.
+Alors, qu'est-ce qu'il a dans le ventre ce petit bijou de technologie ? C'est ce qu'on va voir ensemble.
+Premier point, le design.
+On a ici un boîtier en aluminium de qualité aérospatiale, avec au moins 11% de matériau recyclé.
+C'est solide, c'est durable, et c'est éco-responsable.
+Le dos est en verre Corning Gorilla Glass Victus 2, poli pour un rendu ultra premium.
+Et cerise sur le gâteau, il est résistant à l'eau et à la poussière avec une certification IP68.
+Deuxième point, l'écran.
+On a un écran Actua de 6,3 pouces avec une luminosité max de 3000 nits.
+C'est clair, c'est net, et ça s'adapte à votre environnement grâce à une fréquence d'actualisation de 60 à 120 Hz.
+Troisième point, les performances.
+Le Pixel 10 est équipé du processeur Google Tensor G5, avec une RAM de 12 Go et un stockage de 128 ou 256 Go.
+C'est puissant, c'est rapide, et ça vous permet de faire tourner toutes vos applications sans aucun ralentissement.
+Quatrième point, la batterie.
+On a une capacité de 4970 mAh, avec une autonomie de plus de 24h en usage normal et jusqu'à 100h en mode ultra économiseur.
+Et pour la recharge, on a du sans fil rapide Qi2 Pixelsnap jusqu'à 15W, et du filaire rapide.
+Enfin, cinquième point, la photo.
+Le Pixel 10 est équipé d'un triple capteur avancé, avec un grand angle de 48 Mpx, un ultra grand angle de 12 Mpx et un téléobjectif de 10,8 Mpx.
+Ajoutez à cela des fonctions IA comme la retouche magique, et vous avez un véritable studio photo dans votre poche.
+En conclusion, le Google Pixel 10 est un smartphone haut de gamme, performant et polyvalent, qui saura satisfaire les plus exigeants d'entre vous.
+Alors, prêt à faire le grand saut ?.
 
 MOTS-CLÉS ASSOCIÉS
-Format large (108 x 86 mm)
-Facilité d'utilisation
-Flash électronique intelligent
-Bouton retardateur
-Accessoires pratiques
+Design durable
+Écran Actua
+Performances
+Autonomie
+Photo avancée
+
+
 
 
 Donc redige moi le script comme demandé au dessus, en y incluant les bullet points a chaque debut de phrase reviens a la ligne, c'est tres important.
@@ -195,7 +208,7 @@ Rédige-moi un script de type vidéo YouTube, à la première personne, comme si
 fluide, dynamique, avec des expressions orales ("bon bah", "clairement", "franchement", etc.), un style un peu conversationnel et enthousiaste. 
 Le script doit présenter [nom du produit] en décrivant d’abord l'expérience globale, puis les points forts et les défauts, sans être trop technique mais en restant précis. 
 Termine par une conclusion qui aide le spectateur à savoir si le produit est fait pour lui.
-Je veux que le script soit dans le style des vidéastes tech comme TheiCollection, Jojol, Nowtech ou Brandon Le Proktor : un peu critique, mais objectif, 
+Je veux que le script soit dans le style des vidéastes tech comme STEVEN, TheiCollection, Jojol, Nowtech ou Brandon Le Proktor : un peu critique, mais objectif, 
 passionné et accessible. Fais attention à ne pas juste réciter une fiche technique.
 
 
