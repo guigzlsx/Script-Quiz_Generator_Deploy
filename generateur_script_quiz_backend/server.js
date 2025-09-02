@@ -117,7 +117,7 @@ IMPORTANT : L’exemple fourni est uniquement là pour comprendre le ton et la s
 Tu NE DOIS PAS réutiliser les mêmes phrases, ni la même introduction, ni les mêmes formulations. 
 Chaque phrase doit être originale et adaptée au produit. 
 Le style attendu est fluide, conversationnel, comme une vidéo YouTube, mais avec des expressions différentes. 
-Évite absolument de commencer par "Salut à tous, aujourd'hui on va parler de…" ou "qu'est-ce qu'il a dans le ventre ce petit bijou de technologie ?". 
+Ne parle pas du negatif des produits, pour rappel c'est un texte à caractere promotionnel
 Inspire-toi du ton, pas du texte.
 Ne mets pas de points devant les phrases 
 Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), a chaque fin de phrase reviens a la ligne, c'est tres important.
