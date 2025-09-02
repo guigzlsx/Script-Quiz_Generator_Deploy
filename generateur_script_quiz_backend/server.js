@@ -113,9 +113,12 @@ Photo avancée
 
 
 
-
+IMPORTANT : L’exemple fourni est uniquement là pour comprendre le ton et la structure. 
+Tu NE DOIS PAS réutiliser les mêmes phrases, ni la même introduction, ni les mêmes formulations. 
+Chaque phrase doit être originale et adaptée au produit. 
+Le style attendu est fluide, conversationnel, comme une vidéo YouTube, mais avec des expressions différentes. 
+Inspire-toi du ton, pas du texte.
 Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), en y incluant les bullet points a chaque debut de phrase reviens a la ligne, c'est tres important.
-N'utilise pas les memes expressions a chaque fois , c'est juste un exemple parmis tant d'autre du style que j'attends, C'EST TRES IMPORTANT !
 Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
 
 Ensuite, génère un quiz de 10 questions ORIENTE USAGE AU MAXIMUM avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
