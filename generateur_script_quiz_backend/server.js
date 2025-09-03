@@ -119,7 +119,8 @@ Chaque phrase doit être originale et adaptée au produit.
 Le style attendu est fluide, conversationnel, comme une vidéo YouTube, mais avec des expressions différentes. 
 Ne parle pas du negatif des produits, pour rappel c'est un texte à caractere promotionnel.
 Inspire-toi du ton, pas du texte.
-Ne sois pas trop familier non plus
+Ne sois pas trop familier non plus.
+Pas de "codes YouTube" (pas d’appel aux abonnés, pas de références aux commentaires, pas de "cliquez", etc.).
 Les mots clef doivent etre des mots et non des valeurs
 Important de mettre le titre "MOTS-CLÉS ASSOCIÉS" avant les mots clef
 Ne mets pas de points devant les phrases 
@@ -132,7 +133,7 @@ Ensuite, génère un quiz de 10 questions ORIENTE USAGE AU MAXIMUM avec les form
      en utilisant les documents suivants ainsi que les arguments clés.Ces 3 formats sont evidemment à inclure a chaque fois. 
      Pour ces 10 questions indique moi la bonne reponse à chaque fois
      TRES IMPORTANT : JE VEUX QUE LE QUIZZ SOIT ORIENTÉ USAGE, ET QUE LES QUESTIONS SOIENT PERTINENTES POUR LE PRODUIT, METS EN AVANT LES BÉNÉFICES CONCRETS DES CARACTÉRISTIQUES 
-     TECHNIQUES DANS DES SCÉNARIOS RÉELS (VOYAGES, SOIRÉES, SPORT, TRAVAIL, DÉTENTE) DANS CHACUNE DES QUESTIONS.
+     TECHNIQUES DANS DES SCÉNARIOS RÉELS (VOYAGES, SOIRÉES, SPORT, TRAVAIL, DÉTENTE) DANS CHACUNE DES QUESTIONS, SANS EN FAIRE TROP NON PLUS.
 
 
      Je te soumets un exemple de format de quiz que je souhaite obtenir, pour la mise en forme et le fond:
