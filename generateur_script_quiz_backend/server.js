@@ -236,6 +236,7 @@ CONTRÔLE QUALITÉ
 - Vérifie que le script fait bien entre 290 et 310 mots.
 - Vérifie que le quiz suit exactement la mise en forme demandée.
 - Vérifie que les mots-clés apparaissent dans le script.
+- Vérifie qu'il n'y ai pas de fautes (ortographe, etc...).
 - Si une règle n’est pas respectée, recommence la génération avant de me donner la réponse.
 
 ==================================================
