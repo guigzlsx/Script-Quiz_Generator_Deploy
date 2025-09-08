@@ -98,6 +98,7 @@ PARTIE 1 – SCRIPT
 - Le script doit être écrit à la première personne, comme une vidéo YouTube.
 - Style fluide, conversationnel, naturel, enthousiaste.
 - Inspiré de vidéastes tech (Steven, TheiCollection, Jojol, Nowtech, Brandon Le Proktor).
+- Ne parles jamais de points négatifs.
 - Pas de lecture de fiche technique : fais vivre le produit, mets en avant l’expérience utilisateur.
 - Structure :
    1. Accroche / intro dynamique
