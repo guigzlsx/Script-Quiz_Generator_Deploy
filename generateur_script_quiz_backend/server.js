@@ -76,9 +76,39 @@ app.post("/upload", upload.single("document"), async (req, res) => {
     const prompt = `
     Voici un document :\n${truncatedData}\n
    ${inEnglish ? "TOUT DOIT ÊTRE RÉDIGÉ EN ANGLAIS.\n" : ""}
-     Rédige un script de 290 à 310 mots (TRES TRES IMPORTANT LE NOMBRE DE MOTS) en mettant en avant 5 points clés importants, en adoptant 
-     un ton promotionnel et fluide, semblable à cet exemple de structure :
 
+   
+==================================================
+INSTRUCTIONS GÉNÉRALES
+==================================================
+1. Tu dois produire deux parties distinctes :
+   - Un SCRIPT vidéo (290 à 310 mots, très important).
+   - Un QUIZ de 10 questions parfaitement formaté.
+2. Tu dois te baser uniquement sur le document fourni.
+3. Interdiction d’inventer des informations.
+4. Interdiction de parler du prix.
+5. Respect absolu de la mise en forme donnée en exemple.
+6. Police à utiliser : Calibri (important pour export Word/Excel).
+
+==================================================
+PARTIE 1 – SCRIPT
+==================================================
+- Rédige un script de 290 à 310 mots, pas plus, pas moins.
+- Titre obligatoire : [SCRIPT] [Nom du produit]
+- Le script doit être écrit à la première personne, comme une vidéo YouTube.
+- Style fluide, conversationnel, naturel, enthousiaste.
+- Inspiré de vidéastes tech (Steven, TheiCollection, Jojol, Nowtech, Brandon Le Proktor).
+- Pas de lecture de fiche technique : fais vivre le produit, mets en avant l’expérience utilisateur.
+- Structure :
+   1. Accroche / intro dynamique
+   2. Présentation de l’expérience globale
+   3. Mise en avant de 5 points clés (positifs uniquement)
+   4. Conclusion engageante ("est-ce fait pour vous ?")
+- Chaque phrase doit être suivie d’un retour à la ligne (très important).
+- Après le script, écris la section :
+   MOTS-CLÉS ASSOCIÉS
+   (énumère les 5 mots clés utilisés dans le texte, pas de puces, pas de ponctuation)
+- Je te soumets un exemple ci-dessous:
 
 [SCRIPT] GOOGLE PIXEL 10
 
@@ -112,31 +142,18 @@ Autonomie
 Photo avancée
 
 
-
-IMPORTANT : L’exemple fourni est uniquement là pour comprendre le ton et la structure. 
-Tu NE DOIS PAS réutiliser les mêmes phrases, ni la même introduction, ni les mêmes formulations. 
-Chaque phrase doit être originale et adaptée au produit. 
-Le style attendu est fluide, conversationnel, comme une vidéo YouTube, mais avec des expressions différentes. 
-Ne parle pas du negatif des produits, pour rappel c'est un texte à caractere promotionnel.
-Inspire-toi du ton, pas du texte.
-Ne sois pas trop familier non plus.
-Pas de "codes YouTube" (pas d’appel aux abonnés, pas de références aux commentaires, pas de "cliquez", etc.).
-Les mots clef doivent etre des mots et non des valeurs
-Important de mettre le titre "MOTS-CLÉS ASSOCIÉS" avant les mots clef
-Ne mets pas de points devant les phrases 
-Donc redige moi le script comme demandé au dessus (ce n'est qu'un exemple), a chaque fin de phrase reviens a la ligne, c'est tres important.
-Enumere moi ensuite les 5 mots clef (le nom de l'appareil ne doit pas etre un mot clef) tout en sachant que ces mots clef doivent etre présent dans le script.
-
-Ensuite, génère un quiz de 10 questions ORIENTE USAGE AU MAXIMUM avec les formats suivants (Ces 3 formats doivent etre obligatoirement présent dans le quiz) : 
-     qcm (minimum une fausse réponse,4 propositions par question, ENTRE 1 ET 3 BONNES REPONSES, je veux en partie des questions avec une bonne reponse) +
-     vrai ou faux (en argumentant la bonne reponse si necessaire, jusqu'a 80 caracteres max) + texte à trou (avec un seul trou, 4 propositions dont 1 vraie) 
-     en utilisant les documents suivants ainsi que les arguments clés.Ces 3 formats sont evidemment à inclure a chaque fois. 
-     Pour ces 10 questions indique moi la bonne reponse à chaque fois
-     TRES IMPORTANT : JE VEUX QUE LE QUIZZ SOIT ORIENTÉ USAGE, ET QUE LES QUESTIONS SOIENT PERTINENTES POUR LE PRODUIT, METS EN AVANT LES BÉNÉFICES CONCRETS DES CARACTÉRISTIQUES 
-     TECHNIQUES DANS DES SCÉNARIOS RÉELS (VOYAGES, SOIRÉES, SPORT, TRAVAIL, DÉTENTE) DANS CHACUNE DES QUESTIONS, SANS EN FAIRE TROP NON PLUS.
-
-
-     Je te soumets un exemple de format de quiz que je souhaite obtenir, pour la mise en forme et le fond:
+==================================================
+PARTIE 2 – QUIZ
+==================================================
+- Titre obligatoire : [QUIZ] [Nom du produit]
+- 10 questions au total.
+- Les formats obligatoires :
+   • QCM (au moins une fausse réponse, 4 propositions, entre 1 et 3 bonnes réponses).
+   • Vrai ou Faux (argument court, max 80 caractères).
+   • Texte à trou (un seul trou, 4 propositions dont 1 vraie).
+- Les trois formats doivent obligatoirement être inclus dans le quiz.
+- Structure stricte à respecter (espaces, tabulations, retours à la ligne) comme dans cet exemple :
+- Je te soumets un exemple de format de quiz que je souhaite obtenir, pour la mise en forme et le fond:
 
 [QUIZ] XIAOMI 14T et 14T Pro
 
@@ -199,32 +216,26 @@ Les asterisques (*) indiquent la ou les bonnes réponses. Assure-toi de les incl
 les #1 indiquent les bonnes reponses uniquement sur les textes a trou.TRES IMPORTANT
 Cette structure est primordiale pour la génération du quiz.
 
-Le texte doit etre dans la polisse calibri 
-JE VEUX EXACTEMENT LE MEME FORMAT DE QUIZ QUE CELUI CI-DESSUS, HYPER HYPER IMPORTANT, IL YA 1 TABULATION ENTRE LE NUMERO DE LA QUESTION ET SON ENONCé 
-RESPECTE LES ESPACES ET LES TABULATIONS, JE VEUX EXACTEMENT LES MEME QUE SUR L'EXEMPLE CI-DESSUS C'EST PRIMORDIAL
-EVITE LES REDIS ET REPETITIONS DANS LE QUIZ, CHAUQE QUESTION DOIT ETRE UNIQUE, AUCUNE RESSAMBLANCE AVEC UNE AUTRE QUESTION
-ET SURTOUT N'INVENTE RIEN DANS LE SCRIPT ET LE QUIZ, TU DOIS TE BASER SUR LE DOCUMENT QUE JE T'AI FOURNI
-NE PARLE JAMAIS DE PRIX DANS LE SCRIPT ET LE QUIZ
-RESPECTE LES TABULATIONS IL YA 1 TABULATION ENTRE LE NUMERO DE LA QUESTION ET SON ENONCé
-Evite a tout prix les redondances
-LE QUIZ DOIT ETRE PLUS BASE SUR DES QUESTIONS QUE POURRAIT SE POSER UN CLIENT, IL FAUT QUE LE QUIZ SOIT REALISTE ET UTILISABLE PAR UN CLIENT
-LE SCRIPT DOIT PLUS INCARNER LE PRODUIT, ETRE PLUS VIVANT CAR IL EST DESTINé A L'ELABORATION D'UNE VIDEO.
-LE SCRIPT DOIT CONTENIR 290 à 310 MOTS
+- Attention :
+   • Une tabulation après le numéro de la question (Q1\t).
+   • Aucune répétition entre les questions.
+   • Chaque question doit être réaliste, orientée usage concret (voyage, sport, travail, soirée...).
+   • Indiquer la/les bonnes réponses avec * ou #1 exactement comme dans l’exemple.
+   • Pas d’astérisque ou #1 ailleurs que sur les bonnes réponses.
+   • 1 ou 2 bonne réponse pour les textes à trou. LA reponse 1 sera représenté par #1 et la seconde si il y en a une par #2
 
-VOICI LE STYLE DE SCRIPT QUE JE VEUX OBTENIR :
-Rédige-moi un script de type vidéo YouTube, à la première personne, comme si je parlais directement à ma communauté. Le ton doit être naturel, 
-fluide, dynamique, avec des expressions orales ("bon bah", "clairement", "franchement", etc.), un style un peu conversationnel et enthousiaste. 
-Le script doit présenter [nom du produit] en décrivant d’abord l'expérience globale, puis les points forts et les défauts, sans être trop technique mais en restant précis. 
-Termine par une conclusion qui aide le spectateur à savoir si le produit est fait pour lui.
-Je veux que le script soit dans le style des vidéastes tech comme STEVEN, TheiCollection, Jojol, Nowtech ou Brandon Le Proktor : un peu critique, mais objectif, 
-passionné et accessible. Fais attention à ne pas juste réciter une fiche technique.
+==================================================
+CONTRÔLE QUALITÉ
+==================================================
+- Vérifie que le script fait bien entre 290 et 310 mots.
+- Vérifie que le quiz suit exactement la mise en forme demandée.
+- Vérifie que les mots-clés apparaissent dans le script.
+- Si une règle n’est pas respectée, recommence la génération avant de me donner la réponse.
 
-
-
-
-
-
-   `;
+==================================================
+FIN DU PROMPT
+==================================================
+`;
 
     try {
       // Envoyer la requête à OpenAI
