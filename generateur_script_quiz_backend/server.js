@@ -155,6 +155,7 @@ PARTIE 2 – QUIZ
 - Les trois formats doivent obligatoirement être inclus dans le quiz.
 - Les bonnes réponses doivent toujours mettre en avant l’usage concret pour l’utilisateur. 
    Exemple : ne dis pas seulement "Mise au point macro 5 cm", mais "Mise au point macro 5 cm pour capturer des détails de près".
+- Aucune fausse information ne doit être utilisée.
 - Structure stricte à respecter (espaces, tabulations, retours à la ligne) comme dans cet exemple :
 - Je te soumets un exemple de format de quiz que je souhaite obtenir, pour la mise en forme et le fond:
 
