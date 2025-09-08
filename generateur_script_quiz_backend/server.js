@@ -75,7 +75,7 @@ app.post("/upload", upload.single("document"), async (req, res) => {
     // Préparer le prompt
     const prompt = `
     Voici un document :\n${truncatedData}\n
-   ${inEnglish ? "JE VEUX QUE LE TOUT SOIT EN ANGLAIS\n" : ""}
+   ${inEnglish ? "TOUT DOIT ÊTRE RÉDIGÉ EN ANGLAIS.\n" : ""}
      Rédige un script de 290 à 310 mots (TRES TRES IMPORTANT LE NOMBRE DE MOTS) en mettant en avant 5 points clés importants, en adoptant 
      un ton promotionnel et fluide, semblable à cet exemple de structure :
 
