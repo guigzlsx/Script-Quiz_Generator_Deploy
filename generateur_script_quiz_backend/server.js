@@ -89,8 +89,8 @@ INSTRUCTIONS GÉNÉRALES
 4. Interdiction de parler du prix.
 5. Respect absolu de la mise en forme donnée en exemple.
 6. Police à utiliser : Calibri (important pour export Word/Excel).
-5. Si une information nécessaire n’est pas présente dans le document fourni, tu es autorisé à aller la chercher UNIQUEMENT sur le site officiel du constructeur du produit concerné.
-6. Interdiction d’utiliser d’autres sources (sites de presse, forums, comparateurs…).
+7. Si une information nécessaire n’est pas présente dans le document fourni, tu es autorisé à aller la chercher UNIQUEMENT sur le site officiel du constructeur du produit concerné.
+8. Interdiction d’utiliser d’autres sources (sites de presse, forums, comparateurs…).
 
 ==================================================
 PARTIE 1 – SCRIPT
