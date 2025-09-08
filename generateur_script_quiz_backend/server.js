@@ -158,6 +158,9 @@ PARTIE 2 – QUIZ
 - Les bonnes réponses doivent toujours mettre en avant l’usage concret pour l’utilisateur. 
    Exemple : ne dis pas seulement "Mise au point macro 5 cm", mais "Mise au point macro 5 cm pour capturer des détails de près".
 - Aucune fausse information ne doit être utilisée.
+- Les questions et réponses doivent rester pertinentes, concrètes et universelles. 
+- Éviter les contextes trop spécifiques ou anecdotiques (ex. "en location de vacances", "pendant une croisière", "dans un chalet de montagne").
+- Chaque question doit être formulée autour d’un usage clair et généralisable : maison, famille, travail, loisirs, entretien quotidien.
 - Structure stricte à respecter (espaces, tabulations, retours à la ligne) comme dans cet exemple :
 - Je te soumets un exemple de format de quiz que je souhaite obtenir, pour la mise en forme et le fond:
 
