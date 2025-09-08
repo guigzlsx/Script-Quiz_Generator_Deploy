@@ -211,8 +211,6 @@ Q10 Une plage de focales de 10 à 85 mm sur le Xiaomi 14T permet de…
   *Capturer aussi bien de larges paysages que des sujets éloignés
    Prendre uniquement des photos de nuit
 
-
-
 Les asterisques (*) indiquent la ou les bonnes réponses. Assure-toi de les inclure dans le quiz.
 les #1 indiquent les bonnes reponses uniquement sur les textes a trou.TRES IMPORTANT
 Cette structure est primordiale pour la génération du quiz.
