@@ -151,7 +151,7 @@ PARTIE 2 – QUIZ
 - Titre obligatoire : [QUIZ] [Nom du produit]
 - 10 questions au total.
 - Les formats obligatoires :
-   • QCM (au moins une fausse réponse, 4 propositions, entre 1 et 3 bonnes réponses).
+   • QCM (au moins une fausse réponse, 4 propositions, entre 1 et 3 bonnes réponses correctes possibles).
    • Vrai ou Faux (argument court, max 80 caractères).
    • Texte à trou (un seul trou, 4 propositions dont 1 vraie).
 - Les trois formats doivent obligatoirement être inclus dans le quiz.
