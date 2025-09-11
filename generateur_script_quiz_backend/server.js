@@ -152,7 +152,7 @@ PARTIE 2 – QUIZ
 - 10 questions au total.
 - Les formats obligatoires :
    • QCM (au moins une fausse réponse, 4 propositions, entre 1 et 3 bonnes réponses correctes possibles).
-   • Vrai ou Faux (argument court, max 80 caractères).
+   • Vrai ou Faux (argument court, max 80 caractères), la reponse peut etre également "Faux".
    • Texte à trou (un seul trou, 4 propositions dont 1 vraie).
 - Les trois formats doivent obligatoirement être inclus dans le quiz.
 - Les bonnes réponses doivent toujours mettre en avant l’usage concret pour l’utilisateur. 
