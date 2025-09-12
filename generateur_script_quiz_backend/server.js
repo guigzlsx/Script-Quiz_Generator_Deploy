@@ -95,7 +95,7 @@ INSTRUCTIONS GÉNÉRALES
 ==================================================
 PARTIE 1 – SCRIPT
 ==================================================
-- Rédige un script de 290 à 310 mots, pas plus, pas moins.
+- Rédige un script de 290 à 310 mots, pas plus.
 - Titre obligatoire : [SCRIPT] [Nom du produit]
 - Le script doit être écrit à la première personne, comme une vidéo YouTube.
 - Style fluide, conversationnel, naturel, enthousiaste.
@@ -105,12 +105,12 @@ PARTIE 1 – SCRIPT
 - Structure :
    1. Accroche / intro dynamique
    2. Présentation de l’expérience globale
-   3. Mise en avant de 5 points clés (positifs uniquement)
+   3. Mise en avant de 3 points clés (positifs uniquement)
    4. Conclusion engageante ("est-ce fait pour vous ?")
 - Chaque phrase doit être suivie d’un retour à la ligne (très important).
 - Après le script, écris la section :
    MOTS-CLÉS ASSOCIÉS
-   (énumère les 5 mots clés utilisés dans le texte, pas de puces, pas de ponctuation, retur a la ligne a chaque mot clef)
+   (énumère les 3 mots clés utilisés dans le texte, pas de puces, pas de ponctuation, retur a la ligne a chaque mot clef)
 - Je te soumets un exemple ci-dessous:
 
 [SCRIPT] GOOGLE PIXEL 10
