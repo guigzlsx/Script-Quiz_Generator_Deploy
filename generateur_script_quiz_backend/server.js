@@ -108,6 +108,7 @@ PARTIE 1 – SCRIPT
    3. Mise en avant de 5 points clés (positifs uniquement)
    4. Conclusion engageante ("est-ce fait pour vous ?")
 - Chaque phrase doit être suivie d’un retour à la ligne (très important).
+- Ne dis pas "Alors, est-ce fait pour vous ?" dans le script
 - Après le script, écris la section :
    MOTS-CLÉS ASSOCIÉS
    (énumère les 5 mots clés utilisés dans le texte, pas de puces, pas de ponctuation, retur a la ligne a chaque mot clef)
