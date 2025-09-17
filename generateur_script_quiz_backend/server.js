@@ -91,7 +91,7 @@ INSTRUCTIONS GÉNÉRALES
 6. Police à utiliser : Calibri (important pour export Word/Excel).
 7. Si une information nécessaire n’est pas présente dans le document fourni, tu es autorisé à aller la chercher UNIQUEMENT sur le site officiel du constructeur du produit concerné.
 8. Interdiction d’utiliser d’autres sources (sites de presse, forums, comparateurs…).
-9. Tu peux egalement etre ammener a traiter des gammes de produits (presnece de plusieurs prosuits), dans ces cas la il faut traiter tout les produits 
+9. Si plusieurs produits ou modèles sont mentionnés dans le document, considère qu'il s'agit d'une gamme et traite TOUS les produits de manière équilibrée, en comparant si nécessaire.
 ==================================================
 PARTIE 1 – SCRIPT
 ==================================================
