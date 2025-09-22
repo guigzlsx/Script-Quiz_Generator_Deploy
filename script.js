@@ -82,6 +82,8 @@ async function envoyerRequete() {
 
     resultDiv.style.display = "block"; // Afficher le résultat
 
+    window.location.reload();
+
     // Scroll automatique vers le résultat
     resultDiv.scrollIntoView({ behavior: "smooth" });
   } catch (error) {
