@@ -119,60 +119,44 @@ header img{
 
 }
 
-/* File Upload Container */
 .file-upload-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 20px auto;
-    width: 80%;
-    height: 50vh;
-    border: 2px dashed #ccc;  
-    transition: border-color 0.3s, background-color 0.3s;  
-}
-
-/* Style du conteneur quand un fichier est glissé dessus */
-.file-upload-container.dragover {
-    border-color: #00a0e9;
-    background-color: #e6f3ff;
-    opacity: 0.5;
-}
-
-/* Hidden Input */
-input[type="file"] {
-    display: none;
-}
-
-/* Custom File Upload Style */
-.custom-file-upload {
-    padding: 60px 70px;
-    border: 4px dashed #6b46c1;
-    border-radius: 5px;
-    background-color: #f8f9fa;
-    color: #6b46c1;
-    font-size: 30px;
+    border: 2px dashed #a3a3a3;
+    border-radius: 1rem;
+    padding: 2rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease; /* Utiliser 'all' pour toutes les propriétés modifiables */
+    transition: all 0.2s;
+    position: relative;
+    background: #fff;
 }
 
-.custom-file-upload:hover {
-    border-color: #4c2885;
-    background-color: #e9ecef;
+.file-upload-container:hover {
+    border-color: #6c5ce7;
+    background: rgba(108, 92, 231, 0.05);
 }
 
-/* Focused State */
-.custom-file-upload:focus {
-    outline: none;
-    border-color: #4c2885;
+.file-upload-container.dragover {
+    border-color: #6c5ce7;
+    background: rgba(162, 155, 254, 0.1);
+    transform: scale(1.02);
 }
 
-/* Appliquer le style de dragover au label aussi */
-.file-upload-container.dragover .custom-file-upload {
-    border-color: #00a0e9;
-    background-color: #e6f3ff;
+.upload-icon {
+    font-size: 48px;
+    margin-bottom: 1rem;
 }
+
+.upload-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.upload-subtitle {
+    color: #737373;
+    font-size: 0.875rem;
+}
+
 
 /* btn-8 Styling */
 .btn-8 {
