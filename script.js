@@ -82,11 +82,12 @@ async function envoyerRequete() {
 
     resultDiv.style.display = "block"; // Afficher le résultat
 
-    // Scroll automatique vers le résultat
-    resultDiv.scrollIntoView({ behavior: "smooth" });
+    // ➡ Au lieu de scroller directement, on sauvegarde un indicateur et on recharge la page
+    localStorage.setItem("scrollToResult", "true");
+    location.reload();
   } catch (error) {
     console.error("Erreur:", error);
-    alert("Une erreur s'est produite : " + error.message); // Afficher un message d'erreur à l'utilisateur
+    alert("Une erreur s'est produite : " + error.message);
   } finally {
     loader.style.display = "none"; // Masquer le loader
   }
@@ -123,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const dropZone = document.querySelector(".file-upload-container");
   const fileInput = document.getElementById("fileInput");
 
-  // Empêche le comportement par défaut du navigateur lors du glisser-déposer
   ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
     dropZone.addEventListener(eventName, preventDefaults, false);
   });
@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
     e.stopPropagation();
   }
 
-  // Ajoute visuellement que le drag est sur la zone
   ["dragenter", "dragover"].forEach((eventName) => {
     dropZone.addEventListener(eventName, highlight, false);
   });
@@ -150,7 +149,6 @@ document.addEventListener("DOMContentLoaded", function () {
     dropZone.classList.remove("dragover");
   }
 
-  // Gestion du drop
   dropZone.addEventListener("drop", handleDrop, false);
 
   function handleDrop(e) {
@@ -158,7 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const files = dt.files;
     fileInput.files = files;
 
-    // Mise à jour du texte du label avec le nom du fichier
     const fileName = files[0] ? files[0].name : "Choisir un fichier";
     const label = document.querySelector(".custom-file-upload");
     label.textContent = fileName;
@@ -168,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("fileInput").addEventListener("change", function () {
   const fileName = this.files[0] ? this.files[0].name : "Choisir un fichier";
   const label = document.querySelector(".custom-file-upload");
-  label.textContent = fileName; // Remplace le texte du label par le nom du fichier
+  label.textContent = fileName;
 });
 
 function toggleDarkMode() {
@@ -214,14 +211,22 @@ window.addEventListener("load", function () {
     const resultDiv = document.getElementById("result");
     scriptOutput.textContent = savedScript;
     resultDiv.style.display = "block";
-    // Extraction du quiz pour l'export (pas d'affichage)
+
+    // Si on vient de recharger après génération, scroller avec délai
+    if (localStorage.getItem("scrollToResult") === "true") {
+      setTimeout(() => {
+        resultDiv.scrollIntoView({ behavior: "smooth" });
+        localStorage.removeItem("scrollToResult");
+      }, 300);
+    }
+
     window._lastQuizText = "";
     const quizMatch = savedScript.match(/\[QUIZ\][\s\S]*/);
     if (quizMatch) {
       window._lastQuizText = quizMatch[0].trim();
     }
   }
-  // Charger l'état du mode sombre
+
   const isDarkMode = loadDarkModeFromLocalStorage();
   if (isDarkMode) {
     document.body.classList.add("dark-mode");
@@ -241,7 +246,6 @@ function parseQuizText(quizText) {
   lines.slice(1).forEach((line) => {
     line = line.trim();
 
-    // Ignore les lignes d'instructions
     if (
       line.startsWith("Les asterisques") ||
       line.startsWith("les #1") ||
@@ -250,7 +254,6 @@ function parseQuizText(quizText) {
       return;
     }
 
-    // Accepte tabulation OU plusieurs espaces comme séparateur
     const questionMatch = line.match(/^(Q\d+)[\t ]+(.+)/);
     if (questionMatch) {
       if (currentQuestion) {
@@ -279,61 +282,51 @@ async function generateExcel(quizJson) {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Quiz");
 
-  // Définir les colonnes avec une largeur plus grande
   worksheet.columns = [
     { header: "ID", key: "id", width: 20 },
     { header: "Question et Réponses", key: "question", width: 80 },
   ];
 
-  // Ajouter les données
   quizJson.questions.forEach((item) => {
-    // Ajouter la question
     const questionRow = worksheet.addRow({
       id: item.id,
       question: item.question,
     });
 
-    // Ajouter les réponses
     item.answers.forEach((answer) => {
       const answerRow = worksheet.addRow({
         id: "",
         question: answer,
       });
 
-      // Appliquer le style pour les bonnes réponses
       if (/#1|\*/.test(answer)) {
         const cell = worksheet.getCell(`B${answerRow.number}`);
         cell.fill = {
           type: "pattern",
           pattern: "solid",
-          fgColor: { argb: "8CF09F" }, // Vert spécifique en RVB (140, 240, 159)
+          fgColor: { argb: "8CF09F" },
         };
       }
     });
 
-    // Ajouter une ligne vide après les réponses pour créer de l'espace
     const emptyRow = worksheet.addRow({
       id: "",
       question: "",
     });
 
-    // Fusionner les cellules de la colonne ID avec la ligne vide
     worksheet.mergeCells(`A${questionRow.number}:A${emptyRow.number}`);
 
-    // Ajuster la hauteur de la ligne de la question pour correspondre à la hauteur totale des réponses
-    const totalHeight = (item.answers.length + 1) * 30; // 30 est la hauteur par défaut d'une ligne
+    const totalHeight = (item.answers.length + 1) * 30;
     questionRow.height = totalHeight;
 
-    // Appliquer le style pour les cellules contenant les questions
     const questionCell = worksheet.getCell(`B${questionRow.number}`);
     questionCell.fill = {
       type: "pattern",
       pattern: "solid",
-      fgColor: { argb: "D9D9D9" }, // Gris spécifique en RVB (217, 217, 217)
+      fgColor: { argb: "D9D9D9" },
     };
   });
 
-  // Appliquer les styles
   const headerRow = worksheet.getRow(1);
   headerRow.font = { bold: true, size: 14, name: "Arial" };
   headerRow.alignment = { vertical: "middle", horizontal: "center" };
@@ -344,7 +337,7 @@ async function generateExcel(quizJson) {
   };
 
   worksheet.eachRow({ includeEmpty: false }, function (row, rowNumber) {
-    row.height = 60; // Augmenter la hauteur des lignes
+    row.height = 60;
     row.eachCell({ includeEmpty: false }, function (cell) {
       cell.border = {
         top: { style: "thin" },
@@ -358,30 +351,24 @@ async function generateExcel(quizJson) {
         horizontal: "left",
       };
 
-      // Appliquer un style de remplissage par défaut si aucun style n'a été appliqué
       if (!cell.fill) {
         cell.fill = {
           type: "pattern",
           pattern: "solid",
-          fgColor: { argb: "FFFFFF" }, // Couleur blanche par défaut
+          fgColor: { argb: "FFFFFF" },
         };
       }
 
-      // Appliquer une taille de police pour les autres cellules que l'en-tête
       if (rowNumber !== 1) {
         cell.font = { size: 12, name: "Arial" };
       }
     });
   });
 
-  // Extraire le titre du produit
   const productTitle = quizJson.quizTitle;
   const productTitle1 = productTitle.replace("[QUIZ] ", "").trim();
-
-  // Construire le nom du fichier avec le titre du produit
   const fileName = `Topcoach QUIZ ${productTitle1}.xlsx`;
 
-  // Générer le fichier Excel
   const buffer = await workbook.xlsx.writeBuffer();
   const blob = new Blob([buffer], {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -396,7 +383,6 @@ async function generateExcel(quizJson) {
 
 document.getElementById("exportQuizExcel").addEventListener("click", async function () {
   let quizText = "";
-  // Prend le quiz extrait au chargement si dispo, sinon extrait du script affiché
   if (window._lastQuizText) {
     quizText = window._lastQuizText;
   } else {
@@ -414,14 +400,11 @@ document.getElementById("exportQuizExcel").addEventListener("click", async funct
   await generateExcel(quizJson);
 });
 
-// Fonction utilitaire pour normaliser le texte du script via un textarea caché
 function getCleanScriptText() {
   const scriptOutput = document.getElementById("scriptOutput");
-  // Utilise innerText pour conserver les vrais retours à la ligne
   return scriptOutput.innerText.replace(/\r\n/g, "\n").replace(/\n{2,}/g, "\n").trim();
 }
 
-// Fonction d'export Word (DOCX) stylisée pour le script
 async function exportScriptToDocx(text) {
   if (!window.docx) {
     alert("La bibliothèque docx n'est pas chargée correctement. Vérifiez la connexion internet ou le chargement du script docx.");
