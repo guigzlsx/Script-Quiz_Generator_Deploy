@@ -49,12 +49,13 @@
     </section>
     
 
-    <div class="file-upload-container">
-        <input type="file" id="fileInput" accept=".txt, .pdf, .docx,"> 
-        <label for="fileInput" class="custom-file-upload">
-            Choisir un fichier
-        </label>
+    <div class="file-upload-container" id="uploadZone">
+        <div class="upload-icon" id="uploadIcon">📁</div>
+        <h3 class="upload-title" id="uploadTitle">Choisir un fichier</h3>
+        <p class="upload-subtitle" id="uploadSubtitle">Glissez-déposez votre fichier ou cliquez pour parcourir</p>
+        <input type="file" id="fileInput" accept=".txt,.pdf,.docx" hidden>
     </div>
+    
     <!-- <button class="btn-8" id="uploadButton">Envoyer</button> -->
     <button class="btn-9" id="uploadButton">
         <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1" id="Layer_1" class="sparkle">
