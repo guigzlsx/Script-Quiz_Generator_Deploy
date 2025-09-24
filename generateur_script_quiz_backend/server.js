@@ -161,6 +161,7 @@ PARTIE 2 – QUIZ
 - Aucune fausse information ne doit être utilisée.
 - Éviter les contextes trop spécifiques ou anecdotiques (ex. "en location de vacances", "pendant une croisière", "dans un chalet de montagne").
 - Chaque question doit être formulée autour d’un usage clair et généralisable : maison, famille, travail, loisirs, entretien quotidien.
+- Penses a mettre un point à chaque fin de questions et non dans les reponses (point d'interrogation considéré comme un point).
 - Structure stricte à respecter (espaces, tabulations, retours à la ligne) comme dans cet exemple :
 - Je te soumets un exemple de format de quiz que je souhaite obtenir, pour la mise en forme et le fond:
 
