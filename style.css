@@ -379,7 +379,7 @@ ul li a:hover {
 
 /* Styles pour le mode sombre */
 body.dark-mode {
-    background-color: #121212;
+    /* background-color: #121212; */
     color: #ffffff;
 }
 
