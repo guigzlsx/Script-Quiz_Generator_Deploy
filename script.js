@@ -2,9 +2,7 @@ document
   .getElementById("uploadButton")
   .addEventListener("click", envoyerRequete);
 
-document
-  .getElementById("darkModeToggle")
-  .addEventListener("click", toggleDarkMode);
+// darkModeToggle removed from UI - dark mode will be set by default or from localStorage
 
 document
   .getElementById("clearScriptButton")
@@ -97,27 +95,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const burgerIcon = document.querySelector(".burger-icon");
   const menuItems = document.querySelector(".menu-items");
 
-  burgerIcon.addEventListener("click", function () {
-    burgerIcon.classList.toggle("active");
-    menuItems.classList.toggle("active");
-  });
+  if (burgerIcon && menuItems) {
+    burgerIcon.addEventListener("click", function (e) {
+      // Prevent the document click handler from immediately closing the menu
+      e.stopPropagation();
+      burgerIcon.classList.toggle("active");
+      menuItems.classList.toggle("active");
+    });
+
+    // Prevent clicks inside the menu from closing it
+    menuItems.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  }
 
   // Fermer le menu si on clique en dehors
   document.addEventListener("click", function (event) {
-    if (
-      !burgerIcon.contains(event.target) &&
-      !menuItems.contains(event.target)
-    ) {
+    if (!burgerIcon || !menuItems) return;
+    if (!burgerIcon.contains(event.target) && !menuItems.contains(event.target)) {
       burgerIcon.classList.remove("active");
       menuItems.classList.remove("active");
     }
   });
 
-  // Support du mode sombre existant
-  const darkModeToggle = document.getElementById("darkModeToggle");
-  darkModeToggle.addEventListener("click", function () {
-    document.body.classList.toggle("dark-mode");
-  });
+  // ...existing code...
+
+  // Support du mode sombre existant: set dark mode by default if not set
+  if (!localStorage.getItem('darkMode')) {
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('darkMode', 'enabled');
+  }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -170,14 +177,10 @@ document.getElementById("fileInput").addEventListener("change", function () {
 
 function toggleDarkMode() {
   const body = document.body;
-  const darkModeToggle = document.getElementById("darkModeToggle");
-
   body.classList.toggle("dark-mode");
 
   const isDarkMode = body.classList.contains("dark-mode");
   saveDarkModeToLocalStorage(isDarkMode);
-
-  darkModeToggle.textContent = isDarkMode ? "Light mode" : "Dark mode";
 }
 
 function saveDarkModeToLocalStorage(isDarkMode) {
@@ -230,7 +233,6 @@ window.addEventListener("load", function () {
   const isDarkMode = loadDarkModeFromLocalStorage();
   if (isDarkMode) {
     document.body.classList.add("dark-mode");
-    document.getElementById("darkModeToggle").textContent = "Light mode";
   }
 });
 

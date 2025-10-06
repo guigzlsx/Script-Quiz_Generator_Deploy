@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF Tools - Convert & Merge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="banner">
+    <a href="index.html" class="logo">
+      <h1><img src="image/logotopcoach.png" alt="">  </h1>
+    </a>
+    <div class="burger-menu">
+      <div class="burger-icon" id="burgerIcon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav class="menu-items">
+        <button onclick="window.location.href='index.html'" class="btn-1">Retour</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pdf-tools-container">
+    <div class="card">
+      <header class="card-header">
+        <div>
+          <h3>Fusionner vos PDF</h3>
+          <p class="muted">Ajoutez, réorganisez et fusionnez vos fichiers en un clic</p>
+        </div>
+        <div class="card-actions">
+          <button id="clearListButton" class="btn-1">Vider</button>
+          <a href="index.html" class="btn-1" id="backToMain">Script & Quiz</a>
+          <button id="convertMergeButton" class="btn-9">Fusionner</button>
+        </div>
+      </header>
+
+      <div class="card-body">
+        <div class="drop-area file-upload-container" id="dropArea">
+          <input type="file" id="pdfFilesInput" accept=".pdf,.docx,.txt" multiple>
+          <label for="pdfFilesInput" class="custom-file-upload">Glissez-déposez vos fichiers ici <br> ou <strong>Sélectionner des fichiers</strong></label>
+          <div style="margin-top:10px; text-align:center;">
+            <span id="pdfToolsStatus" style="color:var(--muted)"></span>
+          </div>
+        </div>
+
+        <div class="pdf-list" id="pdfList" aria-live="polite"></div>
+
+        <div style="margin-top:18px; display:flex; justify-content:center; color:var(--muted); font-size:13px;">Réorganisez les fichiers pour choisir l'ordre de fusion</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal preview -->
+  <div class="preview-modal" id="previewModal">
+    <div class="modal-content" id="modalContent">
+      <div class="preview-toolbar">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button id="prevPage" class="btn-1">◀</button>
+          <div id="pageIndicator" style="min-width:80px;text-align:center;color:var(--muted)">Page 1 / 1</div>
+          <button id="nextPage" class="btn-1">▶</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button id="zoomOut" class="btn-1">-</button>
+          <div id="zoomIndicator" style="min-width:56px;text-align:center;color:var(--muted)">100%</div>
+          <button id="zoomIn" class="btn-1">+</button>
+          <button id="fullScreen" class="btn-1">Plein écran</button>
+          <button id="closePreview" class="btn-1">Fermer</button>
+        </div>
+      </div>
+      <div id="previewArea"></div>
+    </div>
+  </div>
+
+  <!-- pdf.js and SortableJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="pdf_tools.js" defer></script>
+</body>
+</html>

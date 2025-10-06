@@ -12,6 +12,8 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Ne servir que le dossier parent "public" (ici la racine frontend) au lieu de tout le repo
+// Remarque: assure-toi que les fichiers statiques front sont bien dans le dossier racine du projet.
 app.use(express.static(path.join(__dirname, "..")));
 
 // Utiliser CORS
@@ -22,8 +24,40 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // Utiliser la clé depuis les variables d'environnement
 });
 
-// Configurer multer pour gérer les fichiers uploadés
-const upload = multer({ dest: "uploads/" });
+// Configurer multer pour gérer les fichiers uploadés avec limites et filtrage
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    // préserver l'extension
+    const ext = path.extname(file.originalname);
+    const base = path.basename(file.originalname, ext).replace(/[^a-z0-9-_]/gi, "_");
+    cb(null, `${base}-${Date.now()}${ext}`);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowed = [
+    "application/pdf",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/plain",
+  ];
+  if (allowed.includes(file.mimetype)) cb(null, true);
+  else cb(new Error("Type de fichier non supporté"));
+};
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  fileFilter,
+});
+
+// Utilitaires PDF : pdf-lib pour manipuler/merger
+const { PDFDocument, StandardFonts, rgb } = require("pdf-lib");
 
 // Fonction pour lire un fichier PDF et le convertir en texte
 const readPDF = async (filePath) => {
@@ -272,6 +306,122 @@ FIN DU PROMPT
     res.status(500).send("Erreur lors de la lecture du fichier");
   }
 });
+
+// Endpoint pour convertir/merger des fichiers en PDF
+// Attends plusieurs fichiers (pdf/docx/txt). Retourne un PDF fusionné téléchargeable.
+app.post("/merge", upload.array("documents", 10), async (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).send("Aucun fichier fourni");
+  }
+
+  try {
+    // Créer un nouveau document PDF final
+    const mergedPdf = await PDFDocument.create();
+
+    for (const file of req.files) {
+      const p = file.path;
+      if (file.mimetype === "application/pdf") {
+        // Charger le PDF et copier ses pages
+        const existingPdfBytes = fs.readFileSync(p);
+        const pdfToAppend = await PDFDocument.load(existingPdfBytes);
+        const copiedPages = await mergedPdf.copyPages(pdfToAppend, pdfToAppend.getPageIndices());
+        copiedPages.forEach((page) => mergedPdf.addPage(page));
+      } else if (file.mimetype === "text/plain") {
+        // Convertir texte simple en PDF (une page par 1000 caractères environ)
+        const text = fs.readFileSync(p, "utf8");
+        const page = mergedPdf.addPage();
+        const font = await mergedPdf.embedFont(StandardFonts.Helvetica);
+        const fontSize = 12;
+        const { width, height } = page.getSize();
+        const margin = 40;
+        const maxWidth = width - margin * 2;
+        const lines = splitTextToLines(text, font, fontSize, maxWidth);
+        let cursorY = height - margin;
+        for (const line of lines) {
+          if (cursorY < margin + fontSize) {
+            // nouvelle page
+            cursorY = height - margin;
+            mergedPdf.addPage();
+          }
+          const currentPage = mergedPdf.getPages()[mergedPdf.getPages().length - 1];
+          currentPage.drawText(line, {
+            x: margin,
+            y: cursorY,
+            size: fontSize,
+            font,
+            color: rgb(0, 0, 0),
+          });
+          cursorY -= fontSize + 4;
+        }
+      } else if (file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+        // Extraire texte du DOCX avec mammoth puis convertir comme texte
+        const result = await mammoth.extractRawText({ path: p });
+        const text = result.value || "";
+        const font = await mergedPdf.embedFont(StandardFonts.Helvetica);
+        const fontSize = 12;
+        const { width, height } = mergedPdf.addPage().getSize();
+        // la précédente addPage crée une page déjà ajoutée; on va remplir les pages par la même logique que pour text
+        const maxWidth = width - 40 * 2;
+        const lines = splitTextToLines(text, font, fontSize, maxWidth);
+        let cursorY = height - 40;
+        for (const line of lines) {
+          if (cursorY < 40 + fontSize) {
+            cursorY = height - 40;
+            mergedPdf.addPage();
+          }
+          const currentPage = mergedPdf.getPages()[mergedPdf.getPages().length - 1];
+          currentPage.drawText(line, {
+            x: 40,
+            y: cursorY,
+            size: fontSize,
+            font,
+            color: rgb(0, 0, 0),
+          });
+          cursorY -= fontSize + 4;
+        }
+      }
+    }
+
+    const mergedPdfBytes = await mergedPdf.save();
+
+    // Nettoyer les fichiers uploadés
+    req.files.forEach((f) => {
+      fs.unlink(f.path, (err) => {
+        if (err) console.error("Erreur suppression upload:", err);
+      });
+    });
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename=merged-${Date.now()}.pdf`);
+    return res.send(Buffer.from(mergedPdfBytes));
+  } catch (err) {
+    console.error("Erreur merge:", err);
+    return res.status(500).send("Erreur lors de la conversion/merge des fichiers");
+  }
+});
+
+// Utilitaire local pour couper le texte en lignes respectant la largeur
+function splitTextToLines(text, font, fontSize, maxWidth) {
+  const words = text.replace(/\r\n/g, " \n ").split(/\s+/);
+  const lines = [];
+  let line = "";
+  for (const word of words) {
+    const test = line ? line + " " + word : word;
+    const width = font.widthOfTextAtSize(test, fontSize);
+    if (width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+    if (word === "\n") {
+      lines.push(line);
+      line = "";
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "index.html"));
