@@ -280,10 +280,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  closePreview.addEventListener('click', () => {
-    if (document.fullscreenElement) document.exitFullscreen();
+  // central close action for modal (used by button, overlay click, Escape key)
+  function closeModalAction() {
+    try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) { /* ignore */ }
     previewModal.classList.remove('active');
     previewArea.innerHTML = '';
+  }
+
+  closePreview.addEventListener('click', closeModalAction);
+
+  // close when clicking on overlay (outside modal-content)
+  previewModal.addEventListener('click', (e) => {
+    if (e.target === previewModal) closeModalAction();
+  });
+
+  // close on Escape key when modal is open
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && previewModal.classList.contains('active')) closeModalAction();
   });
 
   // Accessible modal: trap focus and Esc to close

@@ -28,8 +28,8 @@
                     <input type="checkbox" id="englishOption">
                     Generate in English <img src="image/gb-flag.png" alt="UK flag" style="height:1.2em;vertical-align:middle; margin-left:2px;">
                 </label>
-                <button class="btn-1" onclick="window.location.href='pdf_tools.html'">PDF Tools</button>
-                <button id="clearScriptButton" class="clear-btn">Effacer le script</button>
+                <button class="btn btn-ghost btn-1" onclick="window.location.href='pdf_tools.html'">PDF Tools</button>
+                <button id="clearScriptButton" class="clear-btn btn btn-sm">Effacer le script</button>
                 
             </nav>
         </div>
@@ -57,12 +57,12 @@
                 </div>
             </header>
             <div class="card-body">
-                <div class="file-upload-container">
+                <div class="file-upload-container drop-area">
                     <input type="file" id="fileInput" accept=".txt, .pdf, .docx"> 
-                    <label for="fileInput" class="custom-file-upload">Choisir un fichier 📁</label>
+                    <label for="fileInput" class="custom-file-upload" role="button" tabindex="0" aria-label="Choisir un fichier">Choisir un fichier 📁</label>
                 </div>
 
-                <button class="btn-9" id="uploadButton">
+                <button class="btn btn-primary btn-9" id="uploadButton">
                     <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" class="sparkle">
                         <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"></path>
                     </svg>
@@ -82,15 +82,15 @@
         <pre id="scriptOutput"></pre>
         <div id="quizOutput"></div>
         <div class="export-buttons">
-            <button id="exportQuizExcel" class="btn-1">Exporter le quiz en Excel</button>
-            <button id="exportScriptDocx" class="btn-1">Exporter le script en DOCX</button>
+            <button id="exportQuizExcel" class="btn btn-ghost btn-1">Exporter le quiz en Excel</button>
+            <button id="exportScriptDocx" class="btn btn-ghost btn-1">Exporter le script en DOCX</button>
         </div>
         <section class="page-description">
             <p>Après la génération, vous pouvez directement exporter le script en fichier Word (DOCX) ou le quiz en fichier Excel (XLSX). Cliquez sur le bouton d'export souhaité pour obtenir votre fichier prêt à l'emploi.</p>
         </section>
     </div>
 
-    <button id="clearAllButton" class="clear-btn" style="margin: 20px auto; display:none;">Supprimer tout</button>
+    <button id="clearAllButton" class="clear-btn btn btn-sm" style="margin: 20px auto; display:none;">Supprimer tout</button>
 
     <script type="module" src="script.js" defer></script>
 </body>
