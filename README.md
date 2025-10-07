@@ -1,119 +1,97 @@
 # 📜 Script & Quiz Generator
 
-Bienvenue dans le **Script & Quiz Generator** ! Ce projet vous permet de télécharger des fichiers, de générer des scripts et des quiz à partir de ces fichiers, et de convertir les résultats en onglets Excel. 🚀
+Bienvenue dans le dépôt **Script & Quiz Generator** — une application légère qui permet d'importer des fichiers (.txt, .pdf, .docx), d'en extraire le contenu, puis de générer automatiquement un script de présentation et un quiz à partir de ce contenu.
 
-## 📂 Structure du Projet
+Ce document décrit comment lancer le projet localement, où trouver les pages importantes (dont la page `PDF Tools`) et quelles options OCR sont disponibles si vous souhaitez ajouter de la reconnaissance de texte.
 
-- **index.html** : La page principale de l'application.
-- **style.css** : Les styles CSS pour la mise en page et l'apparence.
-- **script.js** : Le script JavaScript pour la logique de l'application.
+---
 
-## 🚀 Fonctionnalités
+## Arborescence importante
 
-1. **Téléchargement de Fichiers** 📁
-   - Téléchargez des fichiers au format `.txt`, `.pdf`, ou `.docx`.
+- `index.html` — page principale (Générateur de Script & Quiz)
+- `pdf_tools.html` — page dédiée aux outils PDF (fusion / conversion / aperçu)
+- `style.css` — styles partagés
+- `script.js` — logique du générateur principal (frontend)
+- `pdf_tools.js` — logique de la page PDF Tools (frontend)
+- `generateur_script_quiz_backend/` — backend Node.js (endpoints d'upload, merge, conversion)
 
-    ```html
-    <input type="file" id="fileInput" accept=".txt, .pdf, .docx">
-    <label for="fileInput" class="custom-file-upload">
-        Choisir un fichier
-    </label>
-    ```
+Vérifiez le dossier `generateur_script_quiz_backend` pour les dépendances et le fichier `server.js` si vous souhaitez démarrer le serveur.
 
-2. **Génération de Scripts et Quiz** 📝
-   - Cliquez sur le bouton "Envoyer" pour générer le script et le quiz.
+---
 
-    ```html
-    <button class="btn-8" id="uploadButton">Envoyer</button>
-    ```
-
-3. **Chargement** ⏳
-   - Une barre de progression et un message de chargement s'affichent pendant la génération.
-
-    ```html
-    <div id="loader" class="loader" style="display: none;">
-        <div class="progress">
-            <div id="progressBar" class="progress-bar"></div>
-        </div>
-        <div id="Chargement">Votre script et votre quiz chargent</div>
-    </div>
-    ```
-
-4. **Résultats** 📊
-   - Les résultats générés sont affichés dans la section "Script Généré".
-
-    ```html
-    <div id="result" class="result" style="display: none;">
-        <h2>Script Généré :</h2>
-        <pre id="scriptOutput"></pre> 
-        <div id="quizOutput"></div> 
-        <ul class="horizontal-list">
-            <li><a href="C:\Users\glesaux\Documents\Code\Excel\index.html">Convert to Excel tab</a></li>
-        </ul>
-    </div>
-    ```
-
-5. **Script JavaScript** 📜
-   - Le script JavaScript pour la logique de l'application est inclus à la fin du fichier.
-
-    ```html
-    <script src="script.js"></script>
-    ```
-
-## 🛠️ Installation
+## Installer et lancer en local (Windows / PowerShell)
 
 1. Clonez le dépôt :
-   ```bash
-   git clone https://github.com/votre-utilisateur/script-quiz-generator.git
-   
-## 📋 Utilisation
 
-1. **Télécharger un fichier** :
-   - Cliquez sur le bouton "Choisir un fichier" pour télécharger un fichier.
+```powershell
+git clone <votre-repository-url>
+cd Script-Quiz_Generator_Deploy
+```
 
-    ```html
-    <input type="file" id="fileInput" accept=".txt, .pdf, .docx">
-    <label for="fileInput" class="custom-file-upload">
-        Choisir un fichier
-    </label>
-    ```
+1. Installer / lancer le backend (si vous utilisez le backend fourni) :
 
-2. **Générer le script et le quiz** :
-   - Cliquez sur le bouton "Envoyer" pour générer le script et le quiz.
+```powershell
+cd generateur_script_quiz_backend
+npm install
+# définir la variable d'environnement si vous utilisez l'API OpenAI (voir note plus bas)
+$env:OPENAI_API_KEY = "votre_cle"
+node server.js
+```
 
-    ```html
-    <button class="btn-8" id="uploadButton">Envoyer</button>
-    ```
+Le backend expose les endpoints utilisés par la page `pdf_tools.html` (ex: `/merge`). Si vous ne souhaitez pas démarrer le backend, vous pouvez tester l'interface statique localement en ouvrant `index.html` et `pdf_tools.html` dans le navigateur (certaines actions serveur seront inactives).
 
-3. **Voir les résultats** :
-   - Les résultats seront affichés dans la section "Script Généré".
+1. Ouvrir l'interface
 
-    ```html
-    <div id="result" class="result" style="display: none;">
-        <h2>Script Généré :</h2>
-        <pre id="scriptOutput"></pre> 
-        <div id="quizOutput"></div> 
-        <ul class="horizontal-list">
-            <li><a href="C:\Users\glesaux\Documents\Code\Excel\index.html">Convert to Excel tab</a></li>
-        </ul>
-    </div>
-    ```
+- Ouvrez `index.html` dans votre navigateur (double-clic local ou `Live Server` dans VS Code).
+- Pour les fonctionnalités de fusion / conversion, utilisez `pdf_tools.html` (ou via le bouton "PDF Tools" sur la page principale).
 
-4. **Convertir en Excel** :
-   - Cliquez sur le lien "Convert to Excel tab" pour convertir les résultats en onglets Excel.
+---
 
-    ```html
-    <ul class="horizontal-list">
-        <li><a href="C:\Users\glesaux\Documents\Code\Excel\index.html">Convert to Excel tab</a></li>
-    </ul>
-    ```
+## Pages clés et fonctionnalités
 
-## 🌑 Mode Sombre
+- `index.html` : importer un fichier (.txt, .pdf, .docx), cliquer sur "Générer" pour obtenir le script et le quiz. Les résultats peuvent être exportés (DOCX pour le script, XLSX pour le quiz).
+- `pdf_tools.html` : page dédiée pour drag & drop de fichiers PDF/DOCX/TXT, prévisualisation, réorganisation (drag & drop) et fusion. Elle utilise `pdf.js` pour l'aperçu et `SortableJS` pour le réordonnancement.
 
-- Activez le mode sombre en cliquant sur le bouton "Dark mode" en haut à droite de la page.
+**Notes UX importantes :**
 
-## 📷 Aperçu
+- Taille max de fichier côté client : 10 MB (contrainte dans le code frontend).
+- La fusion fait un POST vers `/merge` sur le backend et retourne un PDF fusionné en téléchargement.
 
-<img width="958" alt="image" src="https://github.com/user-attachments/assets/9bf4cf26-0123-4dfa-9b0d-3a0769cc8ae8">
+---
+
+---
+
+## Déploiement & notes importantes
+
+- Si vous déployez sur Render / Vercel / un VPS :
+
+  - Le backend nécessite Node.js. Si vous voulez utiliser OCRmyPDF ou des binaires (tesseract, poppler), préférez un container Docker où vous installez ces dépendances.
+  - Important : `server.js` utilise (dans la version fournie) le client OpenAI. Si `OPENAI_API_KEY` n'est pas défini au démarrage et que le code instancie le client au niveau module, le serveur peut échouer au démarrage. Deux solutions :
+
+    1. Définir `OPENAI_API_KEY` dans les variables d'environnement du service (Render, etc.).
+    2. Modifier `server.js` pour instancier le client OpenAI de façon paresseuse (quand nécessaire) afin d'éviter une erreur au démarrage.
+
+---
+
+## Conseils de sécurité & limites
+
+- Bloquez la taille de fichier côté serveur et limitez le nombre de requêtes pour éviter l'abus.
+- Si vous traitez des fichiers sensibles, évitez d'utiliser des services externes (cloud OCR) ou chiffrez/transmettez avec précaution.
+
+---
+
+## Contribuer
+
+- Vos contributions sont bienvenues : ouvrir une issue, proposer une PR pour améliorer l'UI, ajouter la prise en charge d'OCRmyPDF via Dockerfile, etc.
+- Pour un développement local fluide, utilisez VS Code et l'extension Live Server pour visualiser les pages HTML.
+
+---
+
+## Ressources utiles
+
+- [pdf.js](https://mozilla.github.io/pdf.js/)
+- [SortableJS](https://sortablejs.github.io/Sortable/)
+
+Si tu veux, je peux ajouter un exemple d'endpoint `/ocr` basé sur OCRmyPDF (avec un Dockerfile d'accompagnement) ou une intégration rapide `tesseract.js` côté frontend pour tester l'OCR sans modifier le backend. Lequel préfères-tu ?
 
 
