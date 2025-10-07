@@ -80,13 +80,6 @@ Le backend expose les endpoints utilisés par la page `pdf_tools.html` (ex: `/me
 
 ---
 
-## Contribuer
-
-- Vos contributions sont bienvenues : ouvrir une issue, proposer une PR pour améliorer l'UI, ajouter la prise en charge d'OCRmyPDF via Dockerfile, etc.
-- Pour un développement local fluide, utilisez VS Code et l'extension Live Server pour visualiser les pages HTML.
-
----
-
 ## Ressources utiles
 
 - [pdf.js](https://mozilla.github.io/pdf.js/)
