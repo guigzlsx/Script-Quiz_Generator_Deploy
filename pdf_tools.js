@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const previewModal = document.getElementById('previewModal');
   const previewArea = document.getElementById('previewArea');
   const closePreview = document.getElementById('closePreview');
+  const toastContainer = document.getElementById('toastContainer');
 
   // Internal array to track files and order
   const filesState = [];
@@ -55,6 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`${f.name} dépasse 10MB et a été ignoré.`);
         continue;
       }
+      // avoid duplicate files (same name + size)
+      const already = filesState.some(s => s.file && s.file.name === f.name && s.file.size === f.size);
+      if (already) {
+        if (typeof toast === 'function') toast(`${f.name} est déjà dans la liste.`);
+        continue;
+      }
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
       const item = { id, file: f };
       filesState.push(item);
@@ -72,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderItem(item) {
+    // avoid creating duplicate DOM nodes if same id already rendered
+    if (list.querySelector(`[data-id="${item.id}"]`)) return;
     const el = document.createElement('div');
     el.className = 'pdf-item';
     el.dataset.id = item.id;
@@ -109,11 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     list.appendChild(el);
 
-    // generate thumbnail
+  // generate thumbnail
     if (item.file.type === 'application/pdf') {
       const reader = new FileReader();
       reader.onload = async function (e) {
-        try {
+          try {
           const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(e.target.result) }).promise;
           const page = await pdf.getPage(1);
           const viewport = page.getViewport({ scale: 0.5 });
@@ -128,7 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
           canvas.style.display = 'block';
           thumb.appendChild(canvas);
         } catch (err) {
-          thumb.textContent = 'Aperçu indisponible';
+          // show skeleton fallback
+          const ph = document.createElement('div'); ph.className = 'skeleton'; ph.style.width = '100%'; ph.style.height = '100%'; thumb.appendChild(ph);
         }
       };
       reader.readAsArrayBuffer(item.file);
@@ -137,9 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
       thumb.innerHTML = '<pre style="font-size:12px;">' + item.file.type.replace('/', '\n') + '</pre>';
     }
 
-    // Open preview when clicking the thumbnail or the whole card
-    thumb.style.cursor = 'pointer';
-    thumb.addEventListener('click', () => openPreview(item));
+  // Open preview when clicking the thumbnail or the whole card
+  thumb.style.cursor = 'pointer';
+  thumb.addEventListener('click', (ev) => { ev.stopPropagation(); openPreview(item); });
     el.addEventListener('click', (ev) => {
       // avoid triggering when clicking the remove button
       if (ev.target === removeBtn) return;
@@ -169,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const zoomIndicator = document.getElementById('zoomIndicator');
     const fullScreenBtn = document.getElementById('fullScreen');
 
-    if (item.file.type === 'application/pdf') {
+  if (item.file.type === 'application/pdf') {
       const reader = new FileReader();
       reader.onload = async (e) => {
         try {
@@ -202,6 +212,16 @@ document.addEventListener('DOMContentLoaded', () => {
           nextBtn.onclick = () => { if (currentPage < pdf.numPages) { currentPage++; renderPage(currentPage); } };
           zoomIn.onclick = () => { scale = Math.min(4, scale + 0.25); renderPage(currentPage); };
           zoomOut.onclick = () => { scale = Math.max(0.2, scale - 0.25); renderPage(currentPage); };
+          // slider control
+          const zoomSlider = document.getElementById('zoomSlider');
+          if (zoomSlider) {
+            zoomSlider.addEventListener('input', () => {
+              const val = Number(zoomSlider.value);
+              scale = Math.max(0.1, val / 100);
+              renderPage(currentPage);
+              zoomIndicator.textContent = val + '%';
+            });
+          }
           // allow clicking zoom indicator to enter manual percentage
           zoomIndicator.style.cursor = 'pointer';
           zoomIndicator.addEventListener('click', async () => {
@@ -266,6 +286,37 @@ document.addEventListener('DOMContentLoaded', () => {
     previewArea.innerHTML = '';
   });
 
+  // Accessible modal: trap focus and Esc to close
+  function trapFocus(modal) {
+    const focusable = modal.querySelectorAll('a[href], button, textarea, input, [tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    function keyHandler(e) {
+      if (e.key === 'Escape') { closeModal(); }
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    function closeModal() {
+      document.removeEventListener('keydown', keyHandler);
+      previewModal.classList.remove('active');
+      previewArea.innerHTML = '';
+    }
+    document.addEventListener('keydown', keyHandler);
+    // focus first
+    if (first) first.focus();
+  }
+
+  // toast helper
+  function toast(msg, time = 3500) {
+    if (!toastContainer) return;
+    const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; el.setAttribute('role', 'status');
+    toastContainer.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('show'));
+    setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 220); }, time);
+  }
+
   // Drag & drop
   ['dragenter', 'dragover'].forEach((ev) => {
     dropArea.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); dropArea.classList.add('dragover'); });
@@ -283,21 +334,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Merge & send to server using current files order
   btn.addEventListener('click', async () => {
-    if (!filesState.length) { alert('Aucun fichier à fusionner.'); return; }
+    if (!filesState.length) { toast('Aucun fichier à fusionner.'); return; }
     status.textContent = 'Préparation...';
     const formData = new FormData();
     for (const f of filesState) formData.append('documents', f.file, f.file.name);
     try {
       status.textContent = 'Envoi au serveur...';
-      const resp = await fetch('/merge', { method: 'POST', body: formData });
-      if (!resp.ok) { const txt = await resp.text(); throw new Error(txt || resp.statusText); }
-      const blob = await resp.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `Topcoach-merged-${Date.now()}.pdf`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-      status.textContent = 'Fusion terminée — téléchargement lancé.';
+      // use XHR to provide progress events
+      await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/merge');
+        xhr.responseType = 'blob';
+        // create progress bar element
+        let progressEl = document.getElementById('uploadProgress');
+        if (!progressEl) {
+          progressEl = document.createElement('div'); progressEl.id = 'uploadProgress'; progressEl.setAttribute('role', 'progressbar'); progressEl.setAttribute('aria-valuemin', '0'); progressEl.setAttribute('aria-valuemax', '100'); progressEl.setAttribute('aria-valuenow', '0'); progressEl.className = 'progress';
+          const inner = document.createElement('div'); inner.className = 'progress-bar'; inner.style.width = '0%'; progressEl.appendChild(inner);
+          document.querySelector('.card-body').appendChild(progressEl);
+        }
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            progressEl.querySelector('.progress-bar').style.width = pct + '%';
+            progressEl.setAttribute('aria-valuenow', String(pct));
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            const blob = xhr.response; const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `Topcoach-merged-${Date.now()}.pdf`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            status.textContent = 'Fusion terminée — téléchargement lancé.'; toast('Fusion terminée');
+            progressEl.querySelector('.progress-bar').style.width = '100%';
+            setTimeout(() => progressEl.remove(), 800);
+            resolve();
+          } else {
+            reject(new Error(xhr.statusText || 'Erreur serveur'));
+          }
+        };
+        xhr.onerror = () => reject(new Error('Network error'));
+        xhr.send(formData);
+      });
     } catch (err) {
       console.error(err);
-      alert('Erreur lors de la conversion/merge: ' + err.message);
+      toast('Erreur lors de la conversion.');
       status.textContent = 'Erreur, voir console.';
     }
   });

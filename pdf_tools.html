@@ -55,7 +55,7 @@
   </main>
 
   <!-- Modal preview -->
-  <div class="preview-modal" id="previewModal">
+  <div class="preview-modal" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="previewTitle" tabindex="-1">
     <div class="modal-content" id="modalContent">
       <div class="preview-toolbar">
         <div style="display:flex;gap:8px;align-items:center;">
@@ -74,6 +74,9 @@
       <div id="previewArea"></div>
     </div>
   </div>
+
+  <!-- Toast container -->
+  <div id="toastContainer" aria-live="polite" style="position:fixed;right:18px;bottom:18px;z-index:99999"></div>
 
   <!-- pdf.js and SortableJS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
