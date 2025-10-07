@@ -92,6 +92,4 @@ Le backend expose les endpoints utilisés par la page `pdf_tools.html` (ex: `/me
 - [pdf.js](https://mozilla.github.io/pdf.js/)
 - [SortableJS](https://sortablejs.github.io/Sortable/)
 
-Si tu veux, je peux ajouter un exemple d'endpoint `/ocr` basé sur OCRmyPDF (avec un Dockerfile d'accompagnement) ou une intégration rapide `tesseract.js` côté frontend pour tester l'OCR sans modifier le backend. Lequel préfères-tu ?
-
 
