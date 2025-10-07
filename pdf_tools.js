@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Internal array to track files and order
   const filesState = [];
+  // flag used to avoid opening preview when an item is currently being dragged
+  let isDraggingNow = false;
 
   // Burger handlers (page-specific)
   if (burgerIcon && menuItemsPage) {
@@ -38,34 +40,88 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize Sortable
+  // Initialize Sortable with improved UX (ghost class, chosen class, better animation and fallback)
   const sortable = new Sortable(list, {
-    animation: 150,
-    handle: '.handle',
-    onEnd: () => {
+    animation: 180,
+    // allow dragging from anywhere on the item (not only the small handle)
+    // keep a small delay to avoid starting a drag on a simple click (which opens preview)
+    delay: 150,
+    delayOnTouchOnly: true,
+    touchStartThreshold: 5,
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
+    dragClass: 'sortable-dragging',
+    fallbackOnBody: true,
+    swapThreshold: 0.65,
+    onStart: (evt) => {
+      // visual and a11y hints
+      evt.item.classList.add('dragging');
+      evt.item.setAttribute('aria-grabbed', 'true');
+      list.classList.add('drag-active');
+      isDraggingNow = true;
+    },
+    onEnd: (evt) => {
       // reorder filesState according to DOM
       const ids = Array.from(list.children).map((c) => c.dataset.id);
       filesState.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
+      // cleanup drag classes
+      if (evt.item) {
+        evt.item.classList.remove('dragging');
+        evt.item.removeAttribute('aria-grabbed');
+      }
+      list.classList.remove('drag-active');
+      isDraggingNow = false;
     },
+    onMove: (evt) => {
+      // keep default move behavior; placeholder or insertion hint could be added here later
+      return true;
+    }
   });
 
   function addFiles(fileList) {
+    const acceptedExt = ['.pdf', '.docx', '.txt'];
+    const added = [];
+    const rejected = [];
+
     for (const f of Array.from(fileList)) {
-      // ignore >10MB
-      if (f.size > 10 * 1024 * 1024) {
-        alert(`${f.name} dépasse 10MB et a été ignoré.`);
+      const name = (f.name || '').toLowerCase();
+      const ext = name.includes('.') ? name.slice(name.lastIndexOf('.')) : '';
+
+      // check extension
+      if (!acceptedExt.includes(ext)) {
+        rejected.push({ file: f, reason: 'Format non supporté' });
         continue;
       }
+
+      // check size (10 MB)
+      if (f.size > 10 * 1024 * 1024) {
+        rejected.push({ file: f, reason: 'Taille supérieure à 10 Mo' });
+        continue;
+      }
+
       // avoid duplicate files (same name + size)
       const already = filesState.some(s => s.file && s.file.name === f.name && s.file.size === f.size);
       if (already) {
-        if (typeof toast === 'function') toast(`${f.name} est déjà dans la liste.`);
+        rejected.push({ file: f, reason: 'Fichier déjà ajouté' });
         continue;
       }
+
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
       const item = { id, file: f };
       filesState.push(item);
       renderItem(item);
+      added.push(f);
+    }
+
+    // Update status message
+    const parts = [];
+    if (added.length) parts.push(`${added.length} fichier${added.length > 1 ? 's' : ''} ajouté${added.length > 1 ? 's' : ''}`);
+    if (rejected.length) parts.push(`${rejected.length} ignoré${rejected.length > 1 ? 's' : ''}`);
+    status.textContent = parts.join(' — ');
+
+    // Show toasts for rejected files (brief)
+    for (const r of rejected) {
+      toast(`${r.file.name} : ${r.reason}`);
     }
   }
 
@@ -74,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearListButton.addEventListener('click', () => {
       filesState.length = 0;
       list.innerHTML = '';
-      status.textContent = '';
+      if (status) status.textContent = '';
     });
   }
 
@@ -85,11 +141,32 @@ document.addEventListener('DOMContentLoaded', () => {
     el.className = 'pdf-item';
     el.dataset.id = item.id;
 
-    const handle = document.createElement('div');
-    handle.className = 'handle';
-    handle.title = 'Glisser pour réordonner';
-    handle.textContent = '⋮';
-    el.appendChild(handle);
+    // make the whole card keyboard-focusable and support keyboard reorder
+    el.tabIndex = 0;
+    el.setAttribute('role', 'listitem');
+    el.setAttribute('aria-label', `Fichier ${item.file.name}. Utilisez Flèche haut/bas pour réordonner, Entrée pour l'aperçu`);
+    el.addEventListener('keydown', (ev) => {
+      // Keyboard reordering: ArrowUp / ArrowDown
+      if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown') {
+        ev.preventDefault();
+        const current = el;
+        if (ev.key === 'ArrowUp') {
+          const prev = current.previousElementSibling;
+          if (prev) { list.insertBefore(current, prev); }
+        } else {
+          const next = current.nextElementSibling;
+          if (next) { list.insertBefore(next, current); }
+        }
+        // update filesState order to match DOM
+        const ids = Array.from(list.children).map((c) => c.dataset.id);
+        filesState.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
+      }
+      // Enter or Space to open preview when not dragging
+      if ((ev.key === 'Enter' || ev.key === ' ') && !isDraggingNow) {
+        ev.preventDefault();
+        openPreview(item);
+      }
+    });
 
     const thumb = document.createElement('div');
     thumb.className = 'thumbnail';
@@ -147,14 +224,14 @@ document.addEventListener('DOMContentLoaded', () => {
       thumb.innerHTML = '<pre style="font-size:12px;">' + item.file.type.replace('/', '\n') + '</pre>';
     }
 
-  // Open preview when clicking the thumbnail or the whole card
+  // Open preview when clicking the thumbnail or the whole card (but not during drag)
   thumb.style.cursor = 'pointer';
-  thumb.addEventListener('click', (ev) => { ev.stopPropagation(); openPreview(item); });
+  thumb.addEventListener('click', (ev) => { ev.stopPropagation(); if (!isDraggingNow) openPreview(item); });
     el.addEventListener('click', (ev) => {
       // avoid triggering when clicking the remove button
       if (ev.target === removeBtn) return;
       // if user clicked somewhere on the card (not the remove button), open preview
-      if (!ev.target.closest('.remove-btn')) openPreview(item);
+      if (!ev.target.closest('.remove-btn') && !isDraggingNow) openPreview(item);
     });
     removeBtn.addEventListener('click', (ev) => { ev.stopPropagation(); removeItem(item.id); });
   }
