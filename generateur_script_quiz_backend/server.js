@@ -75,6 +75,13 @@ const readDOCX = async (filePath) => {
 // Route pour recevoir le fichier
 app.post("/upload", upload.single("document"), async (req, res) => {
   const filePath = req.file.path;
+  // Debug: afficher les champs reçus pour vérifier la présence de extraInfo
+  try {
+    console.log("POST /upload body keys:", Object.keys(req.body || {}));
+    console.log("POST /upload extraInfo (raw):", req.body ? req.body.extraInfo : undefined);
+  } catch (err) {
+    console.log("Erreur lors du logging debug du body:", err);
+  }
 
   try {
     let data;
@@ -94,6 +101,12 @@ app.post("/upload", upload.single("document"), async (req, res) => {
       return res.status(400).send("Type de fichier non supporté");
     }
 
+    // Récupérer et limiter les informations complémentaires envoyées par le client
+    const extraInfoRaw = req.body && req.body.extraInfo ? String(req.body.extraInfo) : "";
+    const extraInfo = extraInfoRaw.trim().slice(0, 1000); // limiter à 1000 caractères
+    if (extraInfo) console.log("Informations complémentaires reçues (tronquées si nécessaire):", extraInfo);
+
+
     // Définir la limite de tokens
     const maxTokens = 16385;
     const tokens = data.split(" ").length; // Compte des mots
@@ -106,10 +119,19 @@ app.post("/upload", upload.single("document"), async (req, res) => {
 
     const inEnglish = req.body.inEnglish === "true";
 
+    // Préparer bloc d'informations complémentaires à ajouter au prompt si présent
+    const extraBlock = extraInfo ? `\n\nInformations complémentaires fournies par l'utilisateur :\n${extraInfo}\n` : "";
+
+    // Si extraInfo est présent, créer un bloc prioritaire et explicite pour forcer le modèle
+    const extraPriority = extraInfo
+      ? `\n\n=== INFORMATIONS SUPPLÉMENTAIRES (À PRENDRE EN COMPTE ET À PRIORISER) ===\n${extraInfo}\n=== FIN INFORMATIONS SUPPLÉMENTAIRES ===\n\n`
+      : "";
+
     // Préparer le prompt
+    // On place le bloc prioritaire en tête pour s'assurer qu'il soit pris en compte.
     const prompt = `
-    Voici un document :\n${truncatedData}\n
-   ${inEnglish ? "TOUT DOIT ÊTRE RÉDIGÉ EN ANGLAIS.\n" : ""}
+     ${extraPriority}Voici un document :\n${truncatedData}${extraBlock}
+    ${inEnglish ? "TOUT DOIT ÊTRE RÉDIGÉ EN ANGLAIS.\n" : ""}
 
    
 ==================================================

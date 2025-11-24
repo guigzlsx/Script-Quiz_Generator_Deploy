@@ -49,6 +49,14 @@ async function envoyerRequete() {
     document.getElementById("englishOption").checked
   );
 
+  // Ajouter info complémentaire (facultatif)
+  const extraInfoEl = document.getElementById("extraInfo");
+  if (extraInfoEl && extraInfoEl.value.trim()) {
+    formData.append("extraInfo", extraInfoEl.value.trim());
+  } else {
+    formData.append("extraInfo", "");
+  }
+
   try {
     const response = await fetch("/upload", {
       method: "POST",
