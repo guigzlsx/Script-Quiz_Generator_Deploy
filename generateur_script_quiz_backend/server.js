@@ -329,6 +329,64 @@ FIN DU PROMPT
   }
 });
 
+// Endpoint : Génération courte de description produit (bullet points)
+app.post('/generate-description', upload.single('document'), async (req, res) => {
+  const filePath = req.file && req.file.path;
+  try {
+    if (!filePath) return res.status(400).send('Aucun fichier fourni');
+
+    let data = '';
+    if (req.file.mimetype === 'application/pdf') {
+      console.log('/generate-description: extraction PDF');
+      data = await readPDF(filePath);
+    } else if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      console.log('/generate-description: extraction DOCX');
+      data = await readDOCX(filePath);
+    } else if (req.file.mimetype === 'text/plain') {
+      data = fs.readFileSync(filePath, 'utf8');
+    } else {
+      return res.status(400).send('Type de fichier non supporté');
+    }
+
+    const extraInfoRaw = req.body && req.body.extraInfo ? String(req.body.extraInfo) : '';
+    const extraInfo = extraInfoRaw.trim().slice(0, 1000);
+    if (extraInfo) console.log('/generate-description extraInfo:', extraInfo);
+
+    // Troncature raisonnable
+    const maxWords = 16000;
+    const words = data.split(/\s+/);
+    let truncated = data;
+    if (words.length > maxWords) truncated = words.slice(0, maxWords).join(' ');
+
+    const extraPriority = extraInfo ? `\n\n=== INFORMATIONS SUPPLÉMENTAIRES (À PRENDRE EN COMPTE) ===\n${extraInfo}\n=== FIN ===\n\n` : '';
+
+    const userInstruction = `Analyse la fiche produit ci-dessous et rédige une description très courte, sous forme de bullet points, allant droit au but. Chaque bullet point doit être une phrase simple et concise mettant en avant les principaux bénéfices, caractéristiques clés, accessoires inclus et avantages pratiques. Pas de phrases longues, pas de marketing excessif. Maximum 8 bullet points.`;
+
+    const prompt = `${extraPriority}${userInstruction}\n\nFICHE PRODUIT:\n${truncated}`;
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: 'gpt-5',
+        messages: [{ role: 'user', content: prompt }],
+      });
+
+      const content = response.choices && response.choices[0] && response.choices[0].message
+        ? response.choices[0].message.content
+        : '';
+
+      return res.json({ description: content });
+    } catch (err) {
+      console.error('OpenAI error /generate-description:', err);
+      return res.status(500).send('Erreur lors de la génération de la description produit.');
+    }
+  } catch (err) {
+    console.error('Error /generate-description:', err);
+    return res.status(500).send('Erreur lors du traitement du fichier');
+  } finally {
+    if (filePath) fs.unlink(filePath, () => {});
+  }
+});
+
 // Endpoint pour convertir/merger des fichiers en PDF
 // Attends plusieurs fichiers (pdf/docx/txt). Retourne un PDF fusionné téléchargeable.
 app.post("/merge", upload.array("documents", 10), async (req, res) => {
