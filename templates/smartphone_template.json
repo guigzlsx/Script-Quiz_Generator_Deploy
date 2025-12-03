@@ -1,0 +1,102 @@
+{
+  "general": {
+    "product_name": {"type":"string","value":null},
+    "os_version": {"type":"string","value":null},
+    "dimensions": {
+      "width_mm": {"type":"number","value":null},
+      "width_folded_mm": {"type":"number","value":null},
+      "height_mm": {"type":"number","value":null},
+      "height_folded_mm": {"type":"number","value":null},
+      "thickness_mm": {"type":"number","value":null},
+      "thickness_folded_mm": {"type":"number","value":null}
+    },
+    "weight_g": {"type":"number","value":null},
+    "sim_type": {"type":"string","value":null},
+    "wireless_charging": {"type":"boolean","value":null},
+    "ip_rating": {"type":"string","value":null},
+    "repairability_index": {"type":"string","value":null},
+    "fingerprint_reader": {"type":"string","value":null},
+    "face_recognition": {"type":"string","value":null},
+    "design_finish": {"type":"string","value":null},
+    "warranty_period": {"type":"string","value":null}
+  },
+  "performance": {
+    "cpu_family": {"type":"string","value":null},
+    "cpu_model": {"type":"string","value":null},
+    "cpu_cores_total": {"type":"number","value":null},
+    "cpu_max_frequency_ghz": {"type":"number","value":null},
+    "npu": {"type":"string","value":null},
+    "npu_cores": {"type":"number","value":null},
+    "gpu_features": {"type":"string","value":null},
+    "ai_acceleration": {"type":"string","value":null}
+  },
+  "display": {
+    "size_inches": {"type":"number","value":null},
+    "size_cm": {"type":"number","value":null},
+    "resolution": {"type":"string","value":null},
+    "ppi": {"type":"number","value":null},
+    "screen_type": {"type":"string","value":null},
+    "refresh_rate_hz": {"type":"number","value":null},
+    "hdr_support": {"type":"string","value":null}
+  },
+  "memory_storage": {
+    "ram_gb": {"type":"number","value":null},
+    "storage_internal_gb": {"type":"number","value":null},
+    "storage_expandable": {"type":"boolean","value":null},
+    "max_memory_supported": {"type":"string","value":null}
+  },
+  "camera": {
+    "rear_modules_count": {"type":"number","value":null},
+    "rear_resolutions_mp": {"type":"array","value":null},
+    "rear_apertures": {"type":"array","value":null},
+    "rear_fov_degrees": {"type":"array","value":null},
+    "optical_zoom_x": {"type":"string","value":null},
+    "digital_zoom_x": {"type":"string","value":null},
+    "video_max_resolution": {"type":"string","value":null},
+    "front_camera": {"type":"object","value":null},
+    "stabilization": {"type":"string","value":null}
+  },
+  "audio": {
+    "speakers": {"type":"string","value":null},
+    "microphones_count": {"type":"number","value":null},
+    "audio_features": {"type":"string","value":null}
+  },
+  "battery": {
+    "battery_type": {"type":"string","value":null},
+    "battery_capacity_mah": {"type":"number","value":null},
+    "video_playback_hours": {"type":"number","value":null},
+    "audio_playback_hours": {"type":"number","value":null},
+    "charging_type": {"type":"string","value":null},
+    "fast_charge_supported": {"type":"string","value":null}
+  },
+  "connectivity": {
+    "mobile_network": {"type":"string","value":null},
+    "wifi_standard": {"type":"string","value":null},
+    "bluetooth": {"type":"string","value":null},
+    "nfc": {"type":"boolean","value":null},
+    "usb_type": {"type":"string","value":null},
+    "usb_version": {"type":"string","value":null}
+  },
+  "in_the_box": {
+    "charger_included": {"type":"boolean","value":null},
+    "cable_included": {"type":"string","value":null},
+    "earphones_included": {"type":"string","value":null},
+    "manuals_included": {"type":"string","value":null}
+  },
+  "power": {
+    "usb_c_charging_port": {"type":"boolean","value":null},
+    "max_power_required_w": {"type":"number","value":null},
+    "energy_efficiency_class": {"type":"string","value":null}
+  },
+  "features": {
+    "water_resistant": {"type":"string","value":null},
+    "face_unlock": {"type":"boolean","value":null},
+    "fingerprint_sensor": {"type":"boolean","value":null},
+    "special_features": {"type":"array","value":null}
+  },
+  "meta": {
+    "source_documents": {"type":"array","value":null},
+    "confidence": {"type":"number","value":null},
+    "last_updated": {"type":"string","value":null}
+  }
+}

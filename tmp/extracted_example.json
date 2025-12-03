@@ -1,0 +1,66 @@
+{
+  "general": {
+    "product_name": "Example Phone",
+    "os_version": "iOS 18",
+    "dimensions": {
+      "width_mm": 72.3,
+      "height_mm": 160.1,
+      "thickness_mm": 7.8
+    },
+    "weight_g": 189,
+    "sim_type": "Dual SIM",
+    "wireless_charging": false,
+    "ip_rating": "IP68"
+  },
+  "performance": {
+    "cpu_family": "Apple",
+    "cpu_model": "A19 Pro",
+    "cpu_cores_total": 6,
+    "npu": "Apple Neural Engine (ANE)",
+    "npu_cores": 16
+  },
+  "display": {
+    "size_inches": 6.3,
+    "size_cm": 16,
+    "resolution": "2622 x 1206",
+    "ppi": 460,
+    "hdr_support": "Dolby Vision, HDR10, HDR10+"
+  },
+  "camera": {
+    "rear_modules_count": 3,
+    "rear_resolutions_mp": [48, 48, 48],
+    "rear_apertures": [1.78, 2.2, 2.8],
+    "optical_zoom_x": "16x",
+    "digital_zoom_x": "40x",
+    "video_max_resolution": "3840 x 2160",
+    "front_camera": { "count": 1, "resolution_mp": 18, "aperture": 1.9 },
+    "stabilization": "OIS"
+  },
+  "battery": {
+    "battery_type": "Lithium-Ion (Li-Ion)",
+    "video_playback_hours": 33
+  },
+  "connectivity": {
+    "mobile_network": "5G",
+    "wifi_standard": "Wi-Fi 7 (802.11be)",
+    "bluetooth": "6.0",
+    "nfc": true,
+    "usb_type": "USB Type-C",
+    "usb_version": "3.2 Gen 2"
+  },
+  "in_the_box": {
+    "charger_included": false,
+    "cable_included": "USB Type-C"
+  },
+  "power": {
+    "usb_c_charging_port": true,
+    "energy_efficiency_class": "A"
+  },
+  "features": {
+    "face_unlock": true,
+    "special_features": ["Center Stage", "Dolby Vision"]
+  },
+  "meta": {
+    "source_documents": ["spec_sheet.pdf"]
+  }
+}

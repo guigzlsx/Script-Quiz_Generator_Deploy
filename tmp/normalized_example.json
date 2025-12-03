@@ -1,0 +1,438 @@
+{
+  "normalized": {
+    "general": {
+      "product_name": {
+        "value": "Example Phone",
+        "raw": "Example Phone",
+        "confidence": 0.6
+      },
+      "os_version": {
+        "value": "iOS 18",
+        "raw": "iOS 18",
+        "confidence": 0.6
+      },
+      "dimensions": {
+        "width_mm": {
+          "value": 72.3,
+          "raw": 72.3,
+          "confidence": 0.8
+        },
+        "width_folded_mm": {
+          "value": null,
+          "raw": null,
+          "confidence": 0
+        },
+        "height_mm": {
+          "value": 160.1,
+          "raw": 160.1,
+          "confidence": 0.8
+        },
+        "height_folded_mm": {
+          "value": null,
+          "raw": null,
+          "confidence": 0
+        },
+        "thickness_mm": {
+          "value": 7.8,
+          "raw": 7.8,
+          "confidence": 0.8
+        },
+        "thickness_folded_mm": {
+          "value": null,
+          "raw": null,
+          "confidence": 0
+        }
+      },
+      "weight_g": {
+        "value": 189,
+        "raw": 189,
+        "confidence": 0.8
+      },
+      "sim_type": {
+        "value": "Dual SIM",
+        "raw": "Dual SIM",
+        "confidence": 0.6
+      },
+      "wireless_charging": {
+        "value": false,
+        "raw": false,
+        "confidence": 0.8
+      },
+      "ip_rating": {
+        "value": "IP68",
+        "raw": "IP68",
+        "confidence": 0.6
+      },
+      "repairability_index": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "fingerprint_reader": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "face_recognition": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "design_finish": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "warranty_period": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      }
+    },
+    "performance": {
+      "cpu_family": {
+        "value": "Apple",
+        "raw": "Apple",
+        "confidence": 0.6
+      },
+      "cpu_model": {
+        "value": "A19 Pro",
+        "raw": "A19 Pro",
+        "confidence": 0.6
+      },
+      "cpu_cores_total": {
+        "value": 6,
+        "raw": 6,
+        "confidence": 0.8
+      },
+      "cpu_max_frequency_ghz": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "npu": {
+        "value": "Apple Neural Engine (ANE)",
+        "raw": "Apple Neural Engine (ANE)",
+        "confidence": 0.6
+      },
+      "npu_cores": {
+        "value": 16,
+        "raw": 16,
+        "confidence": 0.8
+      },
+      "gpu_features": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "ai_acceleration": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      }
+    },
+    "display": {
+      "size_inches": {
+        "value": 6.3,
+        "raw": 6.3,
+        "confidence": 0.8
+      },
+      "size_cm": {
+        "value": 16,
+        "raw": 16,
+        "confidence": 0.8
+      },
+      "resolution": {
+        "value": "2622 x 1206",
+        "raw": "2622 x 1206",
+        "confidence": 0.6
+      },
+      "ppi": {
+        "value": 460,
+        "raw": 460,
+        "confidence": 0.8
+      },
+      "screen_type": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "refresh_rate_hz": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "hdr_support": {
+        "value": "Dolby Vision, HDR10, HDR10+",
+        "raw": "Dolby Vision, HDR10, HDR10+",
+        "confidence": 0.6
+      }
+    },
+    "memory_storage": {
+      "ram_gb": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "storage_internal_gb": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "storage_expandable": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "max_memory_supported": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      }
+    },
+    "camera": {
+      "rear_modules_count": {
+        "value": 3,
+        "raw": 3,
+        "confidence": 0.8
+      },
+      "rear_resolutions_mp": {
+        "value": [
+          48,
+          48,
+          48
+        ],
+        "raw": [
+          48,
+          48,
+          48
+        ],
+        "confidence": 0.7
+      },
+      "rear_apertures": {
+        "value": [
+          1.78,
+          2.2,
+          2.8
+        ],
+        "raw": [
+          1.78,
+          2.2,
+          2.8
+        ],
+        "confidence": 0.7
+      },
+      "rear_fov_degrees": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "optical_zoom_x": {
+        "value": "16x",
+        "raw": "16x",
+        "confidence": 0.6
+      },
+      "digital_zoom_x": {
+        "value": "40x",
+        "raw": "40x",
+        "confidence": 0.6
+      },
+      "video_max_resolution": {
+        "value": "3840 x 2160",
+        "raw": "3840 x 2160",
+        "confidence": 0.6
+      },
+      "front_camera": {
+        "value": {
+          "count": 1,
+          "resolution_mp": 18,
+          "aperture": 1.9
+        },
+        "raw": {
+          "count": 1,
+          "resolution_mp": 18,
+          "aperture": 1.9
+        },
+        "confidence": 0.6
+      },
+      "stabilization": {
+        "value": "OIS",
+        "raw": "OIS",
+        "confidence": 0.6
+      }
+    },
+    "audio": {
+      "speakers": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "microphones_count": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "audio_features": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      }
+    },
+    "battery": {
+      "battery_type": {
+        "value": "Lithium-Ion (Li-Ion)",
+        "raw": "Lithium-Ion (Li-Ion)",
+        "confidence": 0.6
+      },
+      "battery_capacity_mah": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "video_playback_hours": {
+        "value": 33,
+        "raw": 33,
+        "confidence": 0.8
+      },
+      "audio_playback_hours": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "charging_type": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "fast_charge_supported": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      }
+    },
+    "connectivity": {
+      "mobile_network": {
+        "value": "5G",
+        "raw": "5G",
+        "confidence": 0.6
+      },
+      "wifi_standard": {
+        "value": "Wi-Fi 7 (802.11be)",
+        "raw": "Wi-Fi 7 (802.11be)",
+        "confidence": 0.6
+      },
+      "bluetooth": {
+        "value": "6.0",
+        "raw": "6.0",
+        "confidence": 0.6
+      },
+      "nfc": {
+        "value": true,
+        "raw": true,
+        "confidence": 0.8
+      },
+      "usb_type": {
+        "value": "USB Type-C",
+        "raw": "USB Type-C",
+        "confidence": 0.6
+      },
+      "usb_version": {
+        "value": "3.2 Gen 2",
+        "raw": "3.2 Gen 2",
+        "confidence": 0.6
+      }
+    },
+    "in_the_box": {
+      "charger_included": {
+        "value": false,
+        "raw": false,
+        "confidence": 0.8
+      },
+      "cable_included": {
+        "value": "USB Type-C",
+        "raw": "USB Type-C",
+        "confidence": 0.6
+      },
+      "earphones_included": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "manuals_included": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      }
+    },
+    "power": {
+      "usb_c_charging_port": {
+        "value": true,
+        "raw": true,
+        "confidence": 0.8
+      },
+      "max_power_required_w": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "energy_efficiency_class": {
+        "value": "A",
+        "raw": "A",
+        "confidence": 0.6
+      }
+    },
+    "features": {
+      "water_resistant": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "face_unlock": {
+        "value": true,
+        "raw": true,
+        "confidence": 0.8
+      },
+      "fingerprint_sensor": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "special_features": {
+        "value": [
+          "Center Stage",
+          "Dolby Vision"
+        ],
+        "raw": [
+          "Center Stage",
+          "Dolby Vision"
+        ],
+        "confidence": 0.7
+      }
+    },
+    "meta": {
+      "source_documents": {
+        "value": [
+          "spec_sheet.pdf"
+        ],
+        "raw": [
+          "spec_sheet.pdf"
+        ],
+        "confidence": 0.7
+      },
+      "confidence": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      },
+      "last_updated": {
+        "value": null,
+        "raw": null,
+        "confidence": 0
+      }
+    }
+  },
+  "meta": {
+    "generated_at": "2025-12-03T16:37:04.426Z",
+    "source": "C:\\Users\\glesaux\\Documents\\Taff_dev\\Script-Quiz_Generator_Deploy\\tmp\\extracted_example.json"
+  }
+}

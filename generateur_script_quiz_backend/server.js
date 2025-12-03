@@ -12,6 +12,9 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Parse JSON bodies for endpoints that accept raw text
+app.use(express.json());
+
 // Ne servir que le dossier parent "public" (ici la racine frontend) au lieu de tout le repo
 // Remarque: assure-toi que les fichiers statiques front sont bien dans le dossier racine du projet.
 app.use(express.static(path.join(__dirname, "..")));
@@ -58,6 +61,7 @@ const upload = multer({
 
 // Utilitaires PDF : pdf-lib pour manipuler/merger
 const { PDFDocument, StandardFonts, rgb } = require("pdf-lib");
+const { execFile } = require('child_process');
 
 // Fonction pour lire un fichier PDF et le convertir en texte
 const readPDF = async (filePath) => {
@@ -384,6 +388,90 @@ app.post('/generate-description', upload.single('document'), async (req, res) =>
     return res.status(500).send('Erreur lors du traitement du fichier');
   } finally {
     if (filePath) fs.unlink(filePath, () => {});
+  }
+});
+
+// Endpoint: extraction smartphone -> LLM strict JSON -> validation
+app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
+  const filePath = req.file && req.file.path;
+  const sourceName = (req.file && req.file.originalname) || req.body.source || 'input';
+
+  try {
+    let extractedText = '';
+    if (filePath) {
+      if (req.file.mimetype === 'application/pdf') extractedText = await readPDF(filePath);
+      else if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') extractedText = await readDOCX(filePath);
+      else if (req.file.mimetype === 'text/plain') extractedText = fs.readFileSync(filePath, 'utf8');
+      else return res.status(400).send('Type de fichier non supporté');
+    } else if (req.body && req.body.text) {
+      extractedText = String(req.body.text);
+    } else {
+      return res.status(400).send('Aucun fichier ni texte fourni');
+    }
+
+    const promptTemplate = fs.readFileSync(path.join(__dirname, '..', 'templates', 'smartphone_prompt.txt'), 'utf8');
+    // Build prompt: template + extracted text
+    const prompt = `${promptTemplate}\n\nSOURCE: ${sourceName}\n\n${extractedText}`;
+
+    // Call OpenAI
+    let llmResp;
+    try {
+      llmResp = await openai.chat.completions.create({
+        model: 'gpt-5',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.0,
+      });
+    } catch (err) {
+      console.error('OpenAI error /extract-smartphone:', err);
+      return res.status(500).send('Erreur lors de l’appel à l’API LLM');
+    }
+
+    const rawContent = llmResp && llmResp.choices && llmResp.choices[0] && llmResp.choices[0].message ? llmResp.choices[0].message.content : '';
+
+    // Try to extract JSON object from model output
+    let jsonText = null;
+    try {
+      const m = rawContent.match(/\{[\s\S]*\}/);
+      if (m) jsonText = m[0];
+      else jsonText = rawContent; // fallback
+    } catch (e) {
+      jsonText = rawContent;
+    }
+
+    // Save extracted JSON to temp file for validator
+    const ts = Date.now();
+    const extractedFile = path.join(uploadDir, `extracted-${ts}.json`);
+    fs.writeFileSync(extractedFile, jsonText, 'utf8');
+
+    // Run validator script to normalize
+    const normalizedFile = path.join(uploadDir, `normalized-${ts}.json`);
+    execFile(process.execPath, [path.join(__dirname, 'tools', 'validate_smartphone.js'), extractedFile, normalizedFile], { windowsHide: true }, (err, stdout, stderr) => {
+      // Clean uploaded file if present
+      if (filePath) fs.unlink(filePath, () => {});
+      if (err) {
+        console.error('Validator error:', err, stderr);
+        // Return raw LLM output with a warning
+        return res.json({ ok: false, warning: 'validation_failed', raw: rawContent });
+      }
+
+      // Read normalized result
+      try {
+        const normalized = fs.readFileSync(normalizedFile, 'utf8');
+        const parsed = JSON.parse(normalized);
+        // Clean temp files
+        fs.unlink(extractedFile, () => {});
+        fs.unlink(normalizedFile, () => {});
+        return res.json({ ok: true, normalized: parsed });
+      } catch (e) {
+        console.error('Erreur lecture normalised file:', e);
+        return res.json({ ok: false, warning: 'parse_normalized_failed', raw: rawContent });
+      }
+    });
+
+  } catch (err) {
+    console.error('/extract-smartphone error:', err);
+    if (filePath) fs.unlink(filePath, () => {});
+    res.status(500).send('Erreur lors du traitement');
   }
 });
 
