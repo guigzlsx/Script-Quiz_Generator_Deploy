@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Extraction Smartphone</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      #outputJson {
+        width:100%; max-width:920px; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); color:var(--text); box-shadow:0 8px 24px rgba(2,6,23,0.45); white-space:pre-wrap; overflow:auto;
+      }
+      .file-hint { color: var(--muted); margin-top:8px }
+      .small-muted { color: var(--muted); font-size:0.9em }
+    </style>
+  </head>
+  <body>
+    <header class="banner">
+      <a href="index.html" class="logo"><h1>Extraction Smartphone</h1></a>
+      <div class="burger-menu">
+        <div class="burger-icon" onclick="document.querySelector('.menu-items').classList.toggle('active'); this.classList.toggle('active')">
+          <span></span><span></span><span></span>
+        </div>
+        <nav class="menu-items">
+          <a class="btn-1" href="index.html">Accueil</a>
+          <a class="btn-1" href="product_desc.html">Description Produit</a>
+          <a class="btn-1" href="pdf_tools.html">PDF Tools</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="pdf-tools-container">
+      <div class="card">
+        <header class="card-header">
+          <div>
+            <h3>Extraction structurée (Smartphone)</h3>
+            <p class="muted">Importez une fiche produit (.pdf, .docx, .txt) et obtenez un JSON normalisé selon le template smartphone.</p>
+          </div>
+        </header>
+
+        <div class="card-body">
+          <label for="fileInput">Fichier (PDF / DOCX / TXT)</label>
+          <div class="file-upload-container drop-area" id="dropArea">
+            <input id="fileInput" type="file" accept=".pdf,.docx,.txt" />
+            <label for="fileInput" class="custom-file-upload" role="button" tabindex="0">Choisir un fichier ou glisser-déposer ici 📁</label>
+            <div id="fileHint" class="file-hint">Aucun fichier sélectionné</div>
+          </div>
+
+          <label for="extraInfo">Informations complémentaires (optionnel)</label>
+          <textarea id="extraInfo" rows="3" placeholder="Ex: Prioriser la fiche constructeur, compléter la section batterie" style="width:100%; max-width:920px; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); color:var(--text);"></textarea>
+
+          <div style="margin-top:14px;">
+            <button id="generateBtn" class="btn btn-primary btn-9">Générer l'extraction</button>
+            <button id="downloadBtn" class="btn btn-ghost btn-1" style="display:none; margin-left:8px;">Télécharger JSON</button>
+          </div>
+
+          <div id="loading" class="loader" style="display:none; margin-top:12px;">Extraction en cours…</div>
+
+          <section style="margin-top:18px;">
+            <h4 class="small-muted">JSON normalisé</h4>
+            <pre id="outputJson">Aucun résultat</pre>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script src="product_smartphone.js"></script>
+  </body>
+</html>
