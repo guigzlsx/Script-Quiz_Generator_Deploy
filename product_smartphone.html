@@ -6,8 +6,82 @@
     <title>Extraction Smartphone</title>
     <link rel="stylesheet" href="style.css">
     <style>
+      .results-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 18px;
+      }
+      @media (max-width: 768px) {
+        .results-grid { grid-template-columns: 1fr; }
+      }
+      .result-panel {
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.04);
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+        box-shadow: 0 8px 24px rgba(2,6,23,0.45);
+      }
+      .result-panel h4 {
+        color: var(--muted-2);
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 0.95em;
+      }
       #outputJson {
-        width:100%; max-width:920px; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); color:var(--text); box-shadow:0 8px 24px rgba(2,6,23,0.45); white-space:pre-wrap; overflow:auto;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(17,17,20,0.6);
+        color: var(--text);
+        white-space: pre-wrap;
+        overflow: auto;
+        font-size: 0.85em;
+        max-height: 600px;
+      }
+      #previewData {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(17,17,20,0.6);
+        color: var(--text);
+        overflow-y: auto;
+        max-height: 600px;
+      }
+      .data-section {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .data-section:last-child { border-bottom: none; }
+      .data-section h5 {
+        color: var(--primary);
+        margin: 0 0 8px 0;
+        font-size: 0.95em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .data-field {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        font-size: 0.9em;
+      }
+      .data-field .label {
+        color: var(--muted);
+        flex: 1;
+      }
+      .data-field .value {
+        color: var(--text);
+        flex: 1;
+        text-align: right;
+        font-weight: 500;
+      }
+      .data-field .value.null {
+        color: var(--muted);
+        font-style: italic;
       }
       .file-hint { color: var(--muted); margin-top:8px }
       .small-muted { color: var(--muted); font-size:0.9em }
@@ -55,10 +129,16 @@
 
           <div id="loading" class="loader" style="display:none; margin-top:12px;">Extraction en cours…</div>
 
-          <section style="margin-top:18px;">
-            <h4 class="small-muted">JSON normalisé</h4>
-            <pre id="outputJson">Aucun résultat</pre>
-          </section>
+          <div class="results-grid">
+            <div class="result-panel">
+              <h4>JSON Brut</h4>
+              <pre id="outputJson">Aucun résultat</pre>
+            </div>
+            <div class="result-panel">
+              <h4>Prévisualisation</h4>
+              <div id="previewData">Aucune donnée à afficher</div>
+            </div>
+          </div>
         </div>
       </div>
     </main>

@@ -63,11 +63,64 @@ const upload = multer({
 const { PDFDocument, StandardFonts, rgb } = require("pdf-lib");
 const { execFile } = require('child_process');
 
-// Fonction pour lire un fichier PDF et le convertir en texte
+// Fonction pour lire un fichier PDF et le convertir en texte (extraction maximale)
 const readPDF = async (filePath) => {
   const dataBuffer = fs.readFileSync(filePath);
-  const data = await pdfParse(dataBuffer);
-  return data.text;
+  const data = await pdfParse(dataBuffer, {
+    // Options pour maximiser l'extraction
+    max: 0, // Pas de limite de pages
+    version: 'v2.0.550' // Version optimale
+  });
+  
+  // Extraire TOUT le texte possible
+  let fullText = data.text || '';
+  
+  // Ajouter les métadonnées si disponibles (titre, sujet, mots-clés)
+  if (data.info) {
+    const meta = [];
+    if (data.info.Title) meta.push('Titre: ' + data.info.Title);
+    if (data.info.Subject) meta.push('Sujet: ' + data.info.Subject);
+    if (data.info.Keywords) meta.push('Mots-clés: ' + data.info.Keywords);
+    if (data.info.Author) meta.push('Auteur: ' + data.info.Author);
+    if (meta.length > 0) {
+      fullText = meta.join('\n') + '\n\n' + fullText;
+    }
+  }
+  
+  // ⚠️ OCR AUTOMATIQUE si le texte est insuffisant (scan ou image)
+  const MIN_TEXT_LENGTH = 500; // Seuil en caractères
+  if (fullText.length < MIN_TEXT_LENGTH) {
+    console.log('[readPDF] Texte insuffisant (' + fullText.length + ' chars), tentative OCR...');
+    try {
+      // Appeler le script Python pour OCR
+      const { execSync } = require('child_process');
+      const ocrResult = execSync(`python ocr_helper.py "${filePath}"`, {
+        encoding: 'utf8',
+        maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+        timeout: 120000 // 2 minutes timeout
+      });
+      
+      const ocrData = JSON.parse(ocrResult);
+      if (ocrData.success && ocrData.text) {
+        console.log('[readPDF] OCR réussi: ' + ocrData.characters + ' caractères extraits de ' + ocrData.pages + ' pages');
+        fullText = ocrData.text;
+      } else {
+        console.log('[readPDF] OCR échoué:', ocrData.error);
+      }
+    } catch (err) {
+      console.log('[readPDF] Erreur OCR (dépendances manquantes?):', err.message);
+      console.log('[readPDF] Pour activer l\'OCR: pip install pdf2image pytesseract pillow');
+    }
+  }
+  
+  // Nettoyer les espaces excessifs mais garder la structure
+  fullText = fullText
+    .replace(/\r\n/g, '\n')
+    .replace(/\n{4,}/g, '\n\n\n') // Max 3 sauts de ligne consécutifs
+    .trim();
+  
+  console.log('[readPDF] Extracted', fullText.length, 'characters,', data.numpages, 'pages');
+  return fullText;
 };
 
 // Fonction pour lire un fichier Word et le convertir en texte
@@ -402,28 +455,69 @@ app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
       if (req.file.mimetype === 'application/pdf') extractedText = await readPDF(filePath);
       else if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') extractedText = await readDOCX(filePath);
       else if (req.file.mimetype === 'text/plain') extractedText = fs.readFileSync(filePath, 'utf8');
-      else return res.status(400).send('Type de fichier non supporté');
+      else return res.status(400).json({ ok: false, error: 'Type de fichier non supporté' });
     } else if (req.body && req.body.text) {
       extractedText = String(req.body.text);
     } else {
-      return res.status(400).send('Aucun fichier ni texte fourni');
+      return res.status(400).json({ ok: false, error: 'Aucun fichier ni texte fourni' });
     }
 
-    const promptTemplate = fs.readFileSync(path.join(__dirname, '..', 'templates', 'smartphone_prompt.txt'), 'utf8');
-    // Build prompt: template + extracted text
-    const prompt = `${promptTemplate}\n\nSOURCE: ${sourceName}\n\n${extractedText}`;
+    console.log('[/extract-smartphone] Extracted text length:', extractedText.length);
 
-    // Call OpenAI
+    const promptTemplate = fs.readFileSync(path.join(__dirname, '..', 'templates', 'smartphone_prompt.txt'), 'utf8');
+
+    // Load the full template and generate a JSON skeleton (same keys/nesting, leaf values = null)
+    const templatePath = path.join(__dirname, '..', 'templates', 'smartphone_template.json');
+    const templateObj = JSON.parse(fs.readFileSync(templatePath, 'utf8'));
+    function buildSkeleton(node) {
+      if (!node || typeof node !== 'object') return null;
+      // Leaf if it has a 'type' property
+      if (Object.prototype.hasOwnProperty.call(node, 'type')) {
+        return null;
+      }
+      const out = Array.isArray(node) ? [] : {};
+      for (const k of Object.keys(node)) {
+        const v = node[k];
+        if (v && typeof v === 'object' && Object.prototype.hasOwnProperty.call(v, 'type')) {
+          // Leaf in template: in the schema for the model, we expect only the raw value (no type/id/value wrappers)
+          out[k] = null;
+        } else if (v && typeof v === 'object') {
+          out[k] = buildSkeleton(v);
+        } else {
+          out[k] = null;
+        }
+      }
+      return out;
+    }
+    const schemaSkeleton = buildSkeleton(templateObj);
+    const schemaString = JSON.stringify(schemaSkeleton, null, 2);
+
+    // Truncate extracted text if too long (keep max ~30000 words to get EVERYTHING)
+    const maxWords = 30000;
+    const words = extractedText.split(/\s+/);
+    let truncatedText = extractedText;
+    if (words.length > maxWords) {
+      truncatedText = words.slice(0, maxWords).join(' ');
+      console.log('[/extract-smartphone] Truncated from', words.length, 'to', maxWords, 'words');
+    } else {
+      console.log('[/extract-smartphone] Using full text:', words.length, 'words');
+    }
+
+    // Build prompt: template + schema + extracted text
+    const prompt = `${promptTemplate}\n\nSCHEMA JSON (exact keys and nesting to follow):\n${schemaString}\n\nSOURCE: ${sourceName}\n\nTEXTE COMPLET DU DOCUMENT:\n${truncatedText}\n\n═══════════════════════════════════════════════════════════\n⚠️ IMPÉRATIF: Extrais ABSOLUMENT TOUTES les informations du texte ci-dessus.\n- Lis ligne par ligne, cherche CHAQUE spec\n- Ne saute AUCUNE info, même mineure\n- Si une info ne correspond à aucun champ du schéma, ajoute-la dans "autres_informations.infos_supplementaires"\n- Format pour infos supplémentaires: "Clé: valeur | Clé: valeur"\n- Renvoie UNIQUEMENT l'objet JSON final. Mets null si une donnée est absente.`;
+
+    // Call OpenAI with low temperature for precise extraction
     let llmResp;
     try {
       llmResp = await openai.chat.completions.create({
-        model: 'gpt-5',
+        model: 'gpt-4o',
         messages: [{ role: 'user', content: prompt }],
-        temperature: 0.0,
+        temperature: 0.1,
+        max_tokens: 16000
       });
     } catch (err) {
-      console.error('OpenAI error /extract-smartphone:', err);
-      return res.status(500).send('Erreur lors de l’appel à l’API LLM');
+      console.error('OpenAI error /extract-smartphone:', err.message);
+      return res.status(500).json({ ok: false, error: 'OpenAI API error: ' + err.message });
     }
 
     const rawContent = llmResp && llmResp.choices && llmResp.choices[0] && llmResp.choices[0].message ? llmResp.choices[0].message.content : '';
@@ -445,7 +539,9 @@ app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
 
     // Run validator script to normalize
     const normalizedFile = path.join(uploadDir, `normalized-${ts}.json`);
-    execFile(process.execPath, [path.join(__dirname, 'tools', 'validate_smartphone.js'), extractedFile, normalizedFile], { windowsHide: true }, (err, stdout, stderr) => {
+    const validatorPath = path.join(__dirname, '..', 'tools', 'validate_smartphone.js');
+    console.log('[/extract-smartphone] Running validator:', validatorPath);
+    execFile(process.execPath, [validatorPath, extractedFile, normalizedFile], { windowsHide: true }, (err, stdout, stderr) => {
       // Clean uploaded file if present
       if (filePath) fs.unlink(filePath, () => {});
       if (err) {
@@ -469,9 +565,9 @@ app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
     });
 
   } catch (err) {
-    console.error('/extract-smartphone error:', err);
+    console.error('/extract-smartphone error:', err.message, err.stack);
     if (filePath) fs.unlink(filePath, () => {});
-    res.status(500).send('Erreur lors du traitement');
+    res.status(500).json({ ok: false, error: 'Internal server error: ' + err.message });
   }
 });
 

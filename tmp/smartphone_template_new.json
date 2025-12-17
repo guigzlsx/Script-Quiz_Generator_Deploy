@@ -18,9 +18,6 @@
     "stylus_weight_g": {"type":"number","value":null,"id":"524856"},
     "weight_g": {"type":"number","value":null,"id":"523979"},
     "sim_card_type": {"type":"string","value":null,"id":"525113"},
-    "dual_sim": {"type":"boolean","value":null},
-    "esim_support": {"type":"boolean","value":null},
-    "sim_and_esim": {"type":"boolean","value":null},
     "wireless_charging": {"type":"boolean","value":null,"id":"523989"},
     "ip_rating": {"type":"string","value":null,"id":"524623"},
     "repairability_index": {"type":"string","value":null,"id":"525655"},
@@ -365,8 +362,6 @@
     "volte_compatible": {"type":"boolean","value":null,"id":"129683"},
     "wifi": {"type":"boolean","value":null,"id":"129220"},
     "wifi_standard": {"type":"string","value":null,"id":"531483"},
-    "wifi_bands": {"type":"string","value":null},
-    "wifi_frequencies": {"type":"string","value":null},
     "bluetooth": {"type":"boolean","value":null,"id":"129222"},
     "bluetooth_version": {"type":"string","value":null,"id":"129223"},
     "bluetooth_le": {"type":"boolean","value":null,"id":"129785"},
@@ -400,47 +395,7 @@
     "aptx_technology": {"type":"boolean","value":null,"id":"524840"},
     "volte_vowifi": {"type":"string","value":null,"id":"524127"},
     "voice_codecs": {"type":"string","value":null,"id":"524865"},
-    "pc_sync": {"type":"boolean","value":null,"id":"525021"},
-    "miracast": {"type":"boolean","value":null},
-    "screen_mirroring": {"type":"boolean","value":null},
-    "smart_connect": {"type":"string","value":null},
-    "casting_devices": {"type":"string","value":null},
-    "dlna": {"type":"boolean","value":null}
-  },
-  "sensors": {
-    "accelerometer": {"type":"boolean","value":null},
-    "gyroscope": {"type":"boolean","value":null},
-    "magnetometer": {"type":"boolean","value":null},
-    "e_compass": {"type":"boolean","value":null},
-    "proximity_sensor": {"type":"boolean","value":null},
-    "ambient_light_sensor": {"type":"boolean","value":null},
-    "barometer": {"type":"boolean","value":null},
-    "compass": {"type":"boolean","value":null},
-    "fingerprint_sensor": {"type":"boolean","value":null},
-    "heart_rate_sensor": {"type":"boolean","value":null},
-    "pedometer": {"type":"boolean","value":null},
-    "thermometer": {"type":"boolean","value":null}
-  },
-  "gps_navigation": {
-    "gps": {"type":"boolean","value":null},
-    "glonass": {"type":"boolean","value":null},
-    "galileo": {"type":"boolean","value":null},
-    "beidou": {"type":"boolean","value":null},
-    "qzss": {"type":"boolean","value":null},
-    "navic": {"type":"boolean","value":null},
-    "a_gps": {"type":"boolean","value":null},
-    "gps_systems": {"type":"string","value":null}
-  },
-  "features": {
-    "water_resistant": {"type":"boolean","value":null},
-    "dust_resistant": {"type":"boolean","value":null},
-    "mil_std_rating": {"type":"string","value":null},
-    "fm_radio": {"type":"boolean","value":null},
-    "infrared": {"type":"boolean","value":null},
-    "virtual_assistant": {"type":"string","value":null},
-    "power_saving_mode": {"type":"boolean","value":null},
-    "gaming_mode": {"type":"boolean","value":null},
-    "reading_mode": {"type":"boolean","value":null}
+    "pc_sync": {"type":"boolean","value":null,"id":"525021"}
   },
   "in_the_box": {
     "ac_adapter": {"type":"boolean","value":null,"id":"129523"},
@@ -501,18 +456,12 @@
     "fingerprint_unlock": {"type":"boolean","value":null},
     "iris_recognition": {"type":"boolean","value":null},
     "secure_folder": {"type":"boolean","value":null},
-    "knox_platform": {"type":"string","value":null},
-    "thinkshield": {"type":"boolean","value":null},
-    "moto_secure": {"type":"boolean","value":null},
-    "enterprise_security": {"type":"string","value":null}
+    "knox_platform": {"type":"string","value":null}
   },
   "sustainability": {
     "recycled_materials_percent": {"type":"number","value":null},
     "energy_star": {"type":"boolean","value":null},
     "carbon_neutral": {"type":"boolean","value":null},
     "sustainability_certifications": {"type":"array","value":null}
-  },
-  "autres_informations": {
-    "infos_supplementaires": {"type":"string","value":null}
   }
 }
