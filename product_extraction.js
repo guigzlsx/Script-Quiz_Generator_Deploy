@@ -8,14 +8,77 @@ document.addEventListener('DOMContentLoaded', function(){
   const downloadBtn = document.getElementById('downloadBtn');
   const extraInfo = document.getElementById('extraInfo');
   const previewData = document.getElementById('previewData');
+  const productTypeSelector = document.getElementById('productType');
+  const templateInfo = document.getElementById('templateInfo');
+  const fieldCount = document.getElementById('fieldCount');
+  const sectionCount = document.getElementById('sectionCount');
 
   // Safety check
-  if (!dropArea || !fileInput || !generateBtn) {
+  if (!dropArea || !fileInput || !generateBtn || !productTypeSelector) {
     console.error('Éléments DOM manquants. Vérifiez le HTML.');
     return;
   }
 
   let lastResult = null;
+
+  // Configuration des templates par type de produit
+  const productConfigs = {
+    smartphone: {
+      template: 'templates/smartphone_template.json',
+      prompt: 'templates/smartphone_prompt.txt',
+      fields: 800,
+      sections: 18,
+      name: 'Smartphone'
+    },
+    audio: {
+      template: 'templates/audio_template.json',
+      prompt: 'templates/audio_prompt.txt',
+      fields: 300,
+      sections: 10,
+      name: 'Audio'
+    },
+    tv: {
+      template: 'templates/tv_template.json',
+      prompt: 'templates/tv_prompt.txt',
+      fields: 400,
+      sections: 12,
+      name: 'Télévision'
+    },
+    casques: {
+      template: 'templates/casques_template.json',
+      prompt: 'templates/casques_prompt.txt',
+      fields: 330,
+      sections: 11,
+      name: 'Casque'
+    },
+    friteuse: {
+      template: 'templates/friteuse_template.json',
+      prompt: 'templates/friteuse_prompt.txt',
+      fields: 180,
+      sections: 13,
+      name: 'Friteuse'
+    }
+    // Ajouter d'autres types ici
+  };
+
+  // Mettre à jour les stats selon le type sélectionné
+  function updateStats() {
+    const selectedType = productTypeSelector.value;
+    const config = productConfigs[selectedType];
+    
+    if (config) {
+      templateInfo.textContent = `Template ${config.name}`;
+      fieldCount.textContent = `+${config.fields}`;
+      sectionCount.textContent = config.sections;
+    }
+  }
+
+  // Écouter le changement de type de produit
+  productTypeSelector.addEventListener('change', updateStats);
+
+  // Initialiser les stats
+  updateStats();
+
 
   // Fonction pour générer la prévisualisation structurée COMPLÈTE
   function renderPreview(data) {
@@ -25,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     const normalized = data.normalized.normalized || data.normalized;
+    const selectedType = productTypeSelector.value;
     let html = '';
 
     // Helper pour afficher une valeur
@@ -50,7 +114,63 @@ document.addEventListener('DOMContentLoaded', function(){
       return `<div class="data-field"><span class="label">${label}</span><span class="value">${formatValue(val)}</span></div>`;
     };
 
-    // Section Général
+    // Fallback générique pour les types non-smartphone (ex: friteuse)
+    const isLeaf = (node) => {
+      if (node === null || node === undefined) return true;
+      if (typeof node !== 'object' || Array.isArray(node)) return true;
+      if (Object.prototype.hasOwnProperty.call(node, 'value')) return true;
+      if (Object.prototype.hasOwnProperty.call(node, 'raw')) return true;
+      if (Object.prototype.hasOwnProperty.call(node, 'id')) return true;
+      if (Object.prototype.hasOwnProperty.call(node, 'type')) return true;
+      return false;
+    };
+
+    const renderGenericSection = (title, obj) => {
+      let inner = '';
+      for (const key of Object.keys(obj)) {
+        const v = obj[key];
+        if (isLeaf(v)) {
+          const val = getValue(v);
+          if (val !== null && val !== undefined && String(val).trim() !== '') {
+            inner += renderField(key, v);
+          }
+        } else if (typeof v === 'object' && v !== null) {
+          const nested = renderGenericSection(key, v);
+          if (nested) inner += nested;
+        }
+      }
+      if (!inner) return '';
+      return `<div class="data-section"><h5>${title}</h5>${inner}</div>`;
+    };
+
+    if (selectedType !== 'smartphone') {
+      let genericHtml = '';
+      for (const sectionName of Object.keys(normalized)) {
+        const section = normalized[sectionName];
+        if (section && typeof section === 'object') {
+          const secHtml = renderGenericSection(sectionName, section);
+          if (secHtml) genericHtml += secHtml;
+        }
+      }
+      previewData.innerHTML = genericHtml || '<p style="color:var(--muted);">Aucune donnée à afficher</p>';
+      return;
+    }
+
+    // Fallback générique pour tous les autres types (audio, tv, casques, etc.)
+    if (selectedType !== 'smartphone' && selectedType !== 'friteuse') {
+      let genericHtml = '';
+      for (const sectionName of Object.keys(normalized)) {
+        const section = normalized[sectionName];
+        if (section && typeof section === 'object') {
+          const secHtml = renderGenericSection(sectionName, section);
+          if (secHtml) genericHtml += secHtml;
+        }
+      }
+      previewData.innerHTML = genericHtml || '<p style="color:var(--muted);">Aucune donnée à afficher</p>';
+      return;
+    }
+
+    // Section Général (smartphone)
     if (normalized.general) {
       html += '<div class="data-section"><h5>🔧 Général</h5>';
       const g = normalized.general;
@@ -447,15 +567,17 @@ document.addEventListener('DOMContentLoaded', function(){
 
     // Section Autres informations (capture toute info non-standard)
     if (normalized.autres_informations) {
-      html += '<div class="data-section" style="background:linear-gradient(135deg,rgba(255,215,0,.05),rgba(255,140,0,.05));border-left:3px solid #ffa500;"><h5>📋 Autres Informations</h5>';
       const other = normalized.autres_informations;
       const infos = getValue(other.infos_supplementaires);
       if (infos) {
-        html += '<div style="padding:8px;background:rgba(255,255,255,.5);border-radius:4px;white-space:pre-wrap;line-height:1.6;">';
-        html += infos.split('|').map(line => `<div style="margin:4px 0;">• ${line.trim()}</div>`).join('');
-        html += '</div>';
+        html += '<div class="data-section" style="background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,140,0,.08));border-left:4px solid #ff9800;border-radius:6px;padding:16px;"><h5 style="color:#e68900;font-size:1.1em;">📋 Informations Complémentaires</h5>';
+        html += '<div class="long-text-container">';
+        html += infos.split('|').map(line => {
+          const trimmed = line.trim();
+          return trimmed ? `<div class="long-text-item">${trimmed}</div>` : '';
+        }).join('');
+        html += '</div></div>';
       }
-      html += '</div>';
     }
 
     previewData.innerHTML = html || '<p style="color:var(--muted);">Aucune donnée extraite</p>';
@@ -510,21 +632,33 @@ document.addEventListener('DOMContentLoaded', function(){
       return;
     }
 
+    const selectedType = productTypeSelector.value;
+    const config = productConfigs[selectedType];
+
+    if (!config) {
+      alert('Type de produit non configuré');
+      return;
+    }
+
     const fd = new FormData();
     if (fileInput.files && fileInput.files.length) {
-      fd.append('document', fileInput.files[0]); // Note: changed from 'file' to 'document'
+      fd.append('document', fileInput.files[0]);
     }
     const extra = extraInfo && extraInfo.value ? extraInfo.value.trim().slice(0, 1000) : '';
     if (extra) {
       fd.append('extraInfo', extra);
     }
 
+    // Ajouter le type de produit pour que le backend charge le bon template
+    fd.append('productType', selectedType);
+
     try {
       if (loading) loading.style.display = 'block';
       generateBtn.disabled = true;
       outputJson.textContent = 'Envoi en cours...';
 
-      const resp = await fetch('/extract-smartphone', { method: 'POST', body: fd });
+      // Utiliser une route générique
+      const resp = await fetch('/extract-product', { method: 'POST', body: fd });
       const data = await resp.json();
       
       if (loading) loading.style.display = 'none';
@@ -561,11 +695,12 @@ document.addEventListener('DOMContentLoaded', function(){
   // Download button
   downloadBtn.addEventListener('click', () => {
     if (!lastResult) return;
+    const selectedType = productTypeSelector.value;
     const blob = new Blob([JSON.stringify(lastResult, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'smartphone_extraction.json';
+    a.download = `${selectedType}_extraction.json`;
     document.body.appendChild(a);
     a.click();
     a.remove();

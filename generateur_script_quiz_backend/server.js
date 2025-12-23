@@ -446,8 +446,55 @@ app.post('/generate-description', upload.single('document'), async (req, res) =>
 
 // Endpoint: extraction smartphone -> LLM strict JSON -> validation
 app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
+  // Rediriger vers la route générique
+  req.body.productType = 'smartphone';
+  return extractProduct(req, res);
+});
+
+// Route générique d'extraction pour tous types de produits
+app.post('/extract-product', upload.single('document'), async (req, res) => {
+  return extractProduct(req, res);
+});
+
+// Fonction générique d'extraction
+async function extractProduct(req, res) {
   const filePath = req.file && req.file.path;
   const sourceName = (req.file && req.file.originalname) || req.body.source || 'input';
+  const productType = req.body.productType || 'smartphone'; // Par défaut smartphone
+
+  // Configuration des types de produits
+  const productConfigs = {
+    smartphone: {
+      template: 'smartphone_template.json',
+      prompt: 'smartphone_prompt.txt',
+      validator: 'validate_smartphone.js'
+    },
+    audio: {
+      template: 'audio_template.json',
+      prompt: 'audio_prompt.txt',
+      validator: 'validate_audio.js'
+    },
+    tv: {
+      template: 'tv_template.json',
+      prompt: 'tv_prompt.txt',
+      validator: 'validate_tv.js'
+    },
+    casques: {
+      template: 'casques_template.json',
+      prompt: 'casques_prompt.txt',
+      validator: 'validate_casques.js'
+    },
+    friteuse: {
+      template: 'friteuse_template.json',
+      prompt: 'friteuse_prompt.txt',
+      validator: 'validate_friteuse.js'
+    }
+  };
+
+  const config = productConfigs[productType];
+  if (!config) {
+    return res.status(400).json({ ok: false, error: 'Type de produit non supporté: ' + productType });
+  }
 
   try {
     let extractedText = '';
@@ -462,16 +509,15 @@ app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Aucun fichier ni texte fourni' });
     }
 
-    console.log('[/extract-smartphone] Extracted text length:', extractedText.length);
+    console.log(`[/extract-product/${productType}] Extracted text length:`, extractedText.length);
 
-    const promptTemplate = fs.readFileSync(path.join(__dirname, '..', 'templates', 'smartphone_prompt.txt'), 'utf8');
+    const promptTemplate = fs.readFileSync(path.join(__dirname, '..', 'templates', config.prompt), 'utf8');
 
-    // Load the full template and generate a JSON skeleton (same keys/nesting, leaf values = null)
-    const templatePath = path.join(__dirname, '..', 'templates', 'smartphone_template.json');
+    // Load the full template and generate a JSON skeleton
+    const templatePath = path.join(__dirname, '..', 'templates', config.template);
     const templateObj = JSON.parse(fs.readFileSync(templatePath, 'utf8'));
     function buildSkeleton(node) {
       if (!node || typeof node !== 'object') return null;
-      // Leaf if it has a 'type' property
       if (Object.prototype.hasOwnProperty.call(node, 'type')) {
         return null;
       }
@@ -479,7 +525,6 @@ app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
       for (const k of Object.keys(node)) {
         const v = node[k];
         if (v && typeof v === 'object' && Object.prototype.hasOwnProperty.call(v, 'type')) {
-          // Leaf in template: in the schema for the model, we expect only the raw value (no type/id/value wrappers)
           out[k] = null;
         } else if (v && typeof v === 'object') {
           out[k] = buildSkeleton(v);
@@ -492,21 +537,21 @@ app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
     const schemaSkeleton = buildSkeleton(templateObj);
     const schemaString = JSON.stringify(schemaSkeleton, null, 2);
 
-    // Truncate extracted text if too long (keep max ~30000 words to get EVERYTHING)
+    // Truncate extracted text if too long
     const maxWords = 30000;
     const words = extractedText.split(/\s+/);
     let truncatedText = extractedText;
     if (words.length > maxWords) {
       truncatedText = words.slice(0, maxWords).join(' ');
-      console.log('[/extract-smartphone] Truncated from', words.length, 'to', maxWords, 'words');
+      console.log(`[/extract-product/${productType}] Truncated from`, words.length, 'to', maxWords, 'words');
     } else {
-      console.log('[/extract-smartphone] Using full text:', words.length, 'words');
+      console.log(`[/extract-product/${productType}] Using full text:`, words.length, 'words');
     }
 
-    // Build prompt: template + schema + extracted text
+    // Build prompt
     const prompt = `${promptTemplate}\n\nSCHEMA JSON (exact keys and nesting to follow):\n${schemaString}\n\nSOURCE: ${sourceName}\n\nTEXTE COMPLET DU DOCUMENT:\n${truncatedText}\n\n═══════════════════════════════════════════════════════════\n⚠️ IMPÉRATIF: Extrais ABSOLUMENT TOUTES les informations du texte ci-dessus.\n- Lis ligne par ligne, cherche CHAQUE spec\n- Ne saute AUCUNE info, même mineure\n- Si une info ne correspond à aucun champ du schéma, ajoute-la dans "autres_informations.infos_supplementaires"\n- Format pour infos supplémentaires: "Clé: valeur | Clé: valeur"\n- Renvoie UNIQUEMENT l'objet JSON final. Mets null si une donnée est absente.`;
 
-    // Call OpenAI with low temperature for precise extraction
+    // Call OpenAI
     let llmResp;
     try {
       llmResp = await openai.chat.completions.create({
@@ -516,37 +561,48 @@ app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
         max_tokens: 16000
       });
     } catch (err) {
-      console.error('OpenAI error /extract-smartphone:', err.message);
+      console.error(`OpenAI error /extract-product/${productType}:`, err.message);
       return res.status(500).json({ ok: false, error: 'OpenAI API error: ' + err.message });
     }
 
     const rawContent = llmResp && llmResp.choices && llmResp.choices[0] && llmResp.choices[0].message ? llmResp.choices[0].message.content : '';
 
-    // Try to extract JSON object from model output
+    // Extract JSON
     let jsonText = null;
     try {
       const m = rawContent.match(/\{[\s\S]*\}/);
       if (m) jsonText = m[0];
-      else jsonText = rawContent; // fallback
+      else jsonText = rawContent;
     } catch (e) {
       jsonText = rawContent;
     }
 
-    // Save extracted JSON to temp file for validator
+    // Save extracted JSON
     const ts = Date.now();
     const extractedFile = path.join(uploadDir, `extracted-${ts}.json`);
     fs.writeFileSync(extractedFile, jsonText, 'utf8');
 
-    // Run validator script to normalize
+    // Run validator if exists
     const normalizedFile = path.join(uploadDir, `normalized-${ts}.json`);
-    const validatorPath = path.join(__dirname, '..', 'tools', 'validate_smartphone.js');
-    console.log('[/extract-smartphone] Running validator:', validatorPath);
+    const validatorPath = path.join(__dirname, '..', 'tools', config.validator);
+    
+    // Vérifier si le validateur existe
+    if (!fs.existsSync(validatorPath)) {
+      console.log(`[/extract-product/${productType}] Validator not found, returning raw JSON`);
+      if (filePath) fs.unlink(filePath, () => {});
+      try {
+        const parsed = JSON.parse(jsonText);
+        return res.json({ ok: true, normalized: parsed, warning: 'no_validator' });
+      } catch (e) {
+        return res.json({ ok: false, warning: 'parse_failed', raw: rawContent });
+      }
+    }
+
+    console.log(`[/extract-product/${productType}] Running validator:`, validatorPath);
     execFile(process.execPath, [validatorPath, extractedFile, normalizedFile], { windowsHide: true }, (err, stdout, stderr) => {
-      // Clean uploaded file if present
       if (filePath) fs.unlink(filePath, () => {});
       if (err) {
         console.error('Validator error:', err, stderr);
-        // Return raw LLM output with a warning
         return res.json({ ok: false, warning: 'validation_failed', raw: rawContent });
       }
 
@@ -565,11 +621,11 @@ app.post('/extract-smartphone', upload.single('document'), async (req, res) => {
     });
 
   } catch (err) {
-    console.error('/extract-smartphone error:', err.message, err.stack);
+    console.error('/extract-product error:', err.message, err.stack);
     if (filePath) fs.unlink(filePath, () => {});
     res.status(500).json({ ok: false, error: 'Internal server error: ' + err.message });
   }
-});
+}
 
 // Endpoint pour convertir/merger des fichiers en PDF
 // Attends plusieurs fichiers (pdf/docx/txt). Retourne un PDF fusionné téléchargeable.

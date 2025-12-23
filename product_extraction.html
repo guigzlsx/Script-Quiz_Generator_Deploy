@@ -3,24 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Extraction Smartphone</title>
+    <title>Extraction Produit</title>
     <link rel="stylesheet" href="style.css">
     <style>
       .results-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 18px;
         margin-top: 18px;
       }
       @media (max-width: 768px) {
         .results-grid { grid-template-columns: 1fr; }
       }
       .result-panel {
-        padding: 14px;
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.04);
-        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
-        box-shadow: 0 8px 24px rgba(2,6,23,0.45);
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: linear-gradient(145deg, rgba(124,58,237,0.08), rgba(6,182,212,0.05));
+        box-shadow: 0 18px 45px rgba(2,6,23,0.65);
+        backdrop-filter: blur(6px);
       }
       .result-panel h4 {
         color: var(--muted-2);
@@ -37,6 +38,9 @@
         color: var(--text);
         white-space: pre-wrap;
         overflow: auto;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        box-sizing: border-box;
         font-size: 0.85em;
         max-height: 600px;
       }
@@ -48,6 +52,10 @@
         background: rgba(17,17,20,0.6);
         color: var(--text);
         overflow-y: auto;
+        overflow-x: auto;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        box-sizing: border-box;
         max-height: 600px;
       }
       .data-section {
@@ -89,7 +97,7 @@
   </head>
   <body>
     <header class="banner">
-      <a href="index.html" class="logo"><h1>Extraction Smartphone</h1></a>
+      <a href="index.html" class="logo"><h1>Extraction Produit</h1></a>
       <div class="burger-menu">
         <div class="burger-icon" onclick="document.querySelector('.menu-items').classList.toggle('active'); this.classList.toggle('active')">
           <span></span><span></span><span></span>
@@ -102,16 +110,49 @@
       </div>
     </header>
 
-    <main class="pdf-tools-container">
+      <main class="pdf-tools-container product-page">
+        <section class="hero">
+          <div class="hero-text">
+            <p class="pill">Extraction IA · Multi-produits</p>
+            <h2>Structure tes fiches produit en un clic</h2>
+            <p class="muted">PDF, DOCX ou TXT → JSON normalisé + prévisualisation. Choisis ton type de produit et récupère automatiquement les champs pertinents.</p>
+            <div class="hero-actions">
+              <span class="chip" id="templateInfo">Template dynamique</span>
+              <span class="chip">OCR fallback prêt</span>
+              <span class="chip">JSON + Preview</span>
+            </div>
+          </div>
+          <div class="hero-side">
+            <div class="stat-card">
+              <div class="stat-value" id="fieldCount">+800</div>
+              <div class="stat-label">champs mappés</div>
+            </div>
+            <div class="stat-card soft">
+              <div class="stat-value" id="sectionCount">18</div>
+              <div class="stat-label">sections affichées</div>
+            </div>
+          </div>
+        </section>
       <div class="card">
         <header class="card-header">
           <div>
-            <h3>Extraction structurée (Smartphone)</h3>
-            <p class="muted">Importez une fiche produit (.pdf, .docx, .txt) et obtenez un JSON normalisé selon le template smartphone.</p>
+            <h3>Extraction structurée</h3>
+            <p class="muted">Importez une fiche produit (.pdf, .docx, .txt) et obtenez un JSON normalisé selon le template sélectionné.</p>
           </div>
         </header>
 
         <div class="card-body">
+          <label for="productType">Type de produit</label>
+          <select id="productType" class="product-selector">
+            <option value="smartphone" selected>📱 Smartphone</option>
+            <option value="casques">🎧 Casque</option>
+            <option value="friteuse">🍟 Friteuse</option>
+            <option value="tv" disabled>📺 Télévision (bientôt disponible)</option>
+            <option value="refrigerateur" disabled>❄️ Réfrigérateur (bientôt disponible)</option>
+            <option value="ordinateur" disabled>💻 Ordinateur (bientôt disponible)</option>
+            <option value="electromenager" disabled>🏠 Électroménager (bientôt disponible)</option>
+          </select>
+
           <label for="fileInput">Fichier (PDF / DOCX / TXT)</label>
           <div class="file-upload-container drop-area" id="dropArea">
             <input id="fileInput" type="file" accept=".pdf,.docx,.txt" />
@@ -120,7 +161,7 @@
           </div>
 
           <label for="extraInfo">Informations complémentaires (optionnel)</label>
-          <textarea id="extraInfo" rows="3" placeholder="Ex: Prioriser la fiche constructeur, compléter la section batterie" style="width:100%; max-width:920px; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); color:var(--text);"></textarea>
+          <textarea id="extraInfo" rows="8" placeholder="Ex: Prioriser la fiche constructeur, compléter la section batterie" style="width:100%; max-width:100%; box-sizing:border-box; padding:14px; border-radius:10px; border:2px solid rgba(255,215,0,0.2); background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.02)); color:var(--text); font-size:14px; line-height:1.5; min-height:180px; resize:vertical;"></textarea>
 
           <div style="margin-top:14px;">
             <button id="generateBtn" class="btn btn-primary btn-9">Générer l'extraction</button>
@@ -143,6 +184,6 @@
       </div>
     </main>
 
-    <script src="product_smartphone.js"></script>
+    <script src="product_extraction.js"></script>
   </body>
 </html>
