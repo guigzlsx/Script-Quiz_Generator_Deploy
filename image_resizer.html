@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redimensionneur d'Images</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Zone de upload */
+        .upload-zone {
+            border: 2px dashed rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(0,0,0,0.02));
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .upload-zone:hover {
+            border-color: rgba(124,58,237,0.4);
+            background: linear-gradient(180deg, rgba(124,58,237,0.03), rgba(0,0,0,0.02));
+            transform: translateY(-2px);
+        }
+
+        .upload-zone.dragging {
+            border-color: rgba(6,182,212,0.8);
+            background: linear-gradient(180deg, rgba(6,182,212,0.08), rgba(0,0,0,0.02));
+            transform: translateY(-4px);
+        }
+
+        .upload-zone h3 {
+            color: #fff;
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .upload-zone p {
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* En-tête */
+        .resizer-header {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .resizer-header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(90deg,#7c3aed,#06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .resizer-header p {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        /* Boutons de format */
+        .format-options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .format-btn {
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.02);
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .format-btn:hover {
+            border-color: rgba(124,58,237,0.5);
+            background: rgba(124,58,237,0.08);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .format-btn.active {
+            background: linear-gradient(90deg,#7c3aed,#06b6d4);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 20px rgba(124,58,237,0.2);
+        }
+
+        /* Conteneur de contrôles */
+        .edit-controls {
+            display: none;
+            background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(0,0,0,0.02));
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .edit-controls.active {
+            display: block;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.08);
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #7c3aed;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #7c3aed;
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider-value {
+            min-width: 60px;
+            text-align: center;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Boutons de mode */
+        .mode-toggle {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.02);
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .mode-btn:hover {
+            border-color: rgba(124,58,237,0.5);
+            background: rgba(124,58,237,0.08);
+            color: #fff;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(90deg,#7c3aed,#06b6d4);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        /* Prévisualisation */
+        .preview-container {
+            display: none;
+            margin: 2rem auto;
+            max-width: 1000px;
+        }
+
+        .preview-container.active {
+            display: block;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .preview-box {
+            text-align: center;
+        }
+
+        .preview-box h3 {
+            margin-bottom: 1rem;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .preview-box img,
+        .preview-box canvas {
+            max-width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(124,58,237,0.1);
+        }
+
+        .image-info {
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        /* Contrôles */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg,#7c3aed,#06b6d4);
+            color: white;
+            box-shadow: 0 8px 20px rgba(124,58,237,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(124,58,237,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.08);
+            color: #94a3b8;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Bouton retour */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 10px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            border-color: rgba(124,58,237,0.5);
+            background: rgba(124,58,237,0.08);
+            transform: translateX(-3px);
+        }
+
+        /* Canvas wrapper */
+        .canvas-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: move;
+            user-select: none;
+        }
+
+        .canvas-wrapper canvas {
+            cursor: grab;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(124,58,237,0.1);
+        }
+
+        .canvas-wrapper canvas:active {
+            cursor: grabbing;
+        }
+
+        /* Conteneur principal */
+        .resizer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .resizer-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .preview-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .format-options {
+                gap: 0.75rem;
+            }
+
+            .controls {
+                gap: 0.75rem;
+            }
+
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resizer-container">
+        <a href="index.html" class="back-link">← Retour à l'accueil</a>
+        
+        <div class="resizer-header">
+            <h1>🖼️ Redimensionneur d'Images</h1>
+            <p>Format automatique 1000 x 1000 px pour vos fiches produits</p>
+        </div>
+
+        <div class="format-options">
+            <button class="format-btn active" data-width="1000" data-height="1000">1000x1000</button>
+            <button class="format-btn" data-width="1440" data-height="970">1440x970</button>
+        </div>
+
+        <div class="upload-zone" id="uploadZone">
+            <div class="upload-icon">📁</div>
+            <h3>Glissez-déposez votre image ici</h3>
+            <p>ou cliquez pour sélectionner un fichier</p>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        </div>
+
+        <div class="preview-container" id="previewContainer">
+            <div class="mode-toggle">
+                <button class="mode-btn" data-mode="fit">Mode Ajuster</button>
+                <button class="mode-btn active" data-mode="fill">Mode Remplir</button>
+            </div>
+
+            <div class="edit-controls" id="editControls">
+                <div class="control-group">
+                    <label for="zoomSlider">Zoom: <span id="zoomValue">100%</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="zoomSlider" class="slider" min="10" max="300" value="100">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="rotateSlider">Rotation: <span id="rotateValue">0°</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="rotateSlider" class="slider" min="0" max="360" value="0">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Position: Glissez l'image avec la souris</label>
+                </div>
+            </div>
+
+            <div class="preview-grid">
+                <div class="preview-box">
+                    <h3>Image originale</h3>
+                    <img id="originalImage" alt="Original">
+                    <div class="image-info" id="originalInfo"></div>
+                </div>
+                <div class="preview-box">
+                    <h3>Image redimensionnée</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="resizedCanvas"></canvas>
+                    </div>
+                    <div class="image-info" id="resizedInfo"></div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="downloadBtn">💾 Télécharger (1000x1000)</button>
+                <button class="btn btn-secondary" id="resetBtn">🔄 Nouvelle image</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="image_resizer.js"></script>
+</body>
+</html>
