@@ -363,8 +363,27 @@
     </style>
 </head>
 <body>
+    <header class="banner">
+        <a href="index.html" class="logo">
+            <h1><img src="image/logotopcoach.png" alt="TopCoach"></h1>
+        </a>
+        <div class="burger-menu">
+            <div class="burger-icon" onclick="document.querySelector('.menu-items').classList.toggle('active'); this.classList.toggle('active')">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="menu-items">
+                <a class="btn-1" href="index.html">Accueil</a>
+                <a class="btn-1" href="product_desc.html">Description Produit</a>
+                <a class="btn-1" href="product_extraction.html">Extraction Produit</a>
+                <a class="btn-1" href="pdf_tools.html">PDF Tools</a>
+                <a class="btn-1" href="image_resizer.html">Redimensionneur Images</a>
+            </nav>
+        </div>
+    </header>
     <div class="resizer-container">
-        <a href="index.html" class="back-link">← Retour à l'accueil</a>
+        <!-- <a href="index.html" class="back-link">← Retour à l'accueil</a> -->
         
         <div class="resizer-header">
             <h1>🖼️ Redimensionneur d'Images</h1>
