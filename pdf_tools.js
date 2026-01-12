@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('convertMergeButton');
   const status = document.getElementById('pdfToolsStatus');
   const clearListButton = document.getElementById('clearListButton');
+  const extraTextArea = document.getElementById('extraPdfText');
   const previewModal = document.getElementById('previewModal');
   const previewArea = document.getElementById('previewArea');
   const closePreview = document.getElementById('closePreview');
@@ -407,6 +408,65 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 220); }, time);
   }
 
+  // Build a one-page PDF from user text (simple wrapping)
+  async function buildTextPdf(text) {
+    if (!window.PDFLib || !window.PDFLib.PDFDocument || !window.PDFLib.StandardFonts) {
+      throw new Error('PDFLib non chargé');
+    }
+    const { PDFDocument, StandardFonts } = window.PDFLib;
+    const pdfDoc = await PDFDocument.create();
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fontSize = 12;
+    const pageMargin = 48;
+    let page = pdfDoc.addPage();
+    let { width, height } = page.getSize();
+    const maxWidth = width - pageMargin * 2;
+    const lineHeight = fontSize * 1.35;
+
+    const paragraphs = text.split(/\r?\n/);
+    const lines = [];
+    for (const para of paragraphs) {
+      const words = para.split(/\s+/).filter(Boolean);
+      if (!words.length) { lines.push(''); continue; }
+      let current = '';
+      for (const w of words) {
+        const candidate = current ? `${current} ${w}` : w;
+        const widthCandidate = font.widthOfTextAtSize(candidate, fontSize);
+        if (widthCandidate > maxWidth && current) {
+          lines.push(current);
+          current = w;
+        } else {
+          current = candidate;
+        }
+      }
+      if (current) lines.push(current);
+      lines.push('');
+    }
+    // remove trailing blank line if exists
+    if (lines.length && lines[lines.length - 1] === '') lines.pop();
+
+    let cursorY = height - pageMargin;
+    for (const line of lines) {
+      if (cursorY < pageMargin) {
+        page = pdfDoc.addPage();
+        ({ width, height } = page.getSize());
+        cursorY = height - pageMargin;
+      }
+      page.drawText(line, { x: pageMargin, y: cursorY - fontSize, size: fontSize, font });
+      cursorY -= lineHeight;
+    }
+
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    try {
+      return new File([blob], 'page-texte.pdf', { type: 'application/pdf' });
+    } catch (e) {
+      // Safari or older browsers may not support File constructor
+      blob.name = 'page-texte.pdf';
+      return blob;
+    }
+  }
+
   // Drag & drop
   ['dragenter', 'dragover'].forEach((ev) => {
     dropArea.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); dropArea.classList.add('dragover'); });
@@ -424,10 +484,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Merge & send to server using current files order
   btn.addEventListener('click', async () => {
-    if (!filesState.length) { toast('Aucun fichier à fusionner.'); return; }
+    const extraText = extraTextArea ? extraTextArea.value.trim() : '';
+    if (!filesState.length && !extraText) { toast('Aucun fichier ou texte à fusionner.'); return; }
     status.textContent = 'Préparation...';
+
+    let textFile = null;
+    if (extraText) {
+      try {
+        textFile = await buildTextPdf(extraText);
+      } catch (err) {
+        console.error(err);
+        toast('Impossible de générer la page texte.');
+        status.textContent = 'Erreur lors de la génération du texte.';
+        return;
+      }
+    }
+
     const formData = new FormData();
     for (const f of filesState) formData.append('documents', f.file, f.file.name);
+    if (textFile) {
+      formData.append('documents', textFile, textFile.name || 'page-texte.pdf');
+    }
     try {
       status.textContent = 'Envoi au serveur...';
       // use XHR to provide progress events

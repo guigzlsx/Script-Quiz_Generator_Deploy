@@ -50,6 +50,12 @@
           </div>
         </div>
 
+        <div style="margin-top:16px; background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:12px;">
+          <label for="extraPdfText" style="display:block; color:var(--muted); margin-bottom:8px;">Ajouter une page texte (optionnel)</label>
+          <textarea id="extraPdfText" rows="6" placeholder="Saisissez une note ou un complément. Elle sera convertie en page PDF et fusionnée avec les autres documents." style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background: transparent; color: var(--text); resize: vertical;"></textarea>
+          <div class="file-hint" style="margin-top:6px; color:var(--muted); font-size:13px;">Le texte sera ajouté comme dernière page lors de la fusion.</div>
+        </div>
+
   <div class="pdf-list" id="pdfList" aria-live="polite"></div>
 
   <div class="file-hint" style="margin-top:14px; text-align:center; color:var(--muted); font-size:13px;">Formats acceptés : <strong>.txt</strong>, <strong>.pdf</strong>, <strong>.docx</strong>, <strong>.pptx</strong> — Taille max : <strong>10 Mo</strong></div>
@@ -87,6 +93,7 @@
   <!-- pdf.js and SortableJS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
   <script src="pdf_tools.js" defer></script>
 </body>
 </html>
