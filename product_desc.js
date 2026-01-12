@@ -1,3 +1,23 @@
+const copyDescription = () => {
+  const output = document.getElementById('output');
+  const copyBtn = document.getElementById('copyBtn');
+  const text = output.textContent;
+  if (text && text.trim()) {
+    navigator.clipboard.writeText(text).then(() => {
+      const originalText = copyBtn.innerHTML;
+      copyBtn.innerHTML = '<svg height="16" width="16" viewBox="0 0 24 24" style="margin-right:6px; display:inline-block;"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" fill="currentColor"/></svg>Copié!';
+      copyBtn.style.backgroundColor = 'rgba(100,255,100,0.2)';
+      setTimeout(() => {
+        copyBtn.innerHTML = originalText;
+        copyBtn.style.backgroundColor = '';
+      }, 2000);
+    }).catch(err => {
+      console.error('Erreur lors de la copie:', err);
+      alert('Impossible de copier le texte');
+    });
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('doc');
   const extraInput = document.getElementById('extraInfo');
@@ -6,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const loading = document.getElementById('loading');
   const dropArea = document.getElementById('dropArea');
   const dropHint = document.getElementById('dropHint');
+  const copyBtn = document.getElementById('copyBtn');
 
   // keep dropped file separately (safer than trying to set input.files)
   let droppedFile = null;
@@ -75,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const j = await res.json();
       output.textContent = j.description || JSON.stringify(j, null, 2);
+      copyBtn.style.display = 'inline-block';
     } catch (err) {
       output.textContent = 'Erreur réseau: ' + err.message;
     } finally {
