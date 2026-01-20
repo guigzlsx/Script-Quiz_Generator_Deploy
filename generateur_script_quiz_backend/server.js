@@ -362,7 +362,7 @@ FIN DU PROMPT
     try {
       // Envoyer la requête à OpenAI
       const response = await openai.chat.completions.create({
-        model: "gpt-5",
+        model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
       });
 
@@ -441,6 +441,233 @@ app.post('/generate-description', upload.single('document'), async (req, res) =>
     return res.status(500).send('Erreur lors du traitement du fichier');
   } finally {
     if (filePath) fs.unlink(filePath, () => {});
+  }
+});
+
+// Endpoint : Génération de storyboard à partir d'un script vidéo
+app.post('/generate-storyboard', upload.single('document'), async (req, res) => {
+  const filePath = req.file && req.file.path;
+  try {
+    if (!filePath) return res.status(400).send('Aucun fichier fourni');
+
+    let scriptData = '';
+    
+    // Lecture du fichier script
+    if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      console.log('[/generate-storyboard] Extraction DOCX');
+      scriptData = await readDOCX(filePath);
+    } else {
+      return res.status(400).send('Format non supporté. Veuillez soumettre un fichier .docx');
+    }
+
+    const extraInfoRaw = req.body && req.body.extraInfo ? String(req.body.extraInfo) : '';
+    const extraInfo = extraInfoRaw.trim().slice(0, 1000);
+    if (extraInfo) console.log('[/generate-storyboard] Extra info:', extraInfo);
+
+    // Troncature
+    const maxWords = 16000;
+    const words = scriptData.split(/\s+/);
+    let truncated = scriptData;
+    if (words.length > maxWords) truncated = words.slice(0, maxWords).join(' ');
+
+    const extraPriority = extraInfo ? `\n\n=== INFORMATIONS SUPPLÉMENTAIRES ===\n${extraInfo}\n=== FIN ===\n\n` : '';
+
+    const prompt = `${extraPriority}Tu es un assistant de storyboard professionnel expert.
+Ton objectif : générer un storyboard détaillé, structuré et directement lié au script.
+
+SCRIPT VIDÉO:
+${truncated}
+
+=== TÂCHES PRIORITAIRES ===
+1. Identifie CHAQUE SECTION du script (marquée par "Cadre:" ou "Indications tournage:")
+2. Pour chaque section = 1 scène
+3. Extrait: cadre (Bureau/Extérieur/Intérieur), action principale, position du protagoniste, détails techniques
+4. IMPORTANT: Pour chaque scène, note la SECTION du script d'où elle provient
+5. Respecte l'ordre chronologique du script
+6. Capture les TRANSITIONS explicites
+
+=== FORMAT JSON STRICTE (ARRAY SEULEMENT) ===
+[
+  {
+    "scene": 1,
+    "title": "Titre court de la scène",
+    "cadre": "Bureau|Extérieur|Intérieur",
+    "shot_type": "wide|medium|close-up",
+    "camera_move": "static|pan|tilt|zoom",
+    "action": "Description précise de l'action (ex: 'Le protagoniste reçoit le colis dans ses mains')",
+    "position": "Position du protagoniste (ex: 'Assis à son bureau', 'Debout en train de courir')",
+    "focus": "Ce qu'on doit voir clairement (ex: 'La boîte du produit')",
+    "emotion": "Émotion/ambiance (ex: 'Enthousiasme', 'Concentration')",
+    "storyboard_focus": "L'idée CLÉ visuelle à montrer",
+    "transition": "Type de transition (ex: 'Coupe nette', 'Fondu', 'Aucune') ou null",
+    "voix_off_extrait": "Bribes pertinentes de la voix off (optionnel)",
+    "notes": "Détails techniques (ex: 'Gros plan sur les écouteurs', 'Son isolé du smartphone')",
+    "script_reference": "Section du script d'où provient cette scène (ex: 'Section 1: Bureau - Réception colis')"
+  }
+]
+
+=== RÈGLES STRICTES ===
+- Retourner UNIQUEMENT un JSON array, pas de texte avant ou après
+- CHAQUE scène doit référencer exactement où elle provient dans le script
+- shot_type: "wide" (plan large) | "medium" (plan moyen) | "close-up" (gros plan)
+- camera_move: "static" (fixe) | "pan" (panoramique) | "tilt" (vertical) | "zoom"
+- cadre: toujours parmi "Bureau", "Extérieur", "Intérieur" OU autre si spécifié dans le script
+- emotion: courte (ex: "enthousiasme", "concentration", "essoufflement")
+- storyboard_focus: l'idée CLÉ à montrer visuellement
+- notes: détails spécifiques du tournage (ex: "Gros plan sur les écouteurs", "Son isolé")
+- transition: "Coupe nette", "Fondu", "Transition", "Aucune", ou null
+- script_reference: le numéro ou titre de la section dans le script (TRÈS IMPORTANT)
+- GARDER l'ordre du script (pas de réarrangement)
+- Nombre de scènes = nombre de sections/cadres distincts dans le script
+- JSON VALIDE ET PARSEABLE
+`;
+
+    try {
+      console.log('[/generate-storyboard] Appel GPT-5 pour générer storyboard JSON...');
+      
+      const analysis = await openai.chat.completions.create({
+        model: 'gpt-5',
+        messages: [{ role: 'user', content: prompt }]
+      });
+
+      const raw = analysis.choices?.[0]?.message?.content || '[]';
+      console.log('[/generate-storyboard] Réponse reçue, longueur:', raw.length);
+
+      let scenes;
+      try {
+        scenes = JSON.parse(raw);
+      } catch (e) {
+        // Essayer d'extraire le JSON s'il y a du texte autour
+        const jsonMatch = raw.match(/\[[\s\S]*\]/);
+        if (jsonMatch) {
+          scenes = JSON.parse(jsonMatch[0]);
+        } else {
+          console.error('[/generate-storyboard] JSON parse error:', e.message);
+          console.error('[/generate-storyboard] Raw response (first 500 chars):', raw.substring(0, 500));
+          return res.status(500).json({ 
+            error: 'JSON storyboard invalide',
+            details: e.message
+          });
+        }
+      }
+
+      if (!Array.isArray(scenes) || scenes.length === 0) {
+        return res.status(500).json({ 
+          error: 'Aucune scène générée',
+          received_type: typeof scenes,
+          length: Array.isArray(scenes) ? scenes.length : 'N/A'
+        });
+      }
+
+      console.log(`[/generate-storyboard] ✅ ${scenes.length} scènes générées`);
+
+      return res.json({
+        product_name: scriptData.split('\n')[0] || 'Product',
+        scenes: scenes,
+        total_scenes: scenes.length
+      });
+
+    } catch (err) {
+      console.error('[/generate-storyboard] OpenAI error:', err.message);
+      return res.status(500).json({ 
+        error: 'Erreur lors de la génération du storyboard',
+        details: err.message
+      });
+    }
+  } catch (err) {
+    console.error('[/generate-storyboard] Error:', err.message);
+    return res.status(500).send('Erreur lors du traitement du fichier');
+  } finally {
+    if (filePath) fs.unlink(filePath, () => {});
+  }
+});
+
+// Fonction pour parser le storyboard et extraire les scènes
+function parseStoryboardScenes(storyboardText) {
+  const scenes = [];
+  const lines = storyboardText.split('\n');
+  let currentScene = null;
+  let description = '';
+
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    
+    // Détecter le début d'une nouvelle scène
+    const sceneMatch = trimmedLine.match(/^(Scène|SCENE|Scene)\s*(\d+)/i);
+    
+    if (sceneMatch) {
+      // Sauvegarder la scène précédente si elle existe
+      if (currentScene) {
+        scenes.push({
+          number: currentScene.number,
+          title: currentScene.title,
+          description: description.trim()
+        });
+      }
+      
+      // Commencer une nouvelle scène
+      currentScene = {
+        number: sceneMatch[2],
+        title: trimmedLine
+      };
+      description = '';
+    } else if (currentScene && trimmedLine) {
+      // Collecter la description de la scène (limiter pour ne pas avoir trop de texte)
+      if (description.length < 2000) {
+        description += trimmedLine + '\n';
+      }
+    }
+  }
+
+  // Ajouter la dernière scène
+  if (currentScene) {
+    scenes.push({
+      number: currentScene.number,
+      title: currentScene.title,
+      description: description.trim()
+    });
+  }
+
+  return scenes;
+}
+
+// Endpoint : Génération d'image pour une scène de storyboard via DALL-E
+app.post('/generate-scene-image', async (req, res) => {
+  try {
+    const { sceneNumber, sceneDescription } = req.body;
+
+    if (!sceneDescription) {
+      return res.status(400).json({ error: 'Description de scène manquante' });
+    }
+
+    console.log(`[/generate-scene-image] Génération DALL-E pour scène ${sceneNumber}`);
+
+    const dallePrompt = `Storyboard frame, cinematic pencil sketch, grayscale, white background, black border. Scene ${sceneNumber}. Description: ${sceneDescription}. Include overlays: thick yellow transition arrow, white cartouche top-right 'Cadre: scène ${sceneNumber}', blue zoom/tactile +/- icons, bold centered feature text if mentioned. Clean HD.`;
+
+    const imageResponse = await openai.images.generate({
+      model: 'dall-e-3',
+      prompt: dallePrompt,
+      n: 1,
+      size: '1024x1024',
+      quality: 'standard',
+      style: 'natural'
+    });
+
+    const imageUrl = imageResponse.data?.[0]?.url;
+    if (!imageUrl) throw new Error('Pas d\'URL retournée par DALL-E');
+
+    return res.json({ 
+      success: true,
+      imageUrl: imageUrl,
+      sceneNumber: sceneNumber
+    });
+
+  } catch (err) {
+    console.error('Error /generate-scene-image:', err);
+    return res.status(500).json({ 
+      error: 'Erreur lors de la génération de l\'image',
+      details: err.message 
+    });
   }
 });
 

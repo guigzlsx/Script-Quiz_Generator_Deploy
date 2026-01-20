@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Storyboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="image/thunder-only-square.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js"></script>
+    <style>
+        /* Style pour l'affichage du storyboard avec images */
+        #storyboardContainer {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            #storyboardContainer .scene-content {
+                grid-template-columns: 1fr !important;
+            }
+            
+            #storyboardContainer img {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="banner">
+        <a href="index.html" class="logo">
+            <h1><img src="image/logotopcoach.png" alt="TopCoach"></h1>
+        </a>
+        <div class="burger-menu">
+            <div class="burger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="menu-items">
+                <button class="btn btn-ghost btn-1" onclick="window.location.href='index.html'">Générateur Script & Quiz</button>
+                <button class="btn btn-ghost btn-1" onclick="window.location.href='product_desc.html'">Description Produit</button>
+                <button class="btn btn-ghost btn-1" onclick="window.location.href='product_extraction.html'">Extraction Produit</button>
+                <button class="btn btn-ghost btn-1" onclick="window.location.href='pdf_tools.html'">PDF Tools</button>
+                <button class="btn btn-ghost btn-1" onclick="window.location.href='image_resizer.html'">Redimensionneur Images</button>
+                <button id="clearStoryboardButton" class="clear-btn btn btn-sm">Effacer le storyboard</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-description">
+        <p>
+          <strong>Générateur de Storyboard pour Production Vidéo</strong><br>
+          Importez votre script vidéo au format <b>.docx</b>.<br>
+          L'IA analysera votre script et générera automatiquement un storyboard détaillé décrivant chaque scène.<br>
+          Taille maximale du fichier : <b>10 Mo</b>.<br>
+          Vous pourrez ensuite exporter le storyboard au format Word (.docx) pour faciliter la production vidéo.
+        </p>
+    </section>
+
+    <main class="pdf-tools-container">
+        <div class="card">
+            <header class="card-header">
+                <div>
+                    <h3>Générer un Storyboard</h3>
+                    <p class="muted">Importez votre script vidéo et cliquez sur Générer</p>
+                </div>
+            </header>
+            <div class="card-body">
+                <div class="file-upload-container drop-area" id="dropArea">
+                    <input type="file" id="fileInput" accept=".docx"> 
+                    <label for="fileInput" class="custom-file-upload" role="button" tabindex="0" aria-label="Choisir un fichier">Choisir un fichier script (.docx) 📁</label>
+                    <div id="dropHint" class="file-hint">Aucun fichier sélectionné</div>
+                </div>
+
+                <div style="margin-top:12px; text-align:center; max-width:800px; margin-left:auto; margin-right:auto;">
+                    <label for="extraInfo" style="display:block; margin-bottom:8px; color:var(--muted);">Informations complémentaires (facultatif) :</label>
+                    <textarea id="extraInfo" rows="8" placeholder="Ex: Style visuel souhaité, ton de la vidéo, public cible, durée approximative..."
+                    style="width:100%; max-width:780px; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit; resize:vertical;"></textarea>
+                </div>
+
+                <button class="btn btn-primary btn-9" id="generateButton">
+                    <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" class="sparkle">
+                        <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"></path>
+                    </svg>
+                    <span class="text">Générer le Storyboard</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div id="loader" class="loader" style="display: none;">
+        <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+        <div id="Chargement">Génération du storyboard en cours...</div>
+    </div>
+
+    <div id="result" class="result" style="display: none;">
+        <h2>Storyboard généré :</h2>
+        <div id="storyboardContainer" style="margin-top: 20px;"></div>
+        
+        <div class="export-buttons" style="margin-top: 20px;">
+            <button id="exportStoryboardDocx" class="btn btn-ghost btn-1">Exporter le Storyboard en DOCX</button>
+        </div>
+        
+        <section class="page-description">
+            <p>Votre storyboard a été généré avec succès avec toutes les illustrations ! Cliquez sur le bouton ci-dessus pour l'exporter au format Word (.docx) pour votre production vidéo.</p>
+        </section>
+    </div>
+
+    <script src="storyboard_generator.js"></script>
+</body>
+</html>

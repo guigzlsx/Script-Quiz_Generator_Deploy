@@ -84,5 +84,3 @@ Le backend expose les endpoints utilisés par la page `pdf_tools.html` (ex: `/me
 
 - [pdf.js](https://mozilla.github.io/pdf.js/)
 - [SortableJS](https://sortablejs.github.io/Sortable/)
-
-
