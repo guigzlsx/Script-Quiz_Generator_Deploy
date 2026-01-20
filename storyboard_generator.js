@@ -126,7 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const progressInterval = animateProgressBar();
 
         try {
-            const response = await fetch('http://localhost:3000/generate-storyboard', {
+            // Use current origin for API calls (works in dev and production)
+            const apiUrl = `${window.location.origin}/generate-storyboard`;
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 body: formData
             });

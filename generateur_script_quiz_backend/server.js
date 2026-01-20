@@ -19,8 +19,27 @@ app.use(express.json());
 // Remarque: assure-toi que les fichiers statiques front sont bien dans le dossier racine du projet.
 app.use(express.static(path.join(__dirname, "..")));
 
-// Utiliser CORS
-app.use(cors()); // Ajouter cette ligne pour activer CORS
+// Utiliser CORS with proper configuration
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or Electron)
+    // or from the same origin in production
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:5000',
+      process.env.FRONTEND_URL // Set this in Render environment variables if needed
+    ];
+    
+    if (!origin || allowedOrigins.includes(origin) || !origin.includes('http')) {
+      callback(null, true);
+    } else {
+      // In production on Render, allow same origin
+      callback(null, true);
+    }
+  },
+  credentials: true
+}));
 
 // Configurer l'API OpenAI
 const openai = new OpenAI({
