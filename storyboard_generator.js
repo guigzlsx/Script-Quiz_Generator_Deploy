@@ -295,23 +295,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            const { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel, Table, TableCell, TableRow, BorderStyle, VerticalAlign, UnderlineType } = window.docx;
+            const { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel, Table, TableCell, TableRow, BorderStyle, VerticalAlign, UnderlineType, WidthType, TableLayoutType } = window.docx;
 
             console.log('Début export DOCX avec', scenesToExport.length, 'scènes');
 
             const children = [];
+            const productTitle = (storyboardData && storyboardData.product_name) ? storyboardData.product_name : "";
 
-            // Titre principal
+            // En-tête: titre principal puis nom du produit en dessous (même style)
             children.push(
                 new Paragraph({
                     text: "STORYBOARD - PRODUCTION VIDÉO",
                     heading: HeadingLevel.HEADING_1,
                     alignment: AlignmentType.CENTER,
-                    spacing: { after: 200, before: 0 }
+                    spacing: { after: 0, before: 0 }
                 })
             );
+            if (productTitle) {
+                children.push(
+                    new Paragraph({
+                        text: productTitle,
+                        heading: HeadingLevel.HEADING_1,
+                        alignment: AlignmentType.CENTER,
+                        spacing: { after: 200, before: 0 }
+                    })
+                );
+            }
 
-            // Ligne vide
+            // Ligne vide pour espacement sous l'en-tête
             children.push(new Paragraph({ text: "" }));
 
             // Ajouter chaque scène
@@ -345,7 +356,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ]
                             })
                         ],
-                        width: { size: 100, type: "percent" }
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        layout: TableLayoutType.FIXED
                     })
                 );
 
@@ -387,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             ]
                                         })
                                     ],
-                                    width: { size: 25, type: "percent" },
+                                    // Largeur contrôlée par columnWidths au niveau du tableau
                                     shading: { fill: "F0F5FF" },
                                     margins: { top: 60, bottom: 60, left: 80, right: 80 }
                                 }),
@@ -425,7 +437,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     children.push(
                         new Table({
                             rows: rows,
-                            width: { size: 100, type: "percent" }
+                            width: { size: 100, type: WidthType.PERCENTAGE },
+                            // Donne plus d'espace à la colonne label pour éviter le retour à la ligne serré
+                            columnWidths: [5000, 10500],
+                            layout: TableLayoutType.FIXED
                         })
                     );
                 }
